@@ -2,10 +2,51 @@
 title: "DanMazJen.github.io"
 ---
 
-This is a Quarto website.
+Welcome to the website.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Currently, this is a test. The site will expand over the next couple of months.
+
+The content will be small blog-styled pieces of statistical material.
+
+# Why random slopes matter
 
 ```{r}
-1 + 1
+library(lme4)
+library(ggplot2)
+
+
+```
+
+With random intercept only:
+
+```{r}
+RI_only <- lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
+summary(RI_only)
+```
+
+```{r}
+datafit=fitted(RI_only)
+ggplot(sleepstudy, aes(Days, Reaction, group=Subject, colour=Subject)) + 
+  geom_point() + 
+  geom_line(aes(y=datafit), linetype=2) + 
+  facet_wrap(~Subject, ncol=9) + 
+  scale_x_continuous(limits=c(0, 10),breaks=c(0,10)) +
+  theme_minimal()
+```
+
+Now with random intercept, random slope, and correlated random terms
+
+```{r}
+RI_RS_corr <- lmer(Reaction ~ 1 + Days + (1 + Days | Subject), sleepstudy)
+summary(RI_RS_corr)
+```
+
+```{r}
+datafit=fitted(RI_RS_corr)
+ggplot(sleepstudy, aes(Days, Reaction, group=Subject, colour=Subject)) + 
+  geom_point() + 
+  geom_line(aes(y=datafit), linetype=2) + 
+  facet_wrap(~Subject, ncol=9) + 
+  scale_x_continuous(limits=c(0, 10),breaks=c(0,10)) +
+  theme_minimal()
 ```
