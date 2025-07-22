@@ -1,0 +1,156 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Hi! I’m Daniel — welcome to my little corner of the internet.\nI’m a health science researcher with a growing interest in data modeling, reproducible analysis, and the R ecosystem. I also have a deep appreciation for specialty coffee — especially as fuel for long modeling sessions and debugging marathons.\nThis site is a mix of things: answers to questions friends and colleagues ask me, experiments with methods or tools I want to learn better, and thoughts on tech and research practices that catch my interest. You might find posts about multilevel models with lme4, visualizations in ggplot2, or just a useful little R trick I want to remember later.\nIf you’re curious about something I post — or if you have a better way to do it — feel free to reach out. I like sharing ideas, and I’m always learning.\nThanks for stopping by."
+  },
+  {
+    "objectID": "about.html#welcome-to-the-website.",
+    "href": "about.html#welcome-to-the-website.",
+    "title": "About me",
+    "section": "",
+    "text": "Currently, this is a test. The site will expand over the next couple of months.\nThe content will be small blog-styled pieces of statistical material that friends and colleagues recently started asking me. Some of the material will also be for my own amusement, relating to topics I’m actively exploring and trying to get a better felling of."
+  },
+  {
+    "objectID": "about.html#background",
+    "href": "about.html#background",
+    "title": "About me",
+    "section": "",
+    "text": "Aalborg University | Denmark PhD in Biomedical Engineering and Neuroscience | 2022 - active\nMaastricht University | Netherlands RMSc in Cognitive and Clinical Neuroscience | 2020 - 2022\nUniversity College of Northern Denmark (UCN) | Denmark Lecturer | 2018 - 2020\nAalborg University | Denmark BA and MA in Music Therapy | 2013 - 2018"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DanMazJen.github.io",
+    "section": "",
+    "text": "Welcome to the website.\nCurrently, this is a test. The site will expand over the next couple of months.\nThe content will be small blog-styled pieces of statistical material."
+  },
+  {
+    "objectID": "index.html#a-brief-look-at-the-data",
+    "href": "index.html#a-brief-look-at-the-data",
+    "title": "DanMazJen.github.io",
+    "section": "A brief look at the data:",
+    "text": "A brief look at the data:\n\nstr(sleepstudy) # for more info, consult ?lme4::sleepstudy for the lme4 documentation\n\n'data.frame':   180 obs. of  3 variables:\n $ Reaction: num  250 259 251 321 357 ...\n $ Days    : num  0 1 2 3 4 5 6 7 8 9 ...\n $ Subject : Factor w/ 18 levels \"308\",\"309\",\"310\",..: 1 1 1 1 1 1 1 1 1 1 ...\n\n\n\nsleepstudy |&gt; \n  ggplot(aes(y=Reaction, x=Days)) +\n  facet_wrap(~ Subject, ncol=6) +\n  geom_point() +\n  geom_line() +\n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))"
+  },
+  {
+    "objectID": "index.html#the-anova-approach-full-pooling",
+    "href": "index.html#the-anova-approach-full-pooling",
+    "title": "DanMazJen.github.io",
+    "section": "The ANOVA approach (full pooling)",
+    "text": "The ANOVA approach (full pooling)\n\nanova_approach &lt;- lm(Reaction ~ 1 + Days, sleepstudy)\nsummary(anova_approach)\n\n\nCall:\nlm(formula = Reaction ~ 1 + Days, data = sleepstudy)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-110.848  -27.483    1.546   26.142  139.953 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  251.405      6.610  38.033  &lt; 2e-16 ***\nDays          10.467      1.238   8.454 9.89e-15 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 47.71 on 178 degrees of freedom\nMultiple R-squared:  0.2865,    Adjusted R-squared:  0.2825 \nF-statistic: 71.46 on 1 and 178 DF,  p-value: 9.894e-15\n\n\nHere is the model prediction - notice how every participant is assumed to have the same initial value and linear trajectory. This is due to pooling, an assumption from ANOVA.\n\nggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + \n  facet_wrap(~Subject, ncol=6) +\n  geom_point() + \n  geom_line(aes(y=fitted(anova_approach)), linetype=2, color = \"red\") + \n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))"
+  },
+  {
+    "objectID": "index.html#no-pooling---treating-every-participant-as-their-own-experiment",
+    "href": "index.html#no-pooling---treating-every-participant-as-their-own-experiment",
+    "title": "DanMazJen.github.io",
+    "section": "No pooling - treating every participant as their own experiment…",
+    "text": "No pooling - treating every participant as their own experiment…\nIf we want to be more sensitive to individual variability, we need to allow participants to be modeled more individually. This can be done by computing linear regression for each participant, treating them as individual cases with no overlap.\n\nno_pooling &lt;- lmList(Reaction ~ Days | Subject, sleepstudy)\nsummary(no_pooling)\n\nCall:\n  Model: Reaction ~ Days | NULL \n   Data: sleepstudy \n\nCoefficients:\n   (Intercept) \n    Estimate Std. Error  t value     Pr(&gt;|t|)\n308 244.1927   15.04169 16.23439 2.419368e-34\n309 205.0549   15.04169 13.63244 1.067180e-27\n310 203.4842   15.04169 13.52802 1.993900e-27\n330 289.6851   15.04169 19.25882 1.122068e-41\n331 285.7390   15.04169 18.99647 4.646933e-41\n332 264.2516   15.04169 17.56795 1.236403e-37\n333 275.0191   15.04169 18.28379 2.303436e-39\n334 240.1629   15.04169 15.96649 1.135574e-33\n335 263.0347   15.04169 17.48705 1.946826e-37\n337 290.1041   15.04169 19.28667 9.653936e-42\n349 215.1118   15.04169 14.30104 1.983389e-29\n350 225.8346   15.04169 15.01391 2.939145e-31\n351 261.1470   15.04169 17.36155 3.943049e-37\n352 276.3721   15.04169 18.37374 1.402577e-39\n369 254.9681   15.04169 16.95077 4.023936e-36\n370 210.4491   15.04169 13.99106 1.253782e-28\n371 253.6360   15.04169 16.86221 6.656453e-36\n372 267.0448   15.04169 17.75365 4.373979e-38\n   Days \n     Estimate Std. Error    t value     Pr(&gt;|t|)\n308 21.764702   2.817566  7.7246464 1.741840e-12\n309  2.261785   2.817566  0.8027444 4.234454e-01\n310  6.114899   2.817566  2.1702769 3.162541e-02\n330  3.008073   2.817566  1.0676139 2.874813e-01\n331  5.266019   2.817566  1.8689956 6.365457e-02\n332  9.566768   2.817566  3.3954013 8.857738e-04\n333  9.142045   2.817566  3.2446604 1.462120e-03\n334 12.253141   2.817566  4.3488388 2.574673e-05\n335 -2.881034   2.817566 -1.0225257 3.082469e-01\n337 19.025974   2.817566  6.7526272 3.315759e-10\n349 13.493933   2.817566  4.7892159 4.115160e-06\n350 19.504017   2.817566  6.9222924 1.356856e-10\n351  6.433498   2.817566  2.2833528 2.387301e-02\n352 13.566549   2.817566  4.8149886 3.683105e-06\n369 11.348109   2.817566  4.0276282 9.081880e-05\n370 18.056151   2.817566  6.4084212 1.964766e-09\n371  9.188445   2.817566  3.2611283 1.385338e-03\n372 11.298073   2.817566  4.0098697 9.718197e-05\n\nResidual standard error: 25.59182 on 144 degrees of freedom\n\n\n\nggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + \n  facet_wrap(~Subject, ncol=6) +\n  geom_point() + \n  geom_line(aes(y=fitted(no_pooling)), linetype=2, color = \"red\") + \n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))"
+  },
+  {
+    "objectID": "index.html#partial-pooling",
+    "href": "index.html#partial-pooling",
+    "title": "DanMazJen.github.io",
+    "section": "Partial pooling",
+    "text": "Partial pooling\n\nWith random intercept only:\nWe can relax the assumption of pooling by allowing each participant to have their own intercept.\n\nRI_only &lt;- lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)\nsummary(RI_only)\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: Reaction ~ 1 + Days + (1 | Subject)\n   Data: sleepstudy\n\nREML criterion at convergence: 1786.5\n\nScaled residuals: \n    Min      1Q  Median      3Q     Max \n-3.2257 -0.5529  0.0109  0.5188  4.2506 \n\nRandom effects:\n Groups   Name        Variance Std.Dev.\n Subject  (Intercept) 1378.2   37.12   \n Residual              960.5   30.99   \nNumber of obs: 180, groups:  Subject, 18\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept) 251.4051     9.7467   25.79\nDays         10.4673     0.8042   13.02\n\nCorrelation of Fixed Effects:\n     (Intr)\nDays -0.371\n\n\nNote the fixed effect 10.4673 / 0.8042 = 13.0157921\n\nggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + \n  facet_wrap(~Subject, ncol=6) +\n  geom_point() + \n  geom_line(aes(y=fitted(RI_only)), linetype=2, color = \"red\") + \n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))\n\n\n\n\n\n\n\n\n\n\nNow with random intercept, random slope, and correlated random terms\n\nRI_RS_corr &lt;- lmer(Reaction ~ 1 + Days + (1 + Days | Subject), sleepstudy)\nsummary(RI_RS_corr)\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: Reaction ~ 1 + Days + (1 + Days | Subject)\n   Data: sleepstudy\n\nREML criterion at convergence: 1743.6\n\nScaled residuals: \n    Min      1Q  Median      3Q     Max \n-3.9536 -0.4634  0.0231  0.4634  5.1793 \n\nRandom effects:\n Groups   Name        Variance Std.Dev. Corr\n Subject  (Intercept) 612.10   24.741       \n          Days         35.07    5.922   0.07\n Residual             654.94   25.592       \nNumber of obs: 180, groups:  Subject, 18\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  251.405      6.825  36.838\nDays          10.467      1.546   6.771\n\nCorrelation of Fixed Effects:\n     (Intr)\nDays -0.138\n\n\nNote the fixed effect 10.467 / 1.546 = 6.7703752\n\nggplot(sleepstudy, aes(Days, Reaction, group=Subject, colour=Subject)) + \n  facet_wrap(~Subject, ncol=6) +\n  geom_point() + \n  geom_line(aes(y=fitted(RI_RS_corr)), linetype=2, color = \"red\") + \n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))"
+  },
+  {
+    "objectID": "index.html#comparing-model-predictions",
+    "href": "index.html#comparing-model-predictions",
+    "title": "DanMazJen.github.io",
+    "section": "Comparing model predictions",
+    "text": "Comparing model predictions\n\nggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + \n  facet_wrap(~Subject, ncol=6) +\n  geom_point() + \n  geom_line(aes(y=fitted(anova_approach)), linetype=2, color = \"red\") + \n  geom_line(aes(y=fitted(no_pooling)), linetype=2, color = \"green\") + \n  geom_line(aes(y=fitted(RI_only)), linetype=2, color = \"blue\") + \n  geom_line(aes(y=fitted(RI_RS_corr)), linetype=2, color = \"black\") +\n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))"
+  },
+  {
+    "objectID": "index.html#conclusions",
+    "href": "index.html#conclusions",
+    "title": "DanMazJen.github.io",
+    "section": "Conclusions",
+    "text": "Conclusions\n\nWhile random intercept models are within the class of linear mixed-effect models, they are often difficult to find use cases for within cognitive neuroscience experiments.\nWhile accouting for individual starting differences is a set up from the ANOVA approach, it still assumes no variability between participants.\nFitting mass linear models (no pooling) overcomes this problem. However, researchers often aim to generalize and make population-based conclusions. It is therefore not optimal for this use case.\nLinear mixed-effect models that are modeled appropriately to a specific data set is a great approach (partial-pooling). However, they quickly become tricky to set up when there are multiple predictors, groups, covariates, and especially interactions."
+  },
+  {
+    "objectID": "blog/index.html",
+    "href": "blog/index.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Welcome to my blog!\nI’ll now try to write more stuff. This should help me identify if it works…\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nWhy random slopes?\n\n\n… and why random intercepts are often not enough\n\n\n\nR\n\n\nlme4\n\n\nmultilevel regression\n\n\n\nUsing lme4, I show why random slopes is often needed in biomedical research and experiments\n\n\n\n\n\nJul 23, 2025\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome to My Blog\n\n\n\n\n\n\nGeneral\n\n\n\nThis is my first blog post.\n\n\n\n\n\nJul 22, 2025\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "blog/2025-07-22-my-first-post.html",
+    "href": "blog/2025-07-22-my-first-post.html",
+    "title": "Welcome to My Blog",
+    "section": "",
+    "text": "Hello, world! This is my first post.\nI’ll now try to write more stuff. This should help me identify if it works…\n\nplot(1:10)"
+  },
+  {
+    "objectID": "blog/2025-08-22-effect-of-RIonly_RIRS.html",
+    "href": "blog/2025-08-22-effect-of-RIonly_RIRS.html",
+    "title": "Why random slopes?",
+    "section": "",
+    "text": "Welcome to the website.\nCurrently, this is a test. The site will expand over the next couple of months.\nThe content will be small blog-styled pieces of statistical material."
+  },
+  {
+    "objectID": "blog/2025-08-22-effect-of-RIonly_RIRS.html#a-brief-look-at-the-data",
+    "href": "blog/2025-08-22-effect-of-RIonly_RIRS.html#a-brief-look-at-the-data",
+    "title": "Why random slopes?",
+    "section": "A brief look at the data:",
+    "text": "A brief look at the data:\n\n\nCode\nstr(sleepstudy) # for more info, consult ?lme4::sleepstudy for the lme4 documentation\n\n\n'data.frame':   180 obs. of  3 variables:\n $ Reaction: num  250 259 251 321 357 ...\n $ Days    : num  0 1 2 3 4 5 6 7 8 9 ...\n $ Subject : Factor w/ 18 levels \"308\",\"309\",\"310\",..: 1 1 1 1 1 1 1 1 1 1 ...\n\n\n\n\nCode\nsleepstudy |&gt; \n  ggplot(aes(y=Reaction, x=Days)) +\n  facet_wrap(~ Subject, ncol=6) +\n  geom_point() +\n  geom_line() +\n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))"
+  },
+  {
+    "objectID": "blog/2025-08-22-effect-of-RIonly_RIRS.html#the-anova-approach-full-pooling",
+    "href": "blog/2025-08-22-effect-of-RIonly_RIRS.html#the-anova-approach-full-pooling",
+    "title": "Why random slopes?",
+    "section": "The ANOVA approach (full pooling)",
+    "text": "The ANOVA approach (full pooling)\n\n\nCode\nanova_approach &lt;- lm(Reaction ~ 1 + Days, sleepstudy)\nsummary(anova_approach)\n\n\n\nCall:\nlm(formula = Reaction ~ 1 + Days, data = sleepstudy)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-110.848  -27.483    1.546   26.142  139.953 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  251.405      6.610  38.033  &lt; 2e-16 ***\nDays          10.467      1.238   8.454 9.89e-15 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 47.71 on 178 degrees of freedom\nMultiple R-squared:  0.2865,    Adjusted R-squared:  0.2825 \nF-statistic: 71.46 on 1 and 178 DF,  p-value: 9.894e-15\n\n\nHere is the model prediction - notice how every participant is assumed to have the same initial value and linear trajectory. This is due to pooling, an assumption from ANOVA.\n\n\nCode\nggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + \n  facet_wrap(~Subject, ncol=6) +\n  geom_point() + \n  geom_line(aes(y=fitted(anova_approach)), linetype=2, color = \"red\") + \n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))"
+  },
+  {
+    "objectID": "blog/2025-08-22-effect-of-RIonly_RIRS.html#no-pooling---treating-every-participant-as-their-own-experiment",
+    "href": "blog/2025-08-22-effect-of-RIonly_RIRS.html#no-pooling---treating-every-participant-as-their-own-experiment",
+    "title": "Why random slopes?",
+    "section": "No pooling - treating every participant as their own experiment…",
+    "text": "No pooling - treating every participant as their own experiment…\nIf we want to be more sensitive to individual variability, we need to allow participants to be modeled more individually. This can be done by computing linear regression for each participant, treating them as individual cases with no overlap.\n\n\nCode\nno_pooling &lt;- lmList(Reaction ~ Days | Subject, sleepstudy)\nsummary(no_pooling)\n\n\nCall:\n  Model: Reaction ~ Days | NULL \n   Data: sleepstudy \n\nCoefficients:\n   (Intercept) \n    Estimate Std. Error  t value     Pr(&gt;|t|)\n308 244.1927   15.04169 16.23439 2.419368e-34\n309 205.0549   15.04169 13.63244 1.067180e-27\n310 203.4842   15.04169 13.52802 1.993900e-27\n330 289.6851   15.04169 19.25882 1.122068e-41\n331 285.7390   15.04169 18.99647 4.646933e-41\n332 264.2516   15.04169 17.56795 1.236403e-37\n333 275.0191   15.04169 18.28379 2.303436e-39\n334 240.1629   15.04169 15.96649 1.135574e-33\n335 263.0347   15.04169 17.48705 1.946826e-37\n337 290.1041   15.04169 19.28667 9.653936e-42\n349 215.1118   15.04169 14.30104 1.983389e-29\n350 225.8346   15.04169 15.01391 2.939145e-31\n351 261.1470   15.04169 17.36155 3.943049e-37\n352 276.3721   15.04169 18.37374 1.402577e-39\n369 254.9681   15.04169 16.95077 4.023936e-36\n370 210.4491   15.04169 13.99106 1.253782e-28\n371 253.6360   15.04169 16.86221 6.656453e-36\n372 267.0448   15.04169 17.75365 4.373979e-38\n   Days \n     Estimate Std. Error    t value     Pr(&gt;|t|)\n308 21.764702   2.817566  7.7246464 1.741840e-12\n309  2.261785   2.817566  0.8027444 4.234454e-01\n310  6.114899   2.817566  2.1702769 3.162541e-02\n330  3.008073   2.817566  1.0676139 2.874813e-01\n331  5.266019   2.817566  1.8689956 6.365457e-02\n332  9.566768   2.817566  3.3954013 8.857738e-04\n333  9.142045   2.817566  3.2446604 1.462120e-03\n334 12.253141   2.817566  4.3488388 2.574673e-05\n335 -2.881034   2.817566 -1.0225257 3.082469e-01\n337 19.025974   2.817566  6.7526272 3.315759e-10\n349 13.493933   2.817566  4.7892159 4.115160e-06\n350 19.504017   2.817566  6.9222924 1.356856e-10\n351  6.433498   2.817566  2.2833528 2.387301e-02\n352 13.566549   2.817566  4.8149886 3.683105e-06\n369 11.348109   2.817566  4.0276282 9.081880e-05\n370 18.056151   2.817566  6.4084212 1.964766e-09\n371  9.188445   2.817566  3.2611283 1.385338e-03\n372 11.298073   2.817566  4.0098697 9.718197e-05\n\nResidual standard error: 25.59182 on 144 degrees of freedom\n\n\n\n\nCode\nggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + \n  facet_wrap(~Subject, ncol=6) +\n  geom_point() + \n  geom_line(aes(y=fitted(no_pooling)), linetype=2, color = \"red\") + \n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))"
+  },
+  {
+    "objectID": "blog/2025-08-22-effect-of-RIonly_RIRS.html#partial-pooling",
+    "href": "blog/2025-08-22-effect-of-RIonly_RIRS.html#partial-pooling",
+    "title": "Why random slopes?",
+    "section": "Partial pooling",
+    "text": "Partial pooling\n\nWith random intercept only:\nWe can relax the assumption of pooling by allowing each participant to have their own intercept.\n\n\nCode\nRI_only &lt;- lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)\nsummary(RI_only)\n\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: Reaction ~ 1 + Days + (1 | Subject)\n   Data: sleepstudy\n\nREML criterion at convergence: 1786.5\n\nScaled residuals: \n    Min      1Q  Median      3Q     Max \n-3.2257 -0.5529  0.0109  0.5188  4.2506 \n\nRandom effects:\n Groups   Name        Variance Std.Dev.\n Subject  (Intercept) 1378.2   37.12   \n Residual              960.5   30.99   \nNumber of obs: 180, groups:  Subject, 18\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept) 251.4051     9.7467   25.79\nDays         10.4673     0.8042   13.02\n\nCorrelation of Fixed Effects:\n     (Intr)\nDays -0.371\n\n\nNote the fixed effect 10.4673 / 0.8042 = 13.0157921\n\n\nCode\nggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + \n  facet_wrap(~Subject, ncol=6) +\n  geom_point() + \n  geom_line(aes(y=fitted(RI_only)), linetype=2, color = \"red\") + \n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))\n\n\n\n\n\n\n\n\n\n\n\nNow with random intercept, random slope, and correlated random terms\n\n\nCode\nRI_RS_corr &lt;- lmer(Reaction ~ 1 + Days + (1 + Days | Subject), sleepstudy)\nsummary(RI_RS_corr)\n\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: Reaction ~ 1 + Days + (1 + Days | Subject)\n   Data: sleepstudy\n\nREML criterion at convergence: 1743.6\n\nScaled residuals: \n    Min      1Q  Median      3Q     Max \n-3.9536 -0.4634  0.0231  0.4634  5.1793 \n\nRandom effects:\n Groups   Name        Variance Std.Dev. Corr\n Subject  (Intercept) 612.10   24.741       \n          Days         35.07    5.922   0.07\n Residual             654.94   25.592       \nNumber of obs: 180, groups:  Subject, 18\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  251.405      6.825  36.838\nDays          10.467      1.546   6.771\n\nCorrelation of Fixed Effects:\n     (Intr)\nDays -0.138\n\n\nNote the fixed effect 10.467 / 1.546 = 6.7703752\n\n\nCode\nggplot(sleepstudy, aes(Days, Reaction, group=Subject, colour=Subject)) + \n  facet_wrap(~Subject, ncol=6) +\n  geom_point() + \n  geom_line(aes(y=fitted(RI_RS_corr)), linetype=2, color = \"red\") + \n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))"
+  },
+  {
+    "objectID": "blog/2025-08-22-effect-of-RIonly_RIRS.html#comparing-model-predictions",
+    "href": "blog/2025-08-22-effect-of-RIonly_RIRS.html#comparing-model-predictions",
+    "title": "Why random slopes?",
+    "section": "Comparing model predictions",
+    "text": "Comparing model predictions\n\n\nCode\nggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + \n  facet_wrap(~Subject, ncol=6) +\n  geom_point() + \n  geom_line(aes(y=fitted(anova_approach)), linetype=2, color = \"red\") + \n  geom_line(aes(y=fitted(no_pooling)), linetype=2, color = \"green\") + \n  geom_line(aes(y=fitted(RI_only)), linetype=2, color = \"blue\") + \n  geom_line(aes(y=fitted(RI_RS_corr)), linetype=2, color = \"black\") +\n  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))"
+  },
+  {
+    "objectID": "blog/2025-08-22-effect-of-RIonly_RIRS.html#conclusions",
+    "href": "blog/2025-08-22-effect-of-RIonly_RIRS.html#conclusions",
+    "title": "Why random slopes?",
+    "section": "Conclusions",
+    "text": "Conclusions\n\nWhile random intercept models are within the class of linear mixed-effect models, they are often difficult to find use cases for within cognitive neuroscience experiments.\nWhile accouting for individual starting differences is a set up from the ANOVA approach, it still assumes no variability between participants.\nFitting mass linear models (no pooling) overcomes this problem. However, researchers often aim to generalize and make population-based conclusions. It is therefore not optimal for this use case.\nLinear mixed-effect models that are modeled appropriately to a specific data set is a great approach (partial-pooling). However, they quickly become tricky to set up when there are multiple predictors, groups, covariates, and especially interactions."
+  },
+  {
+    "objectID": "about.html#about-me",
+    "href": "about.html#about-me",
+    "title": "About",
+    "section": "",
+    "text": "Hi! I’m Daniel — welcome to my little corner of the internet.\nI’m a health science researcher with a growing interest in data modeling, reproducible analysis, and the R ecosystem. I also have a deep appreciation for specialty coffee — especially as fuel for long modeling sessions and debugging marathons.\nThis site is a mix of things: answers to questions friends and colleagues ask me, experiments with methods or tools I want to learn better, and thoughts on tech and research practices that catch my interest. You might find posts about multilevel models with lme4, visualizations in ggplot2, or just a useful little R trick I want to remember later.\nIf you’re curious about something I post — or if you have a better way to do it — feel free to reach out. I like sharing ideas, and I’m always learning.\nThanks for stopping by."
+  },
+  {
+    "objectID": "about.html#about-the-site",
+    "href": "about.html#about-the-site",
+    "title": "About",
+    "section": "About the site",
+    "text": "About the site\nCurrently, this is a test. The site will expand over the next couple of months.\nThe content will be small blog-styled pieces of statistical material that friends and colleagues recently started asking me. Some of the material will also be for my own amusement, relating to topics I’m actively exploring and trying to get a better felling of."
+  },
+  {
+    "objectID": "about.html#my-background",
+    "href": "about.html#my-background",
+    "title": "About",
+    "section": "My Background",
+    "text": "My Background\nAalborg University | Denmark | PhD-fellow enrolled to Biomedical Engineering and Neuroscience | 2022 - active\nMaastricht University | Netherlands | RMSc in Cognitive and Clinical Neuroscience | 2020 - 2022\nUniversity College of Northern Denmark (UCN) | Denmark Lecturer | 2018 - 2020\nAalborg University | Denmark | BA and MA in Music Therapy | 2013 - 2018"
+  }
+]

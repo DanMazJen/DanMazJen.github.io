@@ -1,9 +1,39 @@
 ---
 title: "About"
+about:
+  template: broadside
+  image: profile.jpg
+  links:
+    - icon: person-workspace
+      text: University site
+      href: https://vbn.aau.dk/en/persons/daskmaje
+    - icon: github
+      text: Github
+      href: https://github.com/DanMazJen
 ---
 
-About this site
+## About me
+Hi! I'm Daniel — welcome to my little corner of the internet.
 
-```{r}
-1 + 1
-```
+I'm a health science researcher with a growing interest in data modeling, reproducible analysis, and the R ecosystem. I also have a deep appreciation for specialty coffee — especially as fuel for long modeling sessions and debugging marathons.
+
+This site is a mix of things: answers to questions friends and colleagues ask me, experiments with methods or tools I want to learn better, and thoughts on tech and research practices that catch my interest. You might find posts about multilevel models with `lme4`, visualizations in `ggplot2`, or just a useful little R trick I want to remember later.
+
+If you're curious about something I post — or if you have a better way to do it — feel free to reach out. I like sharing ideas, and I'm always learning.
+
+Thanks for stopping by.
+
+## About the site
+Currently, this is a test. The site will expand over the next couple of months.
+
+The content will be small blog-styled pieces of statistical material that friends and colleagues recently started asking me. Some of the material will also be for my own amusement, relating to topics I'm actively exploring and trying to get a better felling of.
+
+## My Background
+Aalborg University | Denmark | PhD-fellow enrolled to Biomedical Engineering and Neuroscience | 2022 - active
+
+Maastricht University | Netherlands | RMSc in Cognitive and Clinical Neuroscience | 2020 - 2022
+
+University College of Northern Denmark (UCN) | Denmark
+Lecturer | 2018 - 2020
+
+Aalborg University | Denmark | BA and MA in Music Therapy | 2013 - 2018

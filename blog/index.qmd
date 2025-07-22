@@ -1,0 +1,13 @@
+---
+title: "Blog"
+listing:
+  contents: . 
+  sort: "date desc"
+  type: default
+  filter-ui: true
+  categories: true
+---
+
+Welcome to my blog!
+
+I'll now try to write more stuff. This should help me identify if it works...
