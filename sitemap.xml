@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://DanMazJen.github.io/index.html</loc>
-    <lastmod>2025-07-18T09:25:18.950Z</lastmod>
+    <loc>https://DanMazJen.github.io/blog/2025-07-22-my-first-post.html</loc>
+    <lastmod>2025-07-22T16:55:28.916Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/blog/2025-08-22-effect-of-RIonly_RIRS.html</loc>
+    <lastmod>2025-07-22T16:55:28.916Z</lastmod>
   </url>
   <url>
     <loc>https://DanMazJen.github.io/about.html</loc>
-    <lastmod>2025-07-18T09:25:18.949Z</lastmod>
+    <lastmod>2025-07-22T16:55:28.916Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/index.html</loc>
+    <lastmod>2025-07-22T16:55:28.917Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/blog/index.html</loc>
+    <lastmod>2025-07-22T16:55:28.916Z</lastmod>
   </url>
 </urlset>
