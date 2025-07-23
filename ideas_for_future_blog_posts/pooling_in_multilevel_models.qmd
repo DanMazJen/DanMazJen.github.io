@@ -1,0 +1,223 @@
+---
+title: "Why random slopes matters..."
+subtitle: "... and why random intercepts are often not enough"
+author: "Daniel S. Mazhari-Jensen"
+description: "Using lme4, I show why random slopes is often needed in biomedical research and experiments"
+date: 2025-07-23
+reading-time: 5 min
+file-modified: 2025-07-23
+categories: [R, lme4, multilevel regression]
+format:
+  html:
+    toc: true
+    code-fold: true
+---
+
+# Multi-level models and why random slopes matter
+
+![](plots/random-slopes-preview.png){.preview-image}
+
+In this post, we'll discuss why random slopes are often of special concern in health science data and biometrics. We will use `lme4` and `ggplot2` to do so. The data set we'll use to demonstrate this comes from ...
+
+
+```{r}
+#| echo: false
+library(lme4)
+library(ggplot2)
+library(dplyr)
+```
+
+## Generating our data set:
+
+```{r}
+set.seed(314)
+
+# Parameters
+n_subjects <- 30
+n_sessions <- 5
+
+# Fixed effect of session: general learning effect
+beta_0 <- 600   # Average baseline RT in ms
+beta_1 <- -10   # Average decrease in RT per session
+
+# Random effects: standard deviations
+sd_intercept <- 50    # SD of baseline RTs across subjects
+sd_slope     <- 25    # SD of learning rates (slopes)
+rho          <- 0.2   # Correlation between intercepts and slopes
+
+# Within-subject residual error
+sigma_error <- 30
+
+# Construct subject-level random effects (correlated)
+subject_re <- MASS::mvrnorm(
+  n = n_subjects,
+  mu = c(0, 0),
+  Sigma = matrix(c(sd_intercept^2, rho*sd_intercept*sd_slope,
+                   rho*sd_intercept*sd_slope, sd_slope^2), 2)
+) |> 
+  as.data.frame() |>
+  setNames(c("intercept_re", "slope_re")) |>
+  dplyr::mutate(subject = factor(1:n_subjects))
+
+# Create session vector repeated for each subject
+session <- rep(0:(n_sessions - 1), times = n_subjects)
+
+# Repeat subject IDs for each session
+subject <- rep(subject_re$subject, each = n_sessions)
+
+# Join the random effects
+sim_data <- tibble::tibble(subject = subject, session = session) |>
+  dplyr::left_join(subject_re, by = "subject") |>
+  dplyr::mutate(
+    reaction_time = beta_0 + intercept_re +
+                    (beta_1 + slope_re) * session +
+                    rnorm(dplyr::n(), mean = 0, sd = sigma_error)
+  )
+
+# View a few rows
+head(sim_data)
+```
+
+
+## A brief look at the data:
+
+```{r}
+str(sim_data) # for more info, consult ?lme4::sleepstudy for the lme4 documentation
+```
+
+```{r}
+sim_data |> 
+  ggplot(aes(y=reaction_time, x=session)) +
+  facet_wrap(~ subject, ncol=6) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(limits=c(0, 5),breaks=c(0:5))
+```
+
+
+
+```{r}
+RI_only <- lme4::lmer(reaction_time ~ 1 + session + (1 | subject), sim_data)
+summary(RI_only)
+
+2 * pnorm(-1.744)
+
+RI_RS_corr <- lme4::lmer(reaction_time ~ 1 + session + (session | subject), sim_data)
+summary(RI_RS_corr)
+
+2 * pnorm(-1.428)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+sleepstudy |> 
+  ggplot(aes(y=Reaction, x=Days)) +
+  facet_wrap(~ Subject, ncol=6) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))
+```
+
+## The ANOVA approach (full pooling)
+
+```{r}
+anova_approach <- lm(Reaction ~ 1 + Days, sleepstudy)
+summary(anova_approach)
+```
+
+Here is the model prediction - notice how every participant is assumed to have the same initial value and linear trajectory. This is due to pooling, an assumption from ANOVA.
+
+```{r}
+ggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + 
+  facet_wrap(~Subject, ncol=6) +
+  geom_point() + 
+  geom_line(aes(y=fitted(anova_approach)), linetype=2, color = "red") + 
+  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))
+```
+
+## No pooling - treating every participant as their own experiment...
+
+If we want to be more sensitive to individual variability, we need to allow participants to be modeled more individually. This can be done by computing linear regression for each participant, treating them as individual cases with no overlap.
+
+```{r}
+no_pooling <- lmList(Reaction ~ Days | Subject, sleepstudy)
+summary(no_pooling)
+```
+
+```{r}
+ggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + 
+  facet_wrap(~Subject, ncol=6) +
+  geom_point() + 
+  geom_line(aes(y=fitted(no_pooling)), linetype=2, color = "red") + 
+  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))
+```
+
+## Partial pooling
+
+### With random intercept only:
+
+We can relax the assumption of pooling by allowing each participant to have their own intercept.
+
+```{r}
+RI_only <- lmer(Reaction ~ 1 + Days + (1 | Subject), sleepstudy)
+summary(RI_only)
+```
+
+Note the fixed effect 10.4673 / 0.8042 = `{r} 10.4673 / 0.8042`
+
+```{r}
+ggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + 
+  facet_wrap(~Subject, ncol=6) +
+  geom_point() + 
+  geom_line(aes(y=fitted(RI_only)), linetype=2, color = "red") + 
+  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))
+```
+
+### Now with random intercept, random slope, and correlated random terms
+
+```{r}
+RI_RS_corr <- lmer(Reaction ~ 1 + Days + (1 + Days | Subject), sleepstudy)
+summary(RI_RS_corr)
+```
+
+Note the fixed effect 10.467 / 1.546 = `{r} 10.467 / 1.546`
+
+```{r}
+ggplot(sleepstudy, aes(Days, Reaction, group=Subject, colour=Subject)) + 
+  facet_wrap(~Subject, ncol=6) +
+  geom_point() + 
+  geom_line(aes(y=fitted(RI_RS_corr)), linetype=2, color = "red") + 
+  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))
+```
+
+## Comparing model predictions
+
+```{r}
+ggplot(sleepstudy, aes(Days, Reaction, group=Subject)) + 
+  facet_wrap(~Subject, ncol=6) +
+  geom_point() + 
+  geom_line(aes(y=fitted(anova_approach)), linetype=2, color = "red") + 
+  geom_line(aes(y=fitted(no_pooling)), linetype=2, color = "green") + 
+  geom_line(aes(y=fitted(RI_only)), linetype=2, color = "blue") + 
+  geom_line(aes(y=fitted(RI_RS_corr)), linetype=2, color = "black") +
+  scale_x_continuous(limits=c(0, 9),breaks=c(0:9))
+```
+
+## Conclusions
+
+-   While random intercept models are within the class of linear mixed-effect models, they are often difficult to find use cases for within cognitive neuroscience experiments.
+-   While accouting for individual starting differences is a set up from the ANOVA approach, it still assumes no variability between participants.
+-   Fitting mass linear models (no pooling) overcomes this problem. However, researchers often aim to generalize and make population-based conclusions. It is therefore not optimal for this use case.
+-   Linear mixed-effect models that are modeled appropriately to a specific data set is a great approach (partial-pooling). However, they quickly become tricky to set up when there are multiple predictors, groups, covariates, and especially interactions.

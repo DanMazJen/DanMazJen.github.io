@@ -1,5 +1,5 @@
 ---
-title: "Why random slopes?"
+title: "Why random slopes matters..."
 subtitle: "... and why random intercepts are often not enough"
 author: "Daniel S. Mazhari-Jensen"
 description: "Using lme4, I show why random slopes is often needed in biomedical research and experiments"
@@ -13,30 +13,415 @@ format:
     code-fold: true
 ---
 
-
-Welcome to the website.
-
-Currently, this is a test. The site will expand over the next couple of months.
-
-The content will be small blog-styled pieces of statistical material.
-
 # Multi-level models and why random slopes matter
 
 ![](plots/random-slopes-preview.png){.preview-image}
 
-In this post, we'll discuss why random slopes are often of special concern in health science data and biometrics. We will use `lme4` and `ggplot2` to do so. The data set we'll use to demonstrate this comes from ...
+In this post, we'll discuss why random slopes are often of special interest in health science data and biometrics. We will use `lme4` and the basic `tidyverse`-style to do so. The data set we'll use to demonstrate this comes from a simple simulation that mimics a common experimental design: repeated measures of reaction time across multiple sessions per participant.
 
+Imagine we are testing whether people improve (get faster) with repeated practice. This is a typical setup in cognitive psychology. Often, researchers want to know: *is there a significant learning effect over time?*
+
+But here's the issue (SPOILER ALLERT!): if you only allow each participant to have a different **starting point** (a random intercept), you're assuming everyone learns at **the same rate** — which is often unrealistic.
 
 ```{r}
 #| echo: false
 library(lme4)
 library(ggplot2)
+library(dplyr)
+```
+
+## Simulating our data set:
+
+We simulate a data set where each subject completes five sessions of a task. There's a general trend toward faster responses over time, but with subject-specific differences in both starting reaction time and learning rate.
+
+```{r}
+set.seed(314)
+
+# Parameters
+n_subjects <- 30
+n_sessions <- 5
+
+# Fixed effect of session: general learning effect
+beta_0 <- 600   # Average baseline RT in ms
+beta_1 <- -10   # Average decrease in RT per session
+
+# Random effects: standard deviations
+sd_intercept <- 50    # SD of baseline RTs across subjects
+sd_slope     <- 25    # SD of learning rates (slopes)
+rho          <- 0.2   # Correlation between intercepts and slopes
+
+# Within-subject residual error
+sigma_error <- 30
+
+# Construct subject-level random effects (correlated)
+subject_re <- MASS::mvrnorm(
+  n = n_subjects,
+  mu = c(0, 0),
+  Sigma = matrix(c(sd_intercept^2, rho*sd_intercept*sd_slope,
+                   rho*sd_intercept*sd_slope, sd_slope^2), 2)
+) |> 
+  as.data.frame() |>
+  setNames(c("intercept_re", "slope_re")) |>
+  dplyr::mutate(subject = factor(1:n_subjects))
+
+# Create session vector repeated for each subject
+session <- rep(0:(n_sessions - 1), times = n_subjects)
+
+# Repeat subject IDs for each session
+subject <- rep(subject_re$subject, each = n_sessions)
+
+# Join the random effects
+sim_data <- tibble::tibble(subject = subject, session = session) |>
+  dplyr::left_join(subject_re, by = "subject") |>
+  dplyr::mutate(
+    reaction_time = beta_0 + intercept_re +
+                    (beta_1 + slope_re) * session +
+                    rnorm(dplyr::n(), mean = 0, sd = sigma_error)
+  )
+```
+
+Here's the distribution of slopes (ie. learning rate variability):
+
+```{r}
+subject_re |>
+  ggplot(aes(x = slope_re)) +
+  geom_histogram(bins = 20, fill = "#6495ED", color = "white") +
+  labs(title = "Distribution of subject-specific learning rates (slopes)",
+       x = "Subject slope (ms per session)", y = "Count") +
+  theme_minimal()
 ```
 
 ## A brief look at the data:
 
+Here's the structure of our data set:
+
 ```{r}
-str(sleepstudy) # for more info, consult ?lme4::sleepstudy for the lme4 documentation
+dplyr::glimpse(sim_data)
+```
+
+```{r}
+sim_data |> 
+  ggplot(aes(y=reaction_time, x=session)) +
+  facet_wrap(~ subject, ncol=6) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(limits=c(0, 4),breaks=c(0:4)) +
+  labs(x = "Session", y = "Reaction Time (ms)",
+     title = "Individual learning trajectories across sessions")
+```
+
+Generally, our sample shows the following trend:
+
+```{r}
+sim_data |>
+  ggplot(aes(x = session, y = reaction_time)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", color = "firebrick", se = FALSE) +
+  labs(title = "Pooled average trend across all subjects",
+       x = "Session", y = "Reaction Time (ms)") +
+  theme_minimal()
+```
+
+## The ANOVA approach (full pooling)
+
+### What happens when we ignore subjects altogether?
+
+Before diving into mixed models, let’s start with a simple linear model — the kind you'd use in a basic ANOVA-style analysis. This model assumes complete pooling, meaning all subjects are treated as coming from the same population with no individual differences.
+
+```{r}
+anova_approach <- lm(reaction_time ~ 1 + session, sim_data)
+summary(anova_approach)
+```
+
+This model estimates a single intercept (baseline reaction time) and a single slope (learning rate) for everyone. It completely ignores the fact that each participant provides multiple data points.
+
+...Here is the model prediction - notice how every participant is assumed to have the same initial value and linear trajectory. This is due to pooling, an assumption from ANOVA. ...
+
+Let’s overlay the model predictions onto each subject's data:
+
+```{r}
+sim_data |> 
+  ggplot(aes(session, reaction_time, group=subject)) + 
+  facet_wrap(~subject, ncol=6) +
+  geom_point() + 
+  geom_line(aes(y=fitted(anova_approach)), linetype=2, color = "red") + 
+  scale_x_continuous(limits=c(0, 4),breaks=c(0:4))
+```
+
+As you can see:
+
+-   The red dashed line is identical across all panels.
+-   That’s because the model assumes all participants behave the same — same starting point, same rate of learning.
+-   It completely ignores the fact that participants vary in their baseline speed and how much they improve.
+-   This is the statistical assumption behind traditional ANOVA: everyone is treated as identical except for random noise.
+
+At first glance, you might look at this and say:
+
+"Ah, some people are improving, others aren’t — we have responders and non-responders!"
+
+But that interpretation would be misleading here. This model can't tell you who is improving — it just imposes the same trend on everyone. The differences you see are purely residuals (errors), not modeled variation.
+
+## Modeling variation by treating every participant as their own experiment (No pooling)
+
+Modeling each participant separately (No pooling) To better capture individual differences, we can treat each participant as their own mini-experiment. This means fitting a separate linear regression model for each subject, without assuming any shared parameters. This is the no pooling approach — the opposite extreme of the ANOVA model.
+
+... If we want to be more sensitive to individual variability, we need to allow participants to be modeled more individually. This can be done by computing linear regression for each participant, treating them as individual cases with no overlap. ...
+
+```{r}
+no_pooling <- lmList(reaction_time ~ session | subject, sim_data)
+summary(no_pooling)
+```
+
+```{r}
+sim_data |> 
+  ggplot(aes(session, reaction_time, group=subject)) + 
+  facet_wrap(~subject, ncol=6) +
+  geom_point(alpha = 0.6) + 
+  geom_line(aes(y = fitted(no_pooling)), color = "red", linetype = "dashed") + 
+  labs(title = "No pooling: Separate regression for each subject",
+       subtitle = "Each subject gets their own intercept and slope",
+       x = "Days of sleep deprivation", y = "Reaction time (ms)") + 
+  scale_x_continuous(limits=c(0, 4),breaks=c(0:4))
+```
+
+**What does this show?** Now, each subject has their own line, fitted independently from the others.
+
+This approach fully respects subject-level variation — but at a cost.
+
+Although no pooling gives us maximum flexibility, it also comes with trade-offs:
+
+-   It doesn’t borrow strength across subjects. If someone has noisy data, their slope might be wildly off.
+-   There’s no generalization — you can’t talk about an average effect across subjects, only 30 separate stories.
+-   In small datasets (as is common in biomedical studies), this often leads to unstable estimates.
+
+**Key point** No pooling shows us the raw heterogeneity in slopes and intercepts — but it doesn’t help us make population-level inferences or control for noise. We need something in between.
+
+What if we want to both model individual differences and estimate a general trend across subjects?
+
+## Multi'level regression (partial pooling)
+
+This is where things get interesting — we're now ready to bridge the gap between the overly simplistic (ANOVA) and the overly fragmented (no pooling) approaches.
+
+*Partial pooling with random intercepts* The random intercept model is the first step toward balancing the extremes of full pooling and no pooling.
+
+We acknowledge that subjects vary in their baseline levels (reaction times), but we still assume they share a common trend — in this case, how their reaction times change over sessions.
+
+This is a mixed-effects model: it includes both fixed effects (shared across all subjects) and random effects (varying by subject).
+
+```{r}
+RI_only <- lme4::lmer(reaction_time ~ 1 + session + (1 | subject), sim_data)
+summary(RI_only)
+
+sim_data |> 
+  ggplot(aes(session, reaction_time, group=subject)) + 
+  facet_wrap(~subject, ncol=6) +
+  geom_point(alpha = 0.6) + 
+  geom_line(aes(y = fitted(RI_only)), color = "red", linetype = "dashed") + 
+  labs(title = "No pooling: Separate regression for each subject",
+       subtitle = "Each subject gets their own intercept and slope",
+       x = "Days of sleep deprivation", y = "Reaction time (ms)") + 
+  scale_x_continuous(limits=c(0, 4),breaks=c(0:4))
+```
+
+What does this model assume? Each subject has their own intercept (baseline reaction time),
+
+But they all share the same learning (or fatigue) slope.
+
+This is often better than full pooling, because it accounts for subject differences in level — but it may still be too rigid if slopes really do vary.
+
+If some participants improve rapidly while others don’t, a fixed slope assumption can:
+
+Underestimate uncertainty in the group trend,
+
+Bias the estimate of the average slope,
+
+Lead to false positives (thinking there's a trend when it's driven by a few outliers),
+
+Mislead clinical interpretations — e.g. calling someone a "responder" when it's just model misfit.
+
+## Limitations of Random Intercept Models in Clinical Inference
+
+In applied biomedical and clinical research, it is common to assess whether individuals vary in their response to an intervention or over repeated measurements. A random intercept model allows for differences in baseline levels between participants but assumes that all individuals share a common rate of change (i.e., a fixed slope).
+
+This assumption can be problematic. If individuals truly differ in their trajectories—such as some improving and others not—then forcing a single slope across all subjects may misattribute systematic variation to residual noise. This can result in biased fixed-effect estimates and inflated residual variance, especially if a small number of participants deviate substantially from the average trend.
+
+In such cases, interpreting individual deviations from the model as evidence of “responders” or “non-responders” can be misleading. These deviations may reflect model misfit rather than genuine subject-specific effects.
+
+Current consensus in the statistical literature supports the use of random slope models when there is theoretical or empirical justification for individual differences in change over time. These models can account for both baseline heterogeneity and subject-specific trends, offering more accurate and generalizable inference (Gelman & Hill, 2007; Barr et al., 2013).
+
+## Random slopes:
+
+To account for individual differences not only in baseline levels but also in rates of change, we now extend the model to include random slopes. This allows each subject to have their own intercept and their own slope with respect to session.
+
+This model is specified as:
+
+```{r}
+RI_RS_corr <- lme4::lmer(reaction_time ~ 1 + session + (session | subject), sim_data)
+summary(RI_RS_corr)
+```
+
+This model assumes that:
+
+-   The intercepts vary by subject (baseline differences),
+-   The slopes also vary by subject (individual learning rates),
+-   And these random effects can be correlated (e.g., subjects with higher baselines may also learn faster or slower).
+
+By allowing for both random intercepts and random slopes, we acknowledge that participants may respond differently over time — something particularly important in biomedical and behavioral research, where inter-individual variability is the norm rather than the exception.
+
+Let’s visualize the fitted lines from this model:
+
+```{r}
+sim_data$RI_RS_fitted <- predict(RI_RS_corr)
+
+ggplot(sim_data, aes(x = session, y = reaction_time, group = subject)) +
+  facet_wrap(~ subject, ncol = 6) +
+  geom_point(alpha = 0.6) +
+  geom_line(aes(y = RI_RS_fitted), color = "red", linetype = "dashed") +
+  labs(title = "Random intercept and random slope model",
+       subtitle = "Each subject has their own intercept and slope",
+       x = "Session", y = "Reaction Time (ms)") +
+  scale_x_continuous(limits = c(0, 4), breaks = 0:4) +
+  theme_minimal()
+```
+
+Random slope models can:
+
+-   Improve model fit by accounting for structured variability,
+-   Produce more accurate estimates of population-level effects,
+-   Reduce the risk of false positives or negatives due to mis-specified structure,
+-   And provide a framework for investigating individual differences in trajectories — a key concern in many health-related studies.
+
+This approach represents what is often called partial pooling: estimates are informed both by the individual subject's data and by the group-level trend, leading to more stable and interpretable inference, especially in small to moderate samples.
+
+## Comparing models: Do random slopes improve fit?
+
+We now compare two models:
+
+One that allows subjects to differ only in their baseline level (random intercept),
+
+And another that also allows them to differ in their rate of change over sessions (random slope).
+
+Using the REML criterion (restricted maximum likelihood), we can assess model fit:
+
+| Model                           | Model REML criterion   |
+|---------------------------------|------------------------|
+| Random intercept only           | 1639.3                 | 
+| Random intercept + random slope | 1550.6                 |     
+|                                 |                        |     
+
+Lower REML values indicate better fit. Here, the random slope model shows a substantially lower REML, suggesting that accounting for individual variability in slopes improves model fit.
+
+While REML values themselves aren't interpretable in isolation, the difference in REML here (\~89 points) is large enough to strongly favor the more complex model.
+
+
+If we wanted to formally test whether adding random slopes improves the model, we could refit both models using maximum likelihood (ML) and then conduct a likelihood ratio test:
+
+```{r}
+RI_only_ml    <- lmer(reaction_time ~ session + (1 | subject), sim_data, REML = FALSE)
+RI_RS_corr_ml <- lmer(reaction_time ~ session + (session | subject), sim_data, REML = FALSE)
+
+anova(RI_only_ml, RI_RS_corr_ml)
+```
+
+This test examines whether the added complexity (the subject-specific slopes) is justified by a significantly better fit.
+
+
+The model with random slopes:
+
+-   Fits the data substantially better (lower REML),
+-   Produces more conservative fixed-effect estimates (larger SE, smaller t),
+-   Accounts for the correlation between intercepts and slopes across individuals (here: +0.30),
+-   And reduces residual variance (from ~2103 to ~723), indicating that more of the variability is now captured by structured random effects.
+
+This supports the idea that in biomedical or behavioral data — where individual responses often differ — a random intercept-only model may be too restrictive and lead to misleading fixed-effect conclusions.
+
+
+
+## Interpreting the Random Effects
+The random intercept + slope model gives us valuable insight into the structure of variability in our data — not just whether an effect exists on average, but how consistent it is across individuals.
+
+From the model output:
+
+```{r}
+summary(RI_RS_corr)
+```
+
+-   Baseline (Intercept) Variability
+The standard deviation of the intercepts is 45.72 ms, indicating substantial between-subject differences in baseline reaction times. This is expected in behavioral or clinical data, where individuals differ due to prior experience, cognitive ability, or other latent traits.
+
+-   Slope (Session Effect) Variability
+The standard deviation of the random slopes is 23.79 ms, meaning that individuals differ notably in how their reaction times change over sessions — some improve sharply, others remain flat or even worsen slightly. This heterogeneity is clinically relevant and would be obscured by models that assume a common slope.
+
+-   Correlation Between Intercepts and Slopes
+The correlation between intercepts and slopes is +0.30. This suggests a weak-to-moderate tendency for participants with higher baseline reaction times to show steeper improvements (more negative slopes). While not strong, this association may point to individual differences in learning potential — e.g., those starting slower have more room to improve.
+
+*Why this matters*
+The comparison to a simpler model (with only random intercepts) showed that assuming a shared slope across participants can lead to misleading fixed-effect estimates. In that model, the session effect was significant:
+
+RI_only: session estimate = -7.53, t = -2.84
+
+But once we allow subject-specific slopes:
+
+RI_RS_corr: session estimate = -7.53, t = -1.63
+
+| Model          | Fixed Effect | Estimate | Std. Error | t value |
+|----------------|--------------|----------|------------|---------|
+| RI_only        | session      | -7.53    | 2.65       | -2.84   |
+| RI_RS_corr     | session      | -7.53    | 4.61       | -1.63   |
+
+The estimate is identical in both models, but the standard error increases substantially in the random slope model. This reflects how the RI-only model underestimates uncertainty by ignoring individual variability in slopes. Consequently, the t-value drops from a statistically suggestive level (–2.84) to a more cautious level (–1.63), demonstrating the importance of correctly specifying random effects.
+
+The average effect remains the same, but the uncertainty increases, because the model properly attributes some of the variation to individual differences.
+
+This is exactly what Gelman & Hill (2007) and Barr et al. (2013) argue: failing to include justified random slopes can inflate confidence in fixed effects — potentially leading to spurious conclusions.
+
+## Conclusion
+By modeling random slopes:
+
+We acknowledge that people learn differently over time,
+
+We prevent overconfident or misleading group-level inferences,
+
+And we gain access to rich insights about how variability in individual responses relates to baseline ability.
+
+This modeling approach helps move us from averages to individuals, which is crucial in many health, cognitive, and behavioral domains.
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+RI_only <- lme4::lmer(reaction_time ~ 1 + session + (1 | subject), sim_data)
+summary(RI_only)
+
+2 * pnorm(-1.744)
+
+RI_RS_corr <- lme4::lmer(reaction_time ~ 1 + session + (session | subject), sim_data)
+summary(RI_RS_corr)
+
+2 * pnorm(-1.428)
+```
+
+This can be visualized:
+
+```{r}
+sim_data |> dplyr::mutate(improving = slope_re < 0) |> 
+ggplot(aes(y=reaction_time, x=session, color = improving)) +
+    scale_color_manual(values = c("TRUE" = "blue", "FALSE" = "gray")) +
+    facet_wrap(~ subject, ncol=6) +
+    geom_point() +
+    geom_line() +
+    scale_x_continuous(limits=c(0, 4),breaks=c(0:4)) +
+    labs(x = "Session", y = "Reaction Time (ms)",
+         title = "Individual learning trajectories across sessions")
 ```
 
 ```{r}
