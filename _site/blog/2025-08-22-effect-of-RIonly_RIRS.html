@@ -155,26 +155,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#multi-level-models-and-why-random-slopes-matter" id="toc-multi-level-models-and-why-random-slopes-matter" class="nav-link active" data-scroll-target="#multi-level-models-and-why-random-slopes-matter">Multi-level models and why random slopes matter</a>
   <ul class="collapse">
+  <li><a href="#how-two-memes-helped-me-learn-something-about-mixed-effect-models" id="toc-how-two-memes-helped-me-learn-something-about-mixed-effect-models" class="nav-link" data-scroll-target="#how-two-memes-helped-me-learn-something-about-mixed-effect-models">How two memes helped me learn something about mixed-effect models</a></li>
+  <li><a href="#how-well-approach-it" id="toc-how-well-approach-it" class="nav-link" data-scroll-target="#how-well-approach-it">How we’ll approach it:</a></li>
   <li><a href="#simulating-our-data-set" id="toc-simulating-our-data-set" class="nav-link" data-scroll-target="#simulating-our-data-set">Simulating our data set:</a></li>
   <li><a href="#a-brief-look-at-the-data" id="toc-a-brief-look-at-the-data" class="nav-link" data-scroll-target="#a-brief-look-at-the-data">A brief look at the data:</a></li>
   <li><a href="#the-anova-approach-full-pooling" id="toc-the-anova-approach-full-pooling" class="nav-link" data-scroll-target="#the-anova-approach-full-pooling">The ANOVA approach (full pooling)</a>
   <ul class="collapse">
   <li><a href="#what-happens-when-we-ignore-subjects-altogether" id="toc-what-happens-when-we-ignore-subjects-altogether" class="nav-link" data-scroll-target="#what-happens-when-we-ignore-subjects-altogether">What happens when we ignore subjects altogether?</a></li>
   </ul></li>
-  <li><a href="#modeling-variation-by-treating-every-participant-as-their-own-experiment-no-pooling" id="toc-modeling-variation-by-treating-every-participant-as-their-own-experiment-no-pooling" class="nav-link" data-scroll-target="#modeling-variation-by-treating-every-participant-as-their-own-experiment-no-pooling">Modeling variation by treating every participant as their own experiment (No pooling)</a></li>
+  <li><a href="#modeling-variation-by-treating-every-participant-as-their-own-experiment-no-pooling" id="toc-modeling-variation-by-treating-every-participant-as-their-own-experiment-no-pooling" class="nav-link" data-scroll-target="#modeling-variation-by-treating-every-participant-as-their-own-experiment-no-pooling">Modeling variation by treating every participant as their own experiment (no pooling)</a></li>
   <li><a href="#multilevel-regression-partial-pooling" id="toc-multilevel-regression-partial-pooling" class="nav-link" data-scroll-target="#multilevel-regression-partial-pooling">Multi’level regression (partial pooling)</a></li>
   <li><a href="#limitations-of-random-intercept-models-in-clinical-inference" id="toc-limitations-of-random-intercept-models-in-clinical-inference" class="nav-link" data-scroll-target="#limitations-of-random-intercept-models-in-clinical-inference">Limitations of Random Intercept Models in Clinical Inference</a></li>
   <li><a href="#random-slopes" id="toc-random-slopes" class="nav-link" data-scroll-target="#random-slopes">Random slopes:</a></li>
   <li><a href="#comparing-models-do-random-slopes-improve-fit" id="toc-comparing-models-do-random-slopes-improve-fit" class="nav-link" data-scroll-target="#comparing-models-do-random-slopes-improve-fit">Comparing models: Do random slopes improve fit?</a></li>
-  <li><a href="#the-anova-approach-full-pooling-1" id="toc-the-anova-approach-full-pooling-1" class="nav-link" data-scroll-target="#the-anova-approach-full-pooling-1">The ANOVA approach (full pooling)</a></li>
-  <li><a href="#no-pooling---treating-every-participant-as-their-own-experiment" id="toc-no-pooling---treating-every-participant-as-their-own-experiment" class="nav-link" data-scroll-target="#no-pooling---treating-every-participant-as-their-own-experiment">No pooling - treating every participant as their own experiment…</a></li>
-  <li><a href="#partial-pooling" id="toc-partial-pooling" class="nav-link" data-scroll-target="#partial-pooling">Partial pooling</a>
-  <ul class="collapse">
-  <li><a href="#with-random-intercept-only" id="toc-with-random-intercept-only" class="nav-link" data-scroll-target="#with-random-intercept-only">With random intercept only:</a></li>
-  <li><a href="#now-with-random-intercept-random-slope-and-correlated-random-terms" id="toc-now-with-random-intercept-random-slope-and-correlated-random-terms" class="nav-link" data-scroll-target="#now-with-random-intercept-random-slope-and-correlated-random-terms">Now with random intercept, random slope, and correlated random terms</a></li>
-  </ul></li>
-  <li><a href="#comparing-model-predictions" id="toc-comparing-model-predictions" class="nav-link" data-scroll-target="#comparing-model-predictions">Comparing model predictions</a></li>
-  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  <li><a href="#interpreting-the-random-effects" id="toc-interpreting-the-random-effects" class="nav-link" data-scroll-target="#interpreting-the-random-effects">Interpreting the Random Effects</a></li>
+  <li><a href="#take-away-message" id="toc-take-away-message" class="nav-link" data-scroll-target="#take-away-message">Take-away message:</a></li>
+  <li><a href="#old" id="toc-old" class="nav-link" data-scroll-target="#old">old</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">??</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -226,90 +223,106 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="multi-level-models-and-why-random-slopes-matter" class="level1">
 <h1>Multi-level models and why random slopes matter</h1>
-<p><img src="plots/random-slopes-preview.png" class="preview-image img-fluid"></p>
-<p>In this post, we’ll discuss why random slopes are often of special interest in health science data and biometrics. We will use <code>lme4</code> and the basic <code>tidyverse</code>-style to do so. The data set we’ll use to demonstrate this comes from a simple simulation that mimics a common experimental design: repeated measures of reaction time across multiple sessions per participant.</p>
+<section id="how-two-memes-helped-me-learn-something-about-mixed-effect-models" class="level2">
+<h2 class="anchored" data-anchor-id="how-two-memes-helped-me-learn-something-about-mixed-effect-models">How two memes helped me learn something about mixed-effect models</h2>
+<p>About six months ago, I came across these two memes:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plots/random_intercept_only.jpg" class="preview-image img-fluid figure-img"></p>
+<figcaption>Meme 1</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plots/what_about_random_slopes.jpg" class="preview-image img-fluid figure-img"></p>
+<figcaption>Meme 2</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>At first, I was genuinely puzzled. What exactly is the connection between adding a <strong>random intercept</strong> in a regression model and inflating <strong>Type I error</strong> when you don’t include a <strong>random slope</strong>?</p>
+<p>If you, like I did, got intrigued by these meme’s nuggets of information, consider reading along.</p>
+<p>My goal here is to unpack what’s going on in a way that’s accessible, honest, and hopefully a little enjoyable. I’m not writing a textbook chapter; this is more of a <em>personal explanation</em> of a concept I found tricky and later came to appreciate.</p>
+<p>⚠️ <strong>Note</strong>: I assume you have a basic understanding of regression models and null-significance-hypothesis-tests. What follows is not a deep statistical dive, but it should give you just enough to understand the meme, avoid a common pitfall, and get curious about mixed-effects models. The material is based on:</p>
+<ul>
+<li>Gelman &amp; Hill</li>
+<li>Barr</li>
+<li>?</li>
+</ul>
+</section>
+<section id="how-well-approach-it" class="level2">
+<h2 class="anchored" data-anchor-id="how-well-approach-it">How we’ll approach it:</h2>
+<p>We’ll focus on why <strong>random slopes</strong> are crucial in many types of data—especially in <strong>biometric</strong> or <strong>health science research</strong>, where repeated measures designs are common. We’ll use a small simulation in R to illustrate the key concepts, relying on the <code>lme4</code> package and some <code>tidyverse</code>-style data wrangling.</p>
+<p>The data set we’ll use to demonstrate this comes from a simple simulation that mimics a common experimental design: repeated measures of a response variable (here: reaction time) across multiple sessions per participant.</p>
 <p>Imagine we are testing whether people improve (get faster) with repeated practice. This is a typical setup in cognitive psychology. Often, researchers want to know: <em>is there a significant learning effect over time?</em></p>
-<p>But here’s the issue (SPOILER ALLERT!): if you only allow each participant to have a different <strong>starting point</strong> (a random intercept), you’re assuming everyone learns at <strong>the same rate</strong> — which is often unrealistic.</p>
-<div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Indlæser krævet pakke: Matrix</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Vedhæfter pakke: 'dplyr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>De følgende objekter er maskerede fra 'package:stats':
-
-    filter, lag</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>De følgende objekter er maskerede fra 'package:base':
-
-    intersect, setdiff, setequal, union</code></pre>
-</div>
-</div>
+<p>We might want to investigate whether a test we’re performing has an undesirable shift across multiple repeated measures (stability of test instrument) in order to validate it and show it’s feasibility as a repeated measure for a clinical trial, for example for a medical assessment for driving skills under the influence of a given drug.</p>
+<p>But here’s the issue (<strong>SPOILER ALLERT!</strong>): if you don’t model the data closely, you might get fundamentally different results!</p>
+<p>Let’s dive in and see why.</p>
+</section>
 <section id="simulating-our-data-set" class="level2">
 <h2 class="anchored" data-anchor-id="simulating-our-data-set">Simulating our data set:</h2>
 <p>We simulate a data set where each subject completes five sessions of a task. There’s a general trend toward faster responses over time, but with subject-specific differences in both starting reaction time and learning rate.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">314</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>n_subjects <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>n_sessions <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed effect of session: general learning effect</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>beta_0 <span class="ot">&lt;-</span> <span class="dv">600</span>   <span class="co"># Average baseline RT in ms</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>beta_1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">10</span>   <span class="co"># Average decrease in RT per session</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Random effects: standard deviations</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>sd_intercept <span class="ot">&lt;-</span> <span class="dv">50</span>    <span class="co"># SD of baseline RTs across subjects</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>sd_slope     <span class="ot">&lt;-</span> <span class="dv">25</span>    <span class="co"># SD of learning rates (slopes)</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>rho          <span class="ot">&lt;-</span> <span class="fl">0.2</span>   <span class="co"># Correlation between intercepts and slopes</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Within-subject residual error</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>sigma_error <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct subject-level random effects (correlated)</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>subject_re <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> n_subjects,</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">mu =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">Sigma =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(sd_intercept<span class="sc">^</span><span class="dv">2</span>, rho<span class="sc">*</span>sd_intercept<span class="sc">*</span>sd_slope,</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                   rho<span class="sc">*</span>sd_intercept<span class="sc">*</span>sd_slope, sd_slope<span class="sc">^</span><span class="dv">2</span>), <span class="dv">2</span>)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">"intercept_re"</span>, <span class="st">"slope_re"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">subject =</span> <span class="fu">factor</span>(<span class="dv">1</span><span class="sc">:</span>n_subjects))</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Create session vector repeated for each subject</span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>session <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span><span class="sc">:</span>(n_sessions <span class="sc">-</span> <span class="dv">1</span>), <span class="at">times =</span> n_subjects)</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat subject IDs for each session</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>subject <span class="ot">&lt;-</span> <span class="fu">rep</span>(subject_re<span class="sc">$</span>subject, <span class="at">each =</span> n_sessions)</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the random effects</span></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>sim_data <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">subject =</span> subject, <span class="at">session =</span> session) <span class="sc">|&gt;</span></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(subject_re, <span class="at">by =</span> <span class="st">"subject"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">reaction_time =</span> beta_0 <span class="sc">+</span> intercept_re <span class="sc">+</span></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>                    (beta_1 <span class="sc">+</span> slope_re) <span class="sc">*</span> session <span class="sc">+</span></span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">rnorm</span>(dplyr<span class="sc">::</span><span class="fu">n</span>(), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sigma_error)</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">314</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>n_subjects <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>n_sessions <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed effect of session: general learning effect</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>beta_0 <span class="ot">&lt;-</span> <span class="dv">600</span>   <span class="co"># Average baseline RT in ms</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>beta_1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">10</span>   <span class="co"># Average decrease in RT per session</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Random effects: standard deviations</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>sd_intercept <span class="ot">&lt;-</span> <span class="dv">50</span>    <span class="co"># SD of baseline RTs across subjects</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>sd_slope     <span class="ot">&lt;-</span> <span class="dv">25</span>    <span class="co"># SD of learning rates (slopes)</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>rho          <span class="ot">&lt;-</span> <span class="fl">0.2</span>   <span class="co"># Correlation between intercepts and slopes</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Within-subject residual error</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>sigma_error <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct subject-level random effects (correlated)</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>subject_re <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> n_subjects,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">mu =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">Sigma =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(sd_intercept<span class="sc">^</span><span class="dv">2</span>, rho<span class="sc">*</span>sd_intercept<span class="sc">*</span>sd_slope,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                   rho<span class="sc">*</span>sd_intercept<span class="sc">*</span>sd_slope, sd_slope<span class="sc">^</span><span class="dv">2</span>), <span class="dv">2</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">"intercept_re"</span>, <span class="st">"slope_re"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">subject =</span> <span class="fu">factor</span>(<span class="dv">1</span><span class="sc">:</span>n_subjects))</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Create session vector repeated for each subject</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>session <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span><span class="sc">:</span>(n_sessions <span class="sc">-</span> <span class="dv">1</span>), <span class="at">times =</span> n_subjects)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat subject IDs for each session</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>subject <span class="ot">&lt;-</span> <span class="fu">rep</span>(subject_re<span class="sc">$</span>subject, <span class="at">each =</span> n_sessions)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the random effects</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>sim_data <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">subject =</span> subject, <span class="at">session =</span> session) <span class="sc">|&gt;</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(subject_re, <span class="at">by =</span> <span class="st">"subject"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">reaction_time =</span> beta_0 <span class="sc">+</span> intercept_re <span class="sc">+</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>                    (beta_1 <span class="sc">+</span> slope_re) <span class="sc">*</span> session <span class="sc">+</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">rnorm</span>(dplyr<span class="sc">::</span><span class="fu">n</span>(), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sigma_error)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Here’s the distribution of slopes (ie. learning rate variability):</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>subject_re <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> slope_re)) <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>, <span class="at">fill =</span> <span class="st">"#6495ED"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of subject-specific learning rates (slopes)"</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Subject slope (ms per session)"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>subject_re <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> slope_re)) <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>, <span class="at">fill =</span> <span class="st">"#6495ED"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of subject-specific learning rates (slopes)"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Subject slope (ms per session)"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -326,7 +339,7 @@ Vedhæfter pakke: 'dplyr'</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(sim_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(sim_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 150
@@ -338,17 +351,18 @@ $ slope_re      &lt;dbl&gt; 14.352662, 14.352662, 14.352662, 14.352662, 14.35266
 $ reaction_time &lt;dbl&gt; 662.9042, 703.3984, 672.8058, 690.5320, 659.7003, 565.97…</code></pre>
 </div>
 </div>
+<p>And each participants’ responses:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>reaction_time, <span class="at">x=</span>session)) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>)) <span class="sc">+</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Session"</span>, <span class="at">y =</span> <span class="st">"Reaction Time (ms)"</span>,</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">title =</span> <span class="st">"Individual learning trajectories across sessions"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>reaction_time, <span class="at">x=</span>session)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>)) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Session"</span>, <span class="at">y =</span> <span class="st">"Reaction Time (ms)"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">title =</span> <span class="st">"Individual learning trajectories across sessions"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -358,21 +372,17 @@ $ reaction_time &lt;dbl&gt; 662.9042, 703.3984, 672.8058, 690.5320, 659.7003, 56
 </div>
 </div>
 </div>
-<p>Generally, our sample shows the following trend:</p>
+<p>Generally, our sample shows the following trend at the group-level:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> session, <span class="at">y =</span> reaction_time)) <span class="sc">+</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"firebrick"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Pooled average trend across all subjects"</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Session"</span>, <span class="at">y =</span> <span class="st">"Reaction Time (ms)"</span>) <span class="sc">+</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(session, reaction_time)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> <span class="st">'y ~ x'</span>, <span class="at">color =</span> <span class="st">"firebrick"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Pooled average trend across all subjects"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Session"</span>, <span class="at">y =</span> <span class="st">"Reaction Time (ms)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -390,8 +400,8 @@ $ reaction_time &lt;dbl&gt; 662.9042, 703.3984, 672.8058, 690.5320, 659.7003, 56
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>anova_approach <span class="ot">&lt;-</span> <span class="fu">lm</span>(reaction_time <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> session, sim_data)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova_approach)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>anova_approach <span class="ot">&lt;-</span> <span class="fu">lm</span>(reaction_time <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> session, sim_data)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova_approach)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -420,12 +430,12 @@ F-statistic: 2.299 on 1 and 148 DF,  p-value: 0.1316</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(session, reaction_time, <span class="at">group=</span>subject)) <span class="sc">+</span> </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fitted</span>(anova_approach)), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(session, reaction_time, <span class="at">group=</span>subject)) <span class="sc">+</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fitted</span>(anova_approach)), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -435,27 +445,23 @@ F-statistic: 2.299 on 1 and 148 DF,  p-value: 0.1316</code></pre>
 </div>
 </div>
 </div>
-<p>As you can see:</p>
-<ul>
-<li>The red dashed line is identical across all panels.</li>
-<li>That’s because the model assumes all participants behave the same — same starting point, same rate of learning.</li>
-<li>It completely ignores the fact that participants vary in their baseline speed and how much they improve.</li>
-<li>This is the statistical assumption behind traditional ANOVA: everyone is treated as identical except for random noise.</li>
-</ul>
-<p>At first glance, you might look at this and say:</p>
+<p>As you can see, the red dashed line is identical across all panels. That’s because the model assumes all participants behave the same — same starting point, same rate of learning. It completely ignores the fact that participants vary in their baseline speed and how much they improve. This is the statistical assumption behind traditional ANOVA: everyone is treated as identical except for random noise.</p>
+<p><em>The elusive discussion of responders/non-responders</em> At first glance, you might look at this and say:</p>
 <p>“Ah, some people are improving, others aren’t — we have responders and non-responders!”</p>
 <p>But that interpretation would be misleading here. This model can’t tell you who is improving — it just imposes the same trend on everyone. The differences you see are purely residuals (errors), not modeled variation.</p>
 </section>
 </section>
 <section id="modeling-variation-by-treating-every-participant-as-their-own-experiment-no-pooling" class="level2">
-<h2 class="anchored" data-anchor-id="modeling-variation-by-treating-every-participant-as-their-own-experiment-no-pooling">Modeling variation by treating every participant as their own experiment (No pooling)</h2>
-<p>Modeling each participant separately (No pooling) To better capture individual differences, we can treat each participant as their own mini-experiment. This means fitting a separate linear regression model for each subject, without assuming any shared parameters. This is the no pooling approach — the opposite extreme of the ANOVA model.</p>
+<h2 class="anchored" data-anchor-id="modeling-variation-by-treating-every-participant-as-their-own-experiment-no-pooling">Modeling variation by treating every participant as their own experiment (no pooling)</h2>
+<p>Modeling each participant separately (no pooling)</p>
+<p>To better capture individual differences, we can treat each participant as their own mini-experiment. This means fitting a separate linear regression model for each subject, without assuming any shared parameters. This is the no pooling approach — the opposite extreme of the ANOVA model.</p>
 <p>… If we want to be more sensitive to individual variability, we need to allow participants to be modeled more individually. This can be done by computing linear regression for each participant, treating them as individual cases with no overlap. …</p>
+<p>There is this need function in lme4 that does this for you:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>no_pooling <span class="ot">&lt;-</span> <span class="fu">lmList</span>(reaction_time <span class="sc">~</span> session <span class="sc">|</span> subject, sim_data)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(no_pooling)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>no_pooling <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmList</span>(reaction_time <span class="sc">~</span> session <span class="sc">|</span> subject, sim_data)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(no_pooling)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
@@ -531,18 +537,19 @@ Coefficients:
 Residual standard error: 26.89939 on 90 degrees of freedom</code></pre>
 </div>
 </div>
+<p>Now, the model fits the data as follows:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span> </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(session, reaction_time, <span class="at">group=</span>subject)) <span class="sc">+</span> </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">fitted</span>(no_pooling)), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"No pooling: Separate regression for each subject"</span>,</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Each subject gets their own intercept and slope"</span>,</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Days of sleep deprivation"</span>, <span class="at">y =</span> <span class="st">"Reaction time (ms)"</span>) <span class="sc">+</span> </span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(session, reaction_time, <span class="at">group=</span>subject)) <span class="sc">+</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">fitted</span>(no_pooling)), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"No pooling: Separate regression for each subject"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Each subject gets their own intercept and slope"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Days of sleep deprivation"</span>, <span class="at">y =</span> <span class="st">"Reaction time (ms)"</span>) <span class="sc">+</span> </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -568,12 +575,12 @@ Residual standard error: 26.89939 on 90 degrees of freedom</code></pre>
 <p>This is where things get interesting — we’re now ready to bridge the gap between the overly simplistic (ANOVA) and the overly fragmented (no pooling) approaches.</p>
 <p><em>Partial pooling with random intercepts</em> The random intercept model is the first step toward balancing the extremes of full pooling and no pooling.</p>
 <p>We acknowledge that subjects vary in their baseline levels (reaction times), but we still assume they share a common trend — in this case, how their reaction times change over sessions.</p>
-<p>This is a mixed-effects model: it includes both fixed effects (shared across all subjects) and random effects (varying by subject).</p>
+<p>The following code chunk and plot is based on a mixed-effects model: it includes both fixed effects (shared across all subjects) and random effects (varying by subject).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>RI_only <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(reaction_time <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> session <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subject), sim_data)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(RI_only)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>RI_only <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(reaction_time <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> session <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subject), sim_data)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(RI_only)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML ['lmerMod']
@@ -603,15 +610,15 @@ session -0.355</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span> </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(session, reaction_time, <span class="at">group=</span>subject)) <span class="sc">+</span> </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">fitted</span>(RI_only)), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"No pooling: Separate regression for each subject"</span>,</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Each subject gets their own intercept and slope"</span>,</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Days of sleep deprivation"</span>, <span class="at">y =</span> <span class="st">"Reaction time (ms)"</span>) <span class="sc">+</span> </span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(session, reaction_time, <span class="at">group=</span>subject)) <span class="sc">+</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">fitted</span>(RI_only)), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"No pooling: Separate regression for each subject"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Each subject gets their own intercept and slope"</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Days of sleep deprivation"</span>, <span class="at">y =</span> <span class="st">"Reaction time (ms)"</span>) <span class="sc">+</span> </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -621,14 +628,14 @@ session -0.355</code></pre>
 </div>
 </div>
 </div>
-<p>What does this model assume? Each subject has their own intercept (baseline reaction time),</p>
-<p>But they all share the same learning (or fatigue) slope.</p>
-<p>This is often better than full pooling, because it accounts for subject differences in level — but it may still be too rigid if slopes really do vary.</p>
-<p>If some participants improve rapidly while others don’t, a fixed slope assumption can:</p>
-<p>Underestimate uncertainty in the group trend,</p>
-<p>Bias the estimate of the average slope,</p>
-<p>Lead to false positives (thinking there’s a trend when it’s driven by a few outliers),</p>
-<p>Mislead clinical interpretations — e.g.&nbsp;calling someone a “responder” when it’s just model misfit.</p>
+<p><strong>What does this model assume?</strong></p>
+<p>Each subject has their own intercept (baseline reaction time), but they all share the same learning (or fatigue) slope. This is often better than full pooling, because it accounts for subject differences in level — but it may still be too rigid if slopes really do vary. If some participants improve rapidly while others don’t, a fixed slope assumption can:</p>
+<ul>
+<li>Underestimate uncertainty in the group trend,</li>
+<li>Bias the estimate of the average slope,</li>
+<li>Lead to false positives (thinking there’s a trend when it’s driven by a few outliers),</li>
+<li>Mislead clinical interpretations — e.g.&nbsp;calling someone a “responder” when it’s just model misfit.</li>
+</ul>
 </section>
 <section id="limitations-of-random-intercept-models-in-clinical-inference" class="level2">
 <h2 class="anchored" data-anchor-id="limitations-of-random-intercept-models-in-clinical-inference">Limitations of Random Intercept Models in Clinical Inference</h2>
@@ -644,8 +651,8 @@ session -0.355</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>RI_RS_corr <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(reaction_time <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> session <span class="sc">+</span> (session <span class="sc">|</span> subject), sim_data)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(RI_RS_corr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>RI_RS_corr <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(reaction_time <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> session <span class="sc">+</span> (session <span class="sc">|</span> subject), sim_data)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(RI_RS_corr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML ['lmerMod']
@@ -675,7 +682,7 @@ Correlation of Fixed Effects:
 session 0.147 </code></pre>
 </div>
 </div>
-<p>This model assumes that:</p>
+<p><strong>This model assumes that:</strong></p>
 <ul>
 <li>The intercepts vary by subject (baseline differences),</li>
 <li>The slopes also vary by subject (individual learning rates),</li>
@@ -686,17 +693,18 @@ session 0.147 </code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sim_data<span class="sc">$</span>RI_RS_fitted <span class="ot">&lt;-</span> <span class="fu">predict</span>(RI_RS_corr)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sim_data, <span class="fu">aes</span>(<span class="at">x =</span> session, <span class="at">y =</span> reaction_time, <span class="at">group =</span> subject)) <span class="sc">+</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> subject, <span class="at">ncol =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> RI_RS_fitted), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Random intercept and random slope model"</span>,</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Each subject has their own intercept and slope"</span>,</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Session"</span>, <span class="at">y =</span> <span class="st">"Reaction Time (ms)"</span>) <span class="sc">+</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>), <span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>sim_data<span class="sc">$</span>RI_RS_fitted <span class="ot">&lt;-</span> <span class="fu">predict</span>(RI_RS_corr)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> session, <span class="at">y =</span> reaction_time, <span class="at">group =</span> subject)) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> subject, <span class="at">ncol =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> RI_RS_fitted), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Random intercept and random slope model"</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Each subject has their own intercept and slope"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Session"</span>, <span class="at">y =</span> <span class="st">"Reaction Time (ms)"</span>) <span class="sc">+</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>), <span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -720,6 +728,25 @@ session 0.147 </code></pre>
 <p>We now compare two models:</p>
 <p>One that allows subjects to differ only in their baseline level (random intercept),</p>
 <p>And another that also allows them to differ in their rate of change over sessions (random slope).</p>
+<p>Using the Akaike Information Criterion, we can assess model fit:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="fu">c</span>(<span class="st">"ANOVA"</span>,<span class="st">"mass_regression"</span>,<span class="st">"RI_only"</span>,<span class="st">"RI_RS_corr"</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">AIC =</span> <span class="fu">c</span>(<span class="fu">AIC</span>(anova_approach),<span class="fu">AIC</span>(no_pooling),<span class="fu">AIC</span>(RI_only),<span class="fu">AIC</span>(RI_RS_corr))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  model             AIC
+  &lt;chr&gt;           &lt;dbl&gt;
+1 ANOVA           1766.
+2 mass_regression 1459.
+3 RI_only         1647.
+4 RI_RS_corr      1563.</code></pre>
+</div>
+</div>
 <p>Using the REML criterion (restricted maximum likelihood), we can assess model fit:</p>
 <table class="caption-top table">
 <thead>
@@ -743,16 +770,15 @@ session 0.147 </code></pre>
 </tr>
 </tbody>
 </table>
-<p>Lower REML values indicate better fit. Here, the random slope model shows a substantially lower REML, suggesting that accounting for individual variability in slopes improves model fit.</p>
-<p>While REML values themselves aren’t interpretable in isolation, the difference in REML here (~89 points) is large enough to strongly favor the more complex model.</p>
+<p>Lower AIC values indicate better fit. Here, the random slope model shows a substantially lower AIC, suggesting that accounting for individual variability in slopes improves model fit.</p>
 <p>If we wanted to formally test whether adding random slopes improves the model, we could refit both models using maximum likelihood (ML) and then conduct a likelihood ratio test:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>RI_only_ml    <span class="ot">&lt;-</span> <span class="fu">lmer</span>(reaction_time <span class="sc">~</span> session <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subject), sim_data, <span class="at">REML =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>RI_RS_corr_ml <span class="ot">&lt;-</span> <span class="fu">lmer</span>(reaction_time <span class="sc">~</span> session <span class="sc">+</span> (session <span class="sc">|</span> subject), sim_data, <span class="at">REML =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(RI_only_ml, RI_RS_corr_ml)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>RI_only_ml <span class="ot">&lt;-</span> <span class="fu">lmer</span>(reaction_time <span class="sc">~</span> session <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subject), sim_data, <span class="at">REML =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>RI_RS_corr_ml <span class="ot">&lt;-</span> <span class="fu">lmer</span>(reaction_time <span class="sc">~</span> session <span class="sc">+</span> (session <span class="sc">|</span> subject), sim_data, <span class="at">REML =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(RI_only_ml, RI_RS_corr_ml)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Data: sim_data
@@ -766,7 +792,7 @@ RI_RS_corr_ml    6 1573.7 1591.8 -780.85    1561.7 88.428  2  &lt; 2.2e-16 ***
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>This test examines whether the added complexity (the subject-specific slopes) is justified by a significantly better fit.</p>
+<p>This test examines whether the added complexity (the subject-specific slopes and the correlation between random intercept and random slope) is justified by a significantly better fit.</p>
 <p>The model with random slopes:</p>
 <ul>
 <li>Fits the data substantially better (lower REML),</li>
@@ -775,49 +801,15 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <li>And reduces residual variance (from ~2103 to ~723), indicating that more of the variability is now captured by structured random effects.</li>
 </ul>
 <p>This supports the idea that in biomedical or behavioral data — where individual responses often differ — a random intercept-only model may be too restrictive and lead to misleading fixed-effect conclusions.</p>
+</section>
+<section id="interpreting-the-random-effects" class="level2">
+<h2 class="anchored" data-anchor-id="interpreting-the-random-effects">Interpreting the Random Effects</h2>
+<p>The random intercept + slope model with added correlation term gives us valuable insight into the structure of variability in our data — not just whether an effect exists on average, but how consistent it is across individuals.</p>
+<p>From the model output:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>RI_only <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(reaction_time <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> session <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> subject), sim_data)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(RI_only)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Linear mixed model fit by REML ['lmerMod']
-Formula: reaction_time ~ 1 + session + (1 | subject)
-   Data: sim_data
-
-REML criterion at convergence: 1639.3
-
-Scaled residuals: 
-    Min      1Q  Median      3Q     Max 
--2.6679 -0.4728 -0.0547  0.4959  3.8078 
-
-Random effects:
- Groups   Name        Variance Std.Dev.
- subject  (Intercept) 5402     73.50   
- Residual             2103     45.85   
-Number of obs: 150, groups:  subject, 30
-
-Fixed effects:
-            Estimate Std. Error t value
-(Intercept)  614.455     14.904  41.229
-session       -7.529      2.647  -2.844
-
-Correlation of Fixed Effects:
-        (Intr)
-session -0.355</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fl">1.744</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.08115909</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>RI_RS_corr <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(reaction_time <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> session <span class="sc">+</span> (session <span class="sc">|</span> subject), sim_data)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(RI_RS_corr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(RI_RS_corr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML ['lmerMod']
@@ -846,45 +838,27 @@ Correlation of Fixed Effects:
         (Intr)
 session 0.147 </code></pre>
 </div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fl">1.428</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1532919</code></pre>
 </div>
-</div>
+<ul>
+<li><p>Baseline (Intercept) Variability The standard deviation of the intercepts is 45.72 ms, indicating substantial between-subject differences in baseline reaction times. This is expected in behavioral or clinical data, where individuals differ due to prior experience, cognitive ability, or other latent traits.</p></li>
+<li><p>Slope (Session Effect) Variability The standard deviation of the random slopes is 23.79 ms, meaning that individuals differ notably in how their reaction times change over sessions — some improve sharply, others remain flat or even worsen slightly. This heterogeneity is clinically relevant and would be obscured by models that assume a common slope.</p></li>
+<li><p>Correlation Between Intercepts and Slopes The correlation between intercepts and slopes is +0.30. This suggests a weak-to-moderate tendency for participants with higher baseline reaction times to show steeper improvements (more negative slopes). While not strong, this association may point to individual differences in learning potential — e.g., those starting slower have more room to improve.</p></li>
+</ul>
 <p>This can be visualized:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">improving =</span> slope_re <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>reaction_time, <span class="at">x=</span>session, <span class="at">color =</span> improving)) <span class="sc">+</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"gray"</span>)) <span class="sc">+</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>)) <span class="sc">+</span></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Session"</span>, <span class="at">y =</span> <span class="st">"Reaction Time (ms)"</span>,</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Individual learning trajectories across sessions"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="2025-08-22-effect-of-RIonly_RIRS_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>sleepstudy <span class="sc">|&gt;</span> </span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>Reaction, <span class="at">x=</span>Days)) <span class="sc">+</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">9</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">9</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sim_data <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">improving =</span> slope_re <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span>reaction_time, <span class="at">x=</span>session, <span class="at">color =</span> improving)) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"gray"</span>)) <span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept=</span> <span class="fu">mean</span>(<span class="fu">subset</span>(sim_data,session<span class="sc">==</span><span class="dv">1</span>)<span class="sc">$</span>reaction_time)) <span class="sc">+</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>)) <span class="sc">+</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Session"</span>, <span class="at">y =</span> <span class="st">"Reaction Time (ms)"</span>,</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Individual learning trajectories across sessions"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -894,273 +868,69 @@ session 0.147 </code></pre>
 </div>
 </div>
 </div>
+<p><em>Why this matters</em> The comparison to a simpler model (with only random intercepts) showed that assuming a shared slope across participants can lead to misleading fixed-effect estimates. In that model, the session effect was significant:</p>
+<p>RI_only: session estimate = -7.53, t = -2.84</p>
+<p>But once we allow subject-specific slopes:</p>
+<p>RI_RS_corr: session estimate = -7.53, t = -1.63</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Fixed Effect</th>
+<th>Estimate</th>
+<th>Std. Error</th>
+<th>t value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RI_only</td>
+<td>session</td>
+<td>-7.53</td>
+<td>2.65</td>
+<td>-2.84</td>
+</tr>
+<tr class="even">
+<td>RI_RS_corr</td>
+<td>session</td>
+<td>-7.53</td>
+<td>4.61</td>
+<td>-1.63</td>
+</tr>
+</tbody>
+</table>
+<p>The estimate is identical in both models, but the standard error increases substantially in the random slope model. This reflects how the RI-only model underestimates uncertainty by ignoring individual variability in slopes. Consequently, the t-value drops from a statistically suggestive level (–2.84) to a more cautious level (–1.63), demonstrating the importance of correctly specifying random effects.</p>
+<p>The average effect remains the same, but the uncertainty increases, because the model properly attributes some of the variation to individual differences.</p>
+<p>This is exactly what Gelman &amp; Hill (2007) and Barr et al.&nbsp;(2013) argue: failing to include justified random slopes can inflate confidence in fixed effects — potentially leading to spurious conclusions.</p>
 </section>
-<section id="the-anova-approach-full-pooling-1" class="level2">
-<h2 class="anchored" data-anchor-id="the-anova-approach-full-pooling-1">The ANOVA approach (full pooling)</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>anova_approach <span class="ot">&lt;-</span> <span class="fu">lm</span>(Reaction <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Days, sleepstudy)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova_approach)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Reaction ~ 1 + Days, data = sleepstudy)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--110.848  -27.483    1.546   26.142  139.953 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  251.405      6.610  38.033  &lt; 2e-16 ***
-Days          10.467      1.238   8.454 9.89e-15 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 47.71 on 178 degrees of freedom
-Multiple R-squared:  0.2865,    Adjusted R-squared:  0.2825 
-F-statistic: 71.46 on 1 and 178 DF,  p-value: 9.894e-15</code></pre>
-</div>
-</div>
-<p>Here is the model prediction - notice how every participant is assumed to have the same initial value and linear trajectory. This is due to pooling, an assumption from ANOVA.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sleepstudy, <span class="fu">aes</span>(Days, Reaction, <span class="at">group=</span>Subject)) <span class="sc">+</span> </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fitted</span>(anova_approach)), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">9</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">9</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="2025-08-22-effect-of-RIonly_RIRS_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
+<section id="take-away-message" class="level2">
+<h2 class="anchored" data-anchor-id="take-away-message">Take-away message:</h2>
+<p>So, what did we learn from all this?</p>
+<p>We explored a progression of modeling approaches:</p>
+<ul>
+<li>From ANOVA-style pooling,</li>
+<li>to mass regression (no pooling),</li>
+<li>then to partial pooling with a random intercept,</li>
+<li>and finally to a model with both random intercepts and slopes, including their correlation.</li>
+</ul>
+<p>Each step improved the model fit. But here’s the key insight: <strong>Only the model with random slopes gave us a trustworthy picture of individual differences.</strong></p>
+<p>The random intercept-only model, while tempting in its simplicity, produced misleading results. Specifically, it underestimated standard errors, leading to inflated Type I error rates. That’s not just a technical detail — it can fundamentally distort scientific conclusions, especially in clinical or psychological studies where understanding who improves and who doesn’t is crucial.</p>
+<p>So, if you’re working with repeated measures or hierarchical data and you care about individual variability, responder/non-responder patterns, or generalization, don’t stop at random intercepts.</p>
+<p>Modeling the variance-covariance structure of the specific data set (i.e.&nbsp;random terms of the mixed-effect model) aren’t just a technical flourish — they’re essential for honest modeling.</p>
 </section>
-<section id="no-pooling---treating-every-participant-as-their-own-experiment" class="level2">
-<h2 class="anchored" data-anchor-id="no-pooling---treating-every-participant-as-their-own-experiment">No pooling - treating every participant as their own experiment…</h2>
-<p>If we want to be more sensitive to individual variability, we need to allow participants to be modeled more individually. This can be done by computing linear regression for each participant, treating them as individual cases with no overlap.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>no_pooling <span class="ot">&lt;-</span> <span class="fu">lmList</span>(Reaction <span class="sc">~</span> Days <span class="sc">|</span> Subject, sleepstudy)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(no_pooling)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-  Model: Reaction ~ Days | NULL 
-   Data: sleepstudy 
-
-Coefficients:
-   (Intercept) 
-    Estimate Std. Error  t value     Pr(&gt;|t|)
-308 244.1927   15.04169 16.23439 2.419368e-34
-309 205.0549   15.04169 13.63244 1.067180e-27
-310 203.4842   15.04169 13.52802 1.993900e-27
-330 289.6851   15.04169 19.25882 1.122068e-41
-331 285.7390   15.04169 18.99647 4.646933e-41
-332 264.2516   15.04169 17.56795 1.236403e-37
-333 275.0191   15.04169 18.28379 2.303436e-39
-334 240.1629   15.04169 15.96649 1.135574e-33
-335 263.0347   15.04169 17.48705 1.946826e-37
-337 290.1041   15.04169 19.28667 9.653936e-42
-349 215.1118   15.04169 14.30104 1.983389e-29
-350 225.8346   15.04169 15.01391 2.939145e-31
-351 261.1470   15.04169 17.36155 3.943049e-37
-352 276.3721   15.04169 18.37374 1.402577e-39
-369 254.9681   15.04169 16.95077 4.023936e-36
-370 210.4491   15.04169 13.99106 1.253782e-28
-371 253.6360   15.04169 16.86221 6.656453e-36
-372 267.0448   15.04169 17.75365 4.373979e-38
-   Days 
-     Estimate Std. Error    t value     Pr(&gt;|t|)
-308 21.764702   2.817566  7.7246464 1.741840e-12
-309  2.261785   2.817566  0.8027444 4.234454e-01
-310  6.114899   2.817566  2.1702769 3.162541e-02
-330  3.008073   2.817566  1.0676139 2.874813e-01
-331  5.266019   2.817566  1.8689956 6.365457e-02
-332  9.566768   2.817566  3.3954013 8.857738e-04
-333  9.142045   2.817566  3.2446604 1.462120e-03
-334 12.253141   2.817566  4.3488388 2.574673e-05
-335 -2.881034   2.817566 -1.0225257 3.082469e-01
-337 19.025974   2.817566  6.7526272 3.315759e-10
-349 13.493933   2.817566  4.7892159 4.115160e-06
-350 19.504017   2.817566  6.9222924 1.356856e-10
-351  6.433498   2.817566  2.2833528 2.387301e-02
-352 13.566549   2.817566  4.8149886 3.683105e-06
-369 11.348109   2.817566  4.0276282 9.081880e-05
-370 18.056151   2.817566  6.4084212 1.964766e-09
-371  9.188445   2.817566  3.2611283 1.385338e-03
-372 11.298073   2.817566  4.0098697 9.718197e-05
-
-Residual standard error: 25.59182 on 144 degrees of freedom</code></pre>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sleepstudy, <span class="fu">aes</span>(Days, Reaction, <span class="at">group=</span>Subject)) <span class="sc">+</span> </span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fitted</span>(no_pooling)), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">9</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">9</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="2025-08-22-effect-of-RIonly_RIRS_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
+<section id="old" class="level2">
+<h2 class="anchored" data-anchor-id="old">old</h2>
+<p>By modeling random slopes:</p>
+<p>We acknowledge that people learn differently over time,</p>
+<p>We prevent overconfident or misleading group-level inferences,</p>
+<p>And we gain access to rich insights about how variability in individual responses relates to baseline ability.</p>
+<p>This modeling approach helps move us from averages to individuals, which is crucial in many health, cognitive, and behavioral domains.</p>
 </section>
-<section id="partial-pooling" class="level2">
-<h2 class="anchored" data-anchor-id="partial-pooling">Partial pooling</h2>
-<section id="with-random-intercept-only" class="level3">
-<h3 class="anchored" data-anchor-id="with-random-intercept-only">With random intercept only:</h3>
-<p>We can relax the assumption of pooling by allowing each participant to have their own intercept.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>RI_only <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Reaction <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Days <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> Subject), sleepstudy)</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(RI_only)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Linear mixed model fit by REML ['lmerMod']
-Formula: Reaction ~ 1 + Days + (1 | Subject)
-   Data: sleepstudy
-
-REML criterion at convergence: 1786.5
-
-Scaled residuals: 
-    Min      1Q  Median      3Q     Max 
--3.2257 -0.5529  0.0109  0.5188  4.2506 
-
-Random effects:
- Groups   Name        Variance Std.Dev.
- Subject  (Intercept) 1378.2   37.12   
- Residual              960.5   30.99   
-Number of obs: 180, groups:  Subject, 18
-
-Fixed effects:
-            Estimate Std. Error t value
-(Intercept) 251.4051     9.7467   25.79
-Days         10.4673     0.8042   13.02
-
-Correlation of Fixed Effects:
-     (Intr)
-Days -0.371</code></pre>
-</div>
-</div>
-<p>Note the fixed effect 10.4673 / 0.8042 = 13.0157921</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sleepstudy, <span class="fu">aes</span>(Days, Reaction, <span class="at">group=</span>Subject)) <span class="sc">+</span> </span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fitted</span>(RI_only)), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">9</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">9</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="2025-08-22-effect-of-RIonly_RIRS_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="now-with-random-intercept-random-slope-and-correlated-random-terms" class="level3">
-<h3 class="anchored" data-anchor-id="now-with-random-intercept-random-slope-and-correlated-random-terms">Now with random intercept, random slope, and correlated random terms</h3>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>RI_RS_corr <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Reaction <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> Days <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> Days <span class="sc">|</span> Subject), sleepstudy)</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(RI_RS_corr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Linear mixed model fit by REML ['lmerMod']
-Formula: Reaction ~ 1 + Days + (1 + Days | Subject)
-   Data: sleepstudy
-
-REML criterion at convergence: 1743.6
-
-Scaled residuals: 
-    Min      1Q  Median      3Q     Max 
--3.9536 -0.4634  0.0231  0.4634  5.1793 
-
-Random effects:
- Groups   Name        Variance Std.Dev. Corr
- Subject  (Intercept) 612.10   24.741       
-          Days         35.07    5.922   0.07
- Residual             654.94   25.592       
-Number of obs: 180, groups:  Subject, 18
-
-Fixed effects:
-            Estimate Std. Error t value
-(Intercept)  251.405      6.825  36.838
-Days          10.467      1.546   6.771
-
-Correlation of Fixed Effects:
-     (Intr)
-Days -0.138</code></pre>
-</div>
-</div>
-<p>Note the fixed effect 10.467 / 1.546 = 6.7703752</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sleepstudy, <span class="fu">aes</span>(Days, Reaction, <span class="at">group=</span>Subject, <span class="at">colour=</span>Subject)) <span class="sc">+</span> </span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fitted</span>(RI_RS_corr)), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">9</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">9</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="2025-08-22-effect-of-RIonly_RIRS_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="comparing-model-predictions" class="level2">
-<h2 class="anchored" data-anchor-id="comparing-model-predictions">Comparing model predictions</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sleepstudy, <span class="fu">aes</span>(Days, Reaction, <span class="at">group=</span>Subject)) <span class="sc">+</span> </span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Subject, <span class="at">ncol=</span><span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fitted</span>(anova_approach)), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fitted</span>(no_pooling)), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"green"</span>) <span class="sc">+</span> </span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fitted</span>(RI_only)), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fitted</span>(RI_RS_corr)), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">9</span>),<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">9</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="2025-08-22-effect-of-RIonly_RIRS_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="conclusions" class="level2">
-<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section">??</h2>
 <ul>
 <li>While random intercept models are within the class of linear mixed-effect models, they are often difficult to find use cases for within cognitive neuroscience experiments.</li>
-<li>While accouting for individual starting differences is a set up from the ANOVA approach, it still assumes no variability between participants.</li>
+<li>While accounting for individual starting differences is a set up from the ANOVA approach, it still assumes no variability between participants.</li>
 <li>Fitting mass linear models (no pooling) overcomes this problem. However, researchers often aim to generalize and make population-based conclusions. It is therefore not optimal for this use case.</li>
 <li>Linear mixed-effect models that are modeled appropriately to a specific data set is a great approach (partial-pooling). However, they quickly become tricky to set up when there are multiple predictors, groups, covariates, and especially interactions.</li>
 </ul>
