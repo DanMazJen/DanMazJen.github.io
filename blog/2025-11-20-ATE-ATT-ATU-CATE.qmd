@@ -15,6 +15,18 @@ format:
 
 # Causal inference sounds cool - how easy is it to do?
 
+I recently participated in a causal inference class and realized how difficult it is for some of my students and colleagues to actually compute causal inference estimates. Although the most important point is to understand when and why to use these methods, I also think accessibility to the computational part could be helpful for many.
+
+::::: columns
+::: {.column width="50%"}
+![Meme 1](plots/causal-inf_preview.png){.preview-image}
+:::
+
+::: {.column width="50%"}
+![Meme 2](plots/causal-inf2.jpg){.preview-image}
+:::
+:::::
+
 In this short blog, I'll introduce four key estimands that can be computed using a framework called G-computation:
 
 1)   the average treatment effect (ATE)
@@ -77,8 +89,6 @@ dat$treatment <- as.factor(dat$treatment)
  To get an adjustment set for confounder control, we need to make a DAG
 
  ```{r}
-# dagitty model
-
 our_dag <- dagitty::dagitty(
   "dag {
   pre_weight -> post_weight
@@ -129,18 +139,20 @@ counter_factuals <- marginaleffects::predictions(
 
 counter_factual_matrix <- counter_factuals |>
   # ensure we have a subject index:
-  dplyr::mutate(Subject = dplyr::row_number()) |>
-  dplyr::filter(Subject %in% c(1, 20, 51, 70)) |>
-  dplyr::mutate(treatment = paste0("trt", treatment)) #|>
-#tidyr::pivot_wider(
-#  id_cols = Subject,
-#  names_from = treatment,
-#  values_from = Estimate
-#)
+  tibble::as_tibble() |>
+  #dplyr::mutate(Subject = dplyr::row_number()) |>
+  dplyr::filter(rowidcf %in% c(1, 20, 35, 40)) |>
+  dplyr::mutate(treatment = dplyr::if_else(rowid > 40, 'Y_j^1', 'Y_j^0')) |>
+  dplyr::select(treatment, rowidcf, estimate) |>
+  tidyr::pivot_wider(
+    id_cols = c(rowidcf),
+    names_from = treatment,
+    values_from = estimate
+  )
 
 knitr::kable(
   counter_factual_matrix,
-  caption = "Predicted weights for Subjects 1, 20, 30 under Treatment = 0 and 1"
+  caption = "Predicted weights for Subjects 1, 20, 35, and 40 under Treatment = 0 and 1"
 )
 ```
 
