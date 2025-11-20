@@ -46,6 +46,30 @@ When estimating causal effects, such as the ATE or CATE, four fundamental assump
 
 ## The implementation in R
 
+### Our dataset
+
+```{r}
+# keep only ctrl and trt1
+dat <- dplyr::filter(ChickWeight, Time %in% c(0, 12)) |>
+  #dplyr::filter(Diet %in% c(1, 3, 4)) |>
+  dplyr::mutate(
+    treatment = dplyr::if_else(Diet == '1', '1', '2')
+  ) |>
+  dplyr::mutate(timepoint = dplyr::if_else(Time == 0, "pre", "post")) |>
+  tidyr::pivot_wider(
+    id_cols = c(Chick, treatment), # Diet not needed...
+    names_from = timepoint,
+    values_from = weight
+  )
+
+dat$Diet <- as.factor(dat$Diet)
+dat$treatment <- as.factor(dat$treatment)
+#dat$study_arm <- dat$group
+
+#dat$treatment <- forcats::fct_relevel(c('1', '2'), c('ctrl', 'trt1'))
+#dat$group <- c()
+```
+
 ### Specifying our model - the estimator
 
  First, we fit a statistical model which controls for confounders. Then, we use the fitted model to “predict” or “impute” what would happen to an individual under alternative treatment scenarios. Finally, we compare counterfactual predictions to derive an estimate of the treatment effect (Hernán and Robins 2020).
@@ -54,23 +78,26 @@ When estimating causal effects, such as the ATE or CATE, four fundamental assump
 
  ```{r}
 # dagitty model
+
+our_dag <- dagitty::dagitty(
+  "dag {
+  pre_weight -> post_weight
+  treatment  -> post_weight
+}"
+)
+
+plot(our_dag)
  ```
 
-Thus, we will be using some confounding variables for the modeling.
+Thus, we will be using the pre-weight as a confounding variable for the modeling.
 
 ```{r}
-# keep only ctrl and trt1
-dat <- dplyr::filter(PlantGrowth, group %in% c("ctrl", "trt1"))
-dat$study_arm <- dat$group
-dat$study_arm <- forcats::fct_relevel(c('ctrl', 'trt1'), c('ctrl', 'trt1'))
-dat$group <- c()
-
 # model without adjustment set
-unadj_mod <- lm(weight ~ study_arm, data = dat)
+unadj_mod <- lm(post ~ treatment, data = dat)
 unadj_mod
 
 # model with adjustment set
-adj_mod <- lm(weight ~ study_arm, data = dat)
+adj_mod <- lm(post ~ treatment * pre, data = dat)
 adj_mod
 ``` 
 
@@ -82,22 +109,39 @@ Of course, this is not what happened in real life. This is counter to the fact (
 
 ```{r}
 # Show first 3 subjects with outcome and only being treated or not treater with missing values on the other
-
 dat |>
   # create subject id
   dplyr::mutate(ID = dplyr::row_number()) |>
   # spread so each subject has columns for both treatments
   tidyr::pivot_wider(
     id_cols = ID,
-    names_from = study_arm,
-    values_from = weight,
+    names_from = treatment,
+    values_from = post,
     values_fill = NA
   ) |>
-  dplyr::slice(c(1, 5, 11, 20)) # .preserve = group
+  dplyr::slice(c(1, 20, 35, 40)) # .preserve = group
 
-# Show first 3 subjects with outcome using marginaleffect imputation
+# Show subjects with outcome using marginaleffect imputation
+counter_factuals <- marginaleffects::predictions(
+  adj_mod,
+  variables = "treatment"
+)
 
-marginaleffects::predictions(adj_mod, variables = "study_arm")
+counter_factual_matrix <- counter_factuals |>
+  # ensure we have a subject index:
+  dplyr::mutate(Subject = dplyr::row_number()) |>
+  dplyr::filter(Subject %in% c(1, 20, 51, 70)) |>
+  dplyr::mutate(treatment = paste0("trt", treatment)) #|>
+#tidyr::pivot_wider(
+#  id_cols = Subject,
+#  names_from = treatment,
+#  values_from = Estimate
+#)
+
+knitr::kable(
+  counter_factual_matrix,
+  caption = "Predicted weights for Subjects 1, 20, 30 under Treatment = 0 and 1"
+)
 ```
 
 We are only interested in the average effect, as individual treatment effects are not possible to estimate.
@@ -105,8 +149,8 @@ We are only interested in the average effect, as individual treatment effects ar
  ```{r}
 marginaleffects::avg_predictions(
   adj_mod,
-  variables = "study_arm",
-  by = "study_arm"
+  variables = "treatment",
+  by = "treatment"
 )
  ```
 
@@ -116,7 +160,7 @@ marginaleffects::avg_predictions(
  ```{r}
 ATE = marginaleffects::avg_comparisons(
   adj_mod,
-  variables = "study_arm",
+  variables = "treatment",
   newdata = dat
 )
 ATE
@@ -128,8 +172,8 @@ ATE
  ```{r}
 ATT <- marginaleffects::avg_comparisons(
   adj_mod,
-  variables = "study_arm",
-  newdata = subset(study_arm == 'trt1')
+  variables = "treatment",
+  newdata = subset(treatment == '2')
 )
 ATT
  ```
@@ -140,16 +184,21 @@ ATT
  ```{r}
 ATU <- marginaleffects::avg_comparisons(
   adj_mod,
-  variables = "study_arm",
-  newdata = subset(study_arm == 'ctrl')
+  variables = "treatment",
+  newdata = subset(treatment == '1')
 )
 ATU
  ```
 
- The CATE
-
+ The CATE. 
  
  ```{r}
-CATE <- avg_comparisons(adj_mod, variables = "win_big", by = "work")
+CATE <- marginaleffects::avg_comparisons(
+  adj_mod,
+  variables = "treatment",
+  by = "pre"
+)
 CATE
  ```
+
+ Note that we gain some interesting information here. We see, as would be expected, that chicks with low pre-weight (susceptible to being underweight) will gain more weight, whereas chicks with initial high pre-weight (robust or previliged) will gain less weight.
