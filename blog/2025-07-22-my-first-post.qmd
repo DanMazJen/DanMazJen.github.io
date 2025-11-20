@@ -7,10 +7,8 @@ categories: [General]
 
 Hello, world! This is my first post.
 
-
 I'll now try to write more stuff. This should help me identify if it works...
 
 ```{r}
 plot(1:10)
 ```
-

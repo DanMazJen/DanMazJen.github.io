@@ -1,0 +1,155 @@
+---
+title: "Estimating causal effects using a simplified R implementation"
+subtitle: "How {marginaleffects} can make your causal inferece scripts readable"
+author: "Daniel S. Mazhari-Jensen"
+description: "Using marginaleffects, I show how to estimate ATE, ATT, ATU, and CATE in an RCT study"
+date: 2025-07-23
+reading-time: 5 min
+file-modified: 2025-07-23
+categories: [R, marginaleffects, causal inference, ATE]
+format:
+  html:
+    toc: true
+    code-fold: true
+---
+
+# Causal inference sounds cool - how easy is it to do?
+
+In this short blog, I'll introduce four key estimands that can be computed using a framework called G-computation:
+
+1)   the average treatment effect (ATE)
+2)   the average treatment effect on the treated (ATT)
+3)   the average treatment effect on the untreated (ATU)
+4)   the conditional average treatment effect (CATE)
+
+## The estimand
+
+The Average Treatment Effect (ATE) measures how the treatment impacts outcomes across the entire study population. It addresses the question: *Would it be beneficial to offer this program or treatment to everyone?*
+
+The Average Treatment Effect on the Treated (ATT) focuses on the effect of the treatment specifically for those participants who actually received it. It helps evaluate: *Should the treatment be continued for the group currently receiving it?*
+
+The Average Treatment Effect on the Untreated (ATU) examines the effect of the treatment on those who did not receive it. This helps answer: *Would it be advantageous to expand the program or treatment to individuals who were initially excluded?*
+
+The Conditional Average Treatment Effect (CATE) estimates how the treatment affects outcomes for a specific subgroup of the population, defined by certain characteristics (e.g., age, gender, or baseline risk). It answers the question: *How does the treatment work for people with particular traits or conditions?*
+
+## The assumptions
+
+When estimating causal effects, such as the ATE or CATE, four fundamental assumptions must hold to ensure valid conclusions:
+
+**Exchangeability** (or no unmeasured confounding) – This assumes that, after accounting for observed variables, the treated and untreated groups are comparable. In other words, there are no hidden factors that systematically affect both treatment assignment and the outcome.
+
+**Positivity** (or overlap) – Every individual in the study population must have a nonzero chance of receiving each treatment option. Without this, it becomes impossible to estimate the effect for some groups because they never experience one of the treatments.
+
+**Non-interference** (or the Stable Unit Treatment Value Assumption, SUTVA) – One person’s outcome should not be influenced by whether someone else receives the treatment. Each participant’s outcome depends only on their own treatment status.
+
+**Consistency** – The treatment is well-defined, and each individual’s observed outcome under the treatment they actually received is the same as the outcome that would be observed under the same treatment condition in theory.
+
+## The implementation in R
+
+### Specifying our model - the estimator
+
+ First, we fit a statistical model which controls for confounders. Then, we use the fitted model to “predict” or “impute” what would happen to an individual under alternative treatment scenarios. Finally, we compare counterfactual predictions to derive an estimate of the treatment effect (Hernán and Robins 2020).
+
+ To get an adjustment set for confounder control, we need to make a DAG
+
+ ```{r}
+# dagitty model
+ ```
+
+Thus, we will be using some confounding variables for the modeling.
+
+```{r}
+# keep only ctrl and trt1
+dat <- dplyr::filter(PlantGrowth, group %in% c("ctrl", "trt1"))
+dat$study_arm <- dat$group
+dat$study_arm <- forcats::fct_relevel(c('ctrl', 'trt1'), c('ctrl', 'trt1'))
+dat$group <- c()
+
+# model without adjustment set
+unadj_mod <- lm(weight ~ study_arm, data = dat)
+unadj_mod
+
+# model with adjustment set
+adj_mod <- lm(weight ~ study_arm, data = dat)
+adj_mod
+``` 
+
+Note that this model does not correct for adherence. Therefore, it is the **intention-to-treat effect**. If we adjusted for adherence or in any other way try to correct for individuals deviating from the protocol, this would give the **per-protocol effect**.
+
+### Computing estimates | model, estimand
+Now, we want to go from a "missing data"-problem, where only some individuals got the treatment while the others got no treatment, to a full matrix of all individuals got both treated and not. 
+Of course, this is not what happened in real life. This is counter to the fact (i.e. counterfactual) estimates, which we can predict using normal regression coefficients. It looks something like this:
+
+```{r}
+# Show first 3 subjects with outcome and only being treated or not treater with missing values on the other
+
+dat |>
+  # create subject id
+  dplyr::mutate(ID = dplyr::row_number()) |>
+  # spread so each subject has columns for both treatments
+  tidyr::pivot_wider(
+    id_cols = ID,
+    names_from = study_arm,
+    values_from = weight,
+    values_fill = NA
+  ) |>
+  dplyr::slice(c(1, 5, 11, 20)) # .preserve = group
+
+# Show first 3 subjects with outcome using marginaleffect imputation
+
+marginaleffects::predictions(adj_mod, variables = "study_arm")
+```
+
+We are only interested in the average effect, as individual treatment effects are not possible to estimate.
+
+ ```{r}
+marginaleffects::avg_predictions(
+  adj_mod,
+  variables = "study_arm",
+  by = "study_arm"
+)
+ ```
+
+ remember that the ATE is the difference, which we can get by using the ´avg_comparisons()´ of {marginaleffects}
+
+ 
+ ```{r}
+ATE = marginaleffects::avg_comparisons(
+  adj_mod,
+  variables = "study_arm",
+  newdata = dat
+)
+ATE
+ ```
+
+ The ATT
+
+ 
+ ```{r}
+ATT <- marginaleffects::avg_comparisons(
+  adj_mod,
+  variables = "study_arm",
+  newdata = subset(study_arm == 'trt1')
+)
+ATT
+ ```
+
+ and the ATU
+
+ 
+ ```{r}
+ATU <- marginaleffects::avg_comparisons(
+  adj_mod,
+  variables = "study_arm",
+  newdata = subset(study_arm == 'ctrl')
+)
+ATU
+ ```
+
+ The CATE
+
+ 
+ ```{r}
+CATE <- avg_comparisons(adj_mod, variables = "win_big", by = "work")
+CATE
+ ```

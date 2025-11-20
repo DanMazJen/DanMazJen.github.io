@@ -19,30 +19,31 @@ format:
 
 About six months ago, I came across these two memes:
 
-:::{.columns}
+::::: columns
 ::: {.column width="50%"}
 ![Meme 1](plots/random_intercept_only.jpg){.preview-image}
 :::
+
 ::: {.column width="50%"}
 ![Meme 2](plots/what_about_random_slopes.jpg){.preview-image}
 :::
-:::
+:::::
 
 At first, I was genuinely puzzled. What exactly is the connection between adding a **random intercept** in a regression model and inflating **Type I error** when you don't include a **random slope**?
 
-If you, like I did, got intrigued by these meme's nuggets of information, consider reading along. 
+If you, like I did, got intrigued by these meme's nuggets of information, consider reading along.
 
-My goal here is to unpack what’s going on in a way that’s accessible, honest, and hopefully a little enjoyable. I’m not writing a textbook chapter; this is more of a *personal explanation* of a concept I found tricky and later came to appreciate.  
+My goal here is to unpack what’s going on in a way that’s accessible, honest, and hopefully a little enjoyable. I’m not writing a textbook chapter; this is more of a *personal explanation* of a concept I found tricky and later came to appreciate.
 
 ⚠️ **Note**: I assume you have a basic understanding of regression models and null-significance-hypothesis-tests. What follows is not a deep statistical dive, but it should give you just enough to understand the meme, avoid a common pitfall, and get curious about mixed-effects models. The material is based on:
 
--   Gelman & Hill
--   Barr
--   ?
+-   Gelman, A., & Hill, J. (2007). *Data analysis using regression and multilevel/hierarchical models*. Cambridge university press. **A comprehensive book on the topic of *multilevel models**
+-   Barr, D. J., Levy, R., Scheepers, C., & Tily, H. J. (2013). Random effects structure for confirmatory hypothesis testing: Keep it maximal. *Journal of memory and language*, *68*(3), 255-278. **A simulation study showing the type-1 error problem of random intercept only models**
+-   Gelman, A. (2005). Analysis of variance—why it is more important than ever. 
 
 ## How we’ll approach it:
 
-We’ll focus on why **random slopes** are crucial in many types of data—especially in **biometric** or **health science research**, where repeated measures designs are common. We'll use a small simulation in R to illustrate the key concepts, relying on the `lme4` package and some `tidyverse`-style data wrangling.
+We’ll focus on why **random slopes** are crucial in many types of data—especially in **biometric** or **health science research**, where repeated measures designs are common. We'll use a small simulation in R to illustrate the key concepts, relying on vanilla`lme4` and some `tidyverse`-styled data wrangling.
 
 The data set we'll use to demonstrate this comes from a simple simulation that mimics a common experimental design: repeated measures of a response variable (here: reaction time) across multiple sessions per participant.
 
@@ -184,7 +185,9 @@ sim_data |>
 
 As you can see, the red dashed line is identical across all panels. That’s because the model assumes all participants behave the same — same starting point, same rate of learning. It completely ignores the fact that participants vary in their baseline speed and how much they improve. This is the statistical assumption behind traditional ANOVA: everyone is treated as identical except for random noise.
 
-*The elusive discussion of responders/non-responders* At first glance, you might look at this and say:
+*The elusive discussion of responders/non-responders*
+
+At first glance, you might look at this and say:
 
 "Ah, some people are improving, others aren’t — we have responders and non-responders!"
 
@@ -238,7 +241,9 @@ What if we want to both model individual differences and estimate a general tren
 
 This is where things get interesting — we're now ready to bridge the gap between the overly simplistic (ANOVA) and the overly fragmented (no pooling) approaches.
 
-*Partial pooling with random intercepts* The random intercept model is the first step toward balancing the extremes of full pooling and no pooling.
+*Partial pooling with random intercepts*
+
+The random intercept model is the first step toward balancing the extremes of full pooling and no pooling.
 
 We acknowledge that subjects vary in their baseline levels (reaction times), but we still assume they share a common trend — in this case, how their reaction times change over sessions.
 
@@ -327,9 +332,9 @@ This approach represents what is often called partial pooling: estimates are inf
 
 We now compare two models:
 
-One that allows subjects to differ only in their baseline level (random intercept),
+-   One that allows subjects to differ only in their baseline level (random intercept),
 
-And another that also allows them to differ in their rate of change over sessions (random slope).
+-   And another that also allows them to differ in their rate of change over sessions (random slope).
 
 Using the Akaike Information Criterion, we can assess model fit:
 
@@ -402,13 +407,9 @@ sim_data |>
          title = "Individual learning trajectories across sessions")
 ```
 
-*Why this matters* The comparison to a simpler model (with only random intercepts) showed that assuming a shared slope across participants can lead to misleading fixed-effect estimates. In that model, the session effect was significant:
+*Why this matters*
 
-RI_only: session estimate = -7.53, t = -2.84
-
-But once we allow subject-specific slopes:
-
-RI_RS_corr: session estimate = -7.53, t = -1.63
+The comparison to a simpler model (with only random intercepts) showed that assuming a shared slope across participants can lead to misleading fixed-effect estimates. Notice that while the estimate is identical, the standard error of the estimate increased almost two-fold, yielding a lower test statistic.
 
 | Model      | Fixed Effect | Estimate | Std. Error | t value |
 |------------|--------------|----------|------------|---------|
@@ -422,10 +423,8 @@ The average effect remains the same, but the uncertainty increases, because the 
 This is exactly what Gelman & Hill (2007) and Barr et al. (2013) argue: failing to include justified random slopes can inflate confidence in fixed effects — potentially leading to spurious conclusions.
 
 **Key points:**
-By modeling random slopes:
--   We acknowledge that people learn differently over time,
--   We prevent overconfident or misleading group-level inferences,
--   And we gain access to rich insights about how variability in individual responses relates to baseline ability.
+
+By modeling random slopes: - We acknowledge that people learn differently over time, - We prevent overconfident or misleading group-level inferences, - And we gain access to rich insights about how variability in individual responses relates to baseline ability.
 
 This modeling approach helps move us from averages to individuals, which is crucial in many health, cognitive, and behavioral domains.
 
@@ -440,8 +439,7 @@ We explored a progression of modeling approaches:
 -   then to partial pooling with a random intercept,
 -   and finally to a model with both random intercepts and slopes, including their correlation.
 
-Each step improved the model fit. But here’s the key insight:
-**Only the model with random slopes gave us a trustworthy picture of individual differences.**
+Each step improved the model fit. But here’s the key insight: **Only the model with random slopes gave us a trustworthy picture of individual differences.**
 
 The random intercept-only model, while tempting in its simplicity, produced misleading results. Specifically, it underestimated standard errors, leading to inflated Type I error rates. That’s not just a technical detail — it can fundamentally distort scientific conclusions, especially in clinical or psychological studies where understanding who improves and who doesn’t is crucial.
 
