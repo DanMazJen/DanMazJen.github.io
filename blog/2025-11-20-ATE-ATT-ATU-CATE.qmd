@@ -3,7 +3,7 @@ title: "Estimating causal effects using a simplified R implementation"
 subtitle: "How {marginaleffects} can make your causal inferece scripts readable"
 author: "Daniel S. Mazhari-Jensen"
 description: "Using marginaleffects, I show how to estimate ATE, ATT, ATU, and CATE in an RCT study"
-date: 2025-07-23
+date: 2025-11-20
 reading-time: 5 min
 file-modified: 2025-07-23
 categories: [R, marginaleffects, causal inference, ATE]
