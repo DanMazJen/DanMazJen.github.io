@@ -74,7 +74,7 @@ dat <- dplyr::filter(ChickWeight, Time %in% c(0, 12)) |>
     values_from = weight
   )
 
-dat$Diet <- as.factor(dat$Diet)
+#dat$Diet <- as.factor(dat$Diet)
 dat$treatment <- as.factor(dat$treatment)
 #dat$study_arm <- dat$group
 
