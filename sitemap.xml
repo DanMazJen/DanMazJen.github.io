@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://DanMazJen.github.io/blog/2025-07-22-my-first-post.html</loc>
-    <lastmod>2025-07-24T12:55:17.468Z</lastmod>
-  </url>
-  <url>
-    <loc>https://DanMazJen.github.io/blog/2025-08-22-effect-of-RIonly_RIRS.html</loc>
-    <lastmod>2025-07-24T12:55:17.469Z</lastmod>
-  </url>
-  <url>
-    <loc>https://DanMazJen.github.io/ideas_for_future_blog_posts/pooling_in_multilevel_models.html</loc>
-    <lastmod>2025-07-24T12:55:17.470Z</lastmod>
-  </url>
-  <url>
-    <loc>https://DanMazJen.github.io/about.html</loc>
-    <lastmod>2025-07-24T12:55:17.468Z</lastmod>
-  </url>
-  <url>
-    <loc>https://DanMazJen.github.io/index.html</loc>
-    <lastmod>2025-07-24T12:55:17.470Z</lastmod>
+    <loc>https://DanMazJen.github.io/blog/2025-11-20-ATE-ATT-ATU-CATE.html</loc>
+    <lastmod>2025-11-21T09:02:55.683Z</lastmod>
   </url>
   <url>
     <loc>https://DanMazJen.github.io/blog/index.html</loc>
-    <lastmod>2025-07-24T12:55:17.469Z</lastmod>
+    <lastmod>2025-11-21T09:02:55.683Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/about.html</loc>
+    <lastmod>2025-11-21T09:02:55.683Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/index.html</loc>
+    <lastmod>2025-11-21T09:02:55.687Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/ideas_for_future_blog_posts/pooling_in_multilevel_models.html</loc>
+    <lastmod>2025-11-21T09:02:55.687Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/blog/2025-08-22-effect-of-RIonly_RIRS.html</loc>
+    <lastmod>2025-11-21T09:02:55.683Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/blog/2025-07-22-my-first-post.html</loc>
+    <lastmod>2025-11-21T09:02:55.683Z</lastmod>
   </url>
 </urlset>
