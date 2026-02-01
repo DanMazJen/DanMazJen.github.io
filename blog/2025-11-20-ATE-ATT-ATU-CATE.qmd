@@ -19,11 +19,11 @@ I recently participated in a causal inference class and realized how difficult i
 
 ::::: columns
 ::: {.column width="50%"}
-![Meme 1](plots/causal-inf_preview.png){.preview-image}
+![Credits to Pausal Živference](plots/causal-inf_preview.png){.preview-image}
 :::
 
 ::: {.column width="50%"}
-![Meme 2](plots/causal-inf2.jpg){.preview-image}
+![Credits to Francisco Yirá](plots/causal-inf2.jpg){.preview-image}
 :::
 :::::
 
@@ -88,16 +88,11 @@ dat$treatment <- as.factor(dat$treatment)
 
  To get an adjustment set for confounder control, we need to make a DAG
 
- ```{r}
-our_dag <- dagitty::dagitty(
-  "dag {
-  pre_weight -> post_weight
-  treatment  -> post_weight
-}"
-)
-
-plot(our_dag)
- ```
+ ```{mermaid}
+flowchart LR
+  A(Pre-weight) --> B(Post-weight)
+  C(Treatment) --> B
+```
 
 Thus, we will be using the pre-weight as a confounding variable for the modeling.
 
