@@ -88,7 +88,7 @@ dat$treatment <- as.factor(dat$treatment)
 
  To get an adjustment set for confounder control, we need to make a DAG
 
- ```{mermaid}
+```{mermaid}
 flowchart LR
   A(Pre-weight) --> B(Post-weight)
   C(Treatment) --> B
@@ -153,59 +153,59 @@ knitr::kable(
 
 We are only interested in the average effect, as individual treatment effects are not possible to estimate.
 
- ```{r}
+```{r}
 marginaleffects::avg_predictions(
   adj_mod,
   variables = "treatment",
   by = "treatment"
 )
- ```
+```
 
  remember that the ATE is the difference, which we can get by using the ´avg_comparisons()´ of {marginaleffects}
 
  
- ```{r}
+```{r}
 ATE = marginaleffects::avg_comparisons(
   adj_mod,
   variables = "treatment",
   newdata = dat
 )
 ATE
- ```
+```
 
  The ATT
 
  
- ```{r}
+```{r}
 ATT <- marginaleffects::avg_comparisons(
   adj_mod,
   variables = "treatment",
   newdata = subset(treatment == '2')
 )
 ATT
- ```
+```
 
  and the ATU
 
  
- ```{r}
+```{r}
 ATU <- marginaleffects::avg_comparisons(
   adj_mod,
   variables = "treatment",
   newdata = subset(treatment == '1')
 )
 ATU
- ```
+```
 
  The CATE. 
  
- ```{r}
+```{r}
 CATE <- marginaleffects::avg_comparisons(
   adj_mod,
   variables = "treatment",
   by = "pre"
 )
 CATE
- ```
+```
 
  Note that we gain some interesting information here. We see, as would be expected, that chicks with low pre-weight (susceptible to being underweight) will gain more weight, whereas chicks with initial high pre-weight (robust or previliged) will gain less weight.
