@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2025-07-22">
-<meta name="description" content="This is my first blog post.">
+<meta name="description" content="Setting up an action in Github is easy!">
 
-<title>Welcome to My Blog – DanMazJen.github.io</title>
+<title>Using Github Actions for hosting websites – DanMazJen.github.io</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,41 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -77,7 +42,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-0b37c64f34216b628666a8dac638b53b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-afa37c5c79185640b9c231024f4fe5ea.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -150,23 +115,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
+  <ul class="collapse">
+  <li><a href="#the-workflow-specification" id="toc-the-workflow-specification" class="nav-link" data-scroll-target="#the-workflow-specification">2) The workflow specification</a>
+  <ul class="collapse">
+  <li><a href="#set-up-quarto" id="toc-set-up-quarto" class="nav-link" data-scroll-target="#set-up-quarto">3.2) Set up Quarto</a></li>
+  <li><a href="#install-r" id="toc-install-r" class="nav-link" data-scroll-target="#install-r">3.4) Install R</a></li>
+  <li><a href="#render-and-publish" id="toc-render-and-publish" class="nav-link" data-scroll-target="#render-and-publish">3.6) Render and Publish</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#ending-remarks" id="toc-ending-remarks" class="nav-link" data-scroll-target="#ending-remarks">Ending remarks</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Welcome to My Blog</h1>
+<h1 class="title">Using Github Actions for hosting websites</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">General</div>
+    <div class="quarto-category">Github</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    This is my first blog post.
+    Setting up an action in Github is easy!
   </div>
 </div>
 
@@ -189,20 +170,204 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Hello, world! This is my first post.</p>
-<p>I’ll now try to write more stuff. This should help me identify if it works…</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="2025-07-22-my-first-post_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>Github is great for collaborative team working - also in the common case, where the collaborator is your future self! Here, Github serves as the external backup of your local git version control.</p>
+<p>However, Github is much more than just an external harddisk - it also does rendering, cross-platform testing, and even hosts websites on Github Pages. This past is about the latter.</p>
+<p>Take a look at this code:</p>
+<p>```{.github/publish.yml} on: workflow_dispatch: push: branches: main</p>
+<p>name: Quarto Publish</p>
+<p>jobs: build-deploy: runs-on: ubuntu-latest permissions: contents: write steps: - name: Check out repository uses: actions/checkout@v4</p>
+<pre><code>  - name: Set up Quarto
+    uses: quarto-dev/quarto-actions/setup@v2
+
+  # Install system dependencies for R packages
+  - name: Install system libs
+    run: |
+      sudo apt-get update
+      sudo apt-get install -y \
+        libcurl4-openssl-dev
+        
+  - name: Install R
+    uses: r-lib/actions/setup-r@v2
+    with:
+      r-version: '4.5.0'
+      use-public-rspm: true
+
+  - name: Install R Dependencies
+    uses: r-lib/actions/setup-renv@v2
+    with:
+      cache-version: 1
+
+  - name: Render and Publish
+    uses: quarto-dev/quarto-actions/publish@v2
+    with:
+      target: gh-pages
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}</code></pre>
+<pre><code>
+This is literally the Github action for hosting this very blog. Let's break it apart.
+
+## 1) When to trigger the action
+
+The first lines tells Github **when** to do the action you want. Take a look:
+
+```{.github/publish.yml}
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+    ...</code></pre>
+<p>There are two triggers defined here:</p>
+<ul>
+<li><code>workflow_dispatch</code>: allows you to manually start the workflow from the GitHub web interface.</li>
+<li><code>push</code>: with <code>branches: main</code> means that every time something is pushed to the <code>main</code> branch, the action will automatically run.</li>
+</ul>
+<p>In short: every new commit to <code>main</code> rebuilds and republishes the website.</p>
+<section id="the-workflow-specification" class="level2">
+<h2 class="anchored" data-anchor-id="the-workflow-specification">2) The workflow specification</h2>
+<p>The next few lines tells Github <strong>what</strong> to do within the action you want. Take a look:</p>
+<p>```{.github/publish.yml} …</p>
+<p>name: Quarto Publish</p>
+<p>jobs: build-deploy: runs-on: ubuntu-latest permissions: contents: write</p>
+<pre><code>...</code></pre>
+<pre><code>
+-   name: `Quarto Publish` gives the workflow a readable name in the GitHub Actions tab.
+-   Under `jobs`:, we define a job called `build-deploy`.
+-   runs-on: ubuntu-latest means the job runs on the latest available Ubuntu runner provided by GitHub.
+-   `permissions: contents: write` grants the workflow permission to push content back to the repository (which is required for publishing to the `gh-pages` branch).
+
+So at this stage, we have defined a job that runs on a virtual Linux machine and is allowed to modify the repository.
+
+## 3) The workflow specification
+
+Next, a list of steps are specified. Let's go through them one at a time.
+
+### 3.1) Checkout
+
+```{.github/publish.yml}
+    ...
+
+        - name: Check out repository
+        uses: actions/checkout@v4
+
+    ...</code></pre>
+<p>This step uses the official actions/checkout action.</p>
+<p>It clones your repository into the virtual machine. Without this step, the runner would not have access to your project files, and there would be nothing to render or publish.</p>
+<p>In short: this makes your code available to the workflow.</p>
+<section id="set-up-quarto" class="level3">
+<h3 class="anchored" data-anchor-id="set-up-quarto">3.2) Set up Quarto</h3>
+<p>```{.github/publish.yml} …</p>
+<pre><code>  - name: Set up Quarto
+    uses: quarto-dev/quarto-actions/setup@v2
+
+...</code></pre>
+<pre><code>Here, Quarto is installed on the runner.
+
+Quarto is the publishing system used to render the blog (e.g., from `.qmd` files to HTML). Quarto uses Pandoc under the hood for this. This step ensures that the correct version of Quarto is available before rendering starts.
+
+### 3.3) Install system libs
+
+```{.github/publish.yml}
+    ...
+
+      # Install system dependencies for R packages
+      - name: Install system libs
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcurl4-openssl-dev
+
+    ...</code></pre>
+<p>Some R packages depend not only on R itself, but also on system-level libraries.</p>
+<p>Here:</p>
+<ul>
+<li>apt-get update refreshes the package list.</li>
+<li>apt-get install installs libcurl4-openssl-dev.</li>
+</ul>
+<p>This is required because certain R packages (for example those handling web requests) rely on libcurl at the system level. If these libraries are missing, package installation would fail.</p>
+</section>
+<section id="install-r" class="level3">
+<h3 class="anchored" data-anchor-id="install-r">3.4) Install R</h3>
+<p>```{.github/publish.yml} …</p>
+<pre><code>  - name: Install R
+    uses: r-lib/actions/setup-r@v2
+    with:
+      r-version: '4.5.0'
+      use-public-rspm: true
+
+...</code></pre>
+<pre><code>
+This step installs R itself.
+
+-   `r-version: '4.5.0'` ensures a specific R version is used. This improves reproducibility.
+-   `use-public-rspm: true` enables a public RStudio Package Manager mirror for faster and more reliable package installation.
+
+Now the runner has a working R installation.
+
+### 3.5) Install R Dependencies
+
+```{.github/publish.yml}
+    ...
+
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+    ...</code></pre>
+<p>This step restores the R package environment using <code>renv</code>.</p>
+<p><code>renv</code> is a dependency management system for R. It ensures that:</p>
+<ul>
+<li>The exact package versions specified in your project are installed.</li>
+<li>The environment is reproducible across machines.</li>
+<li>Installation is faster thanks to caching.</li>
+</ul>
+<p>The <code>cache-version: 1</code> allows GitHub to cache installed packages between workflow runs, significantly speeding up future builds.</p>
+</section>
+<section id="render-and-publish" class="level3">
+<h3 class="anchored" data-anchor-id="render-and-publish">3.6) Render and Publish</h3>
+<p>```{.github/publish.yml} …</p>
+<pre><code>  - name: Render and Publish
+    uses: quarto-dev/quarto-actions/publish@v2
+    with:
+      target: gh-pages
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}</code></pre>
+<p>```</p>
+<p>This is the final and most important step.</p>
+<p>It does two things:</p>
+<ol type="1">
+<li>Renders the website using Quarto.</li>
+<li>Publishes the generated site to the <code>gh-pages</code> branch.</li>
+</ol>
+<ul>
+<li><code>target: gh-pages</code> tells the action to deploy to the GitHub Pages branch. <strong>NB!</strong> Make sure you already have this branch. Otherwise, the action will fail.</li>
+<li><code>GITHUB_TOKEN</code> is an automatically generated token that allows the workflow to authenticate and push changes back to the repository securely.</li>
+</ul>
+<p>Once this step completes successfully, GitHub Pages serves the updated website.</p>
+</section>
+</section>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<p>To summarize, this workflow:</p>
+<ol type="1">
+<li>Triggers on every push to <code>main</code>.</li>
+<li>Sets up a fresh Ubuntu environment.</li>
+<li>Installs Quarto, R, and all required dependencies.</li>
+<li>Renders the website. 5 Publishes it automatically to GitHub Pages.</li>
+</ol>
+<p>In other words: push to <code>main</code> → automatic rebuild → website updated.</p>
+<p>This is continuous deployment for your blog – fully automated and fully reproducible.</p>
+</section>
+<section id="ending-remarks" class="level1">
+<h1>Ending remarks</h1>
+<p>Github actions are powerfull and can serve multiple purposes. See my other project <a href="https://danmazjen.github.io/medicinsk-statistik/exercises/data.html">Medical Statistics</a> for a much more advanced use of Github actions for hosting the website on netlify or github, using pre-commit hooks to check typos, and more.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
