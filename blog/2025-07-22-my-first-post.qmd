@@ -14,6 +14,7 @@ However, Github is much more than just an external harddisk - it also does rende
 Take a look at this code:
 
 ```{.github/publish.yml}
+
 on:
   workflow_dispatch:
   push:
@@ -57,11 +58,12 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 ```
 
 This is literally the Github action for hosting this very blog. Let's break it apart.
 
-## 1) When to trigger the action
+## 1. When to trigger the action
 
 The first lines tells Github **when** to do the action you want. Take a look:
 
@@ -81,11 +83,12 @@ There are two triggers defined here:
 
 In short: every new commit to `main` rebuilds and republishes the website.
 
-## 2) The workflow specification
+## 2. The workflow specification
 
 The next few lines tells Github **what** to do within the action you want. Take a look:
 
 ```{.github/publish.yml}
+
     ...
 
 name: Quarto Publish
@@ -97,6 +100,7 @@ jobs:
       contents: write
 
     ...
+
 ```
 
 -   name: `Quarto Publish` gives the workflow a readable name in the GitHub Actions tab.
@@ -106,19 +110,21 @@ jobs:
 
 So at this stage, we have defined a job that runs on a virtual Linux machine and is allowed to modify the repository.
 
-## 3) The workflow specification
+## 3. The workflow specification
 
 Next, a list of steps are specified. Let's go through them one at a time.
 
-### 3.1) Checkout
+### 3.1 Checkout
 
 ```{.github/publish.yml}
+
     ...
 
         - name: Check out repository
         uses: actions/checkout@v4
 
     ...
+
 ```
 
 This step uses the official actions/checkout action.
@@ -127,23 +133,26 @@ It clones your repository into the virtual machine. Without this step, the runne
 
 In short: this makes your code available to the workflow.
 
-### 3.2) Set up Quarto
+### 3.2 Set up Quarto
 
 ```{.github/publish.yml}
+
     ...
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
     ...
+
 ```
 Here, Quarto is installed on the runner.
 
 Quarto is the publishing system used to render the blog (e.g., from `.qmd` files to HTML). Quarto uses Pandoc under the hood for this. This step ensures that the correct version of Quarto is available before rendering starts.
 
-### 3.3) Install system libs
+### 3.3 Install system libs
 
 ```{.github/publish.yml}
+
     ...
 
       # Install system dependencies for R packages
@@ -154,6 +163,7 @@ Quarto is the publishing system used to render the blog (e.g., from `.qmd` files
             libcurl4-openssl-dev
 
     ...
+
 ```
 
 Some R packages depend not only on R itself, but also on system-level libraries.
@@ -165,9 +175,10 @@ Here:
 
 This is required because certain R packages (for example those handling web requests) rely on libcurl at the system level. If these libraries are missing, package installation would fail.
 
-### 3.4) Install R
+### 3.4 Install R
 
 ```{.github/publish.yml}
+
     ...
 
       - name: Install R
@@ -177,6 +188,7 @@ This is required because certain R packages (for example those handling web requ
           use-public-rspm: true
 
     ...
+
 ```
 
 This step installs R itself.
@@ -186,9 +198,10 @@ This step installs R itself.
 
 Now the runner has a working R installation.
 
-### 3.5) Install R Dependencies
+### 3.5 Install R Dependencies
 
 ```{.github/publish.yml}
+
     ...
 
       - name: Install R Dependencies
@@ -197,6 +210,7 @@ Now the runner has a working R installation.
           cache-version: 1
 
     ...
+
 ```
 
 This step restores the R package environment using `renv`.
@@ -209,9 +223,10 @@ This step restores the R package environment using `renv`.
 
 The `cache-version: 1` allows GitHub to cache installed packages between workflow runs, significantly speeding up future builds.
 
-### 3.6) Render and Publish
+### 3.6 Render and Publish
 
 ```{.github/publish.yml}
+
     ...
 
       - name: Render and Publish
@@ -220,6 +235,7 @@ The `cache-version: 1` allows GitHub to cache installed packages between workflo
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
 ```
 
 This is the final and most important step.
@@ -242,7 +258,7 @@ To summarize, this workflow:
 2)  Sets up a fresh Ubuntu environment.
 3)  Installs Quarto, R, and all required dependencies.
 4)  Renders the website.
-5   Publishes it automatically to GitHub Pages.
+5)   Publishes it automatically to GitHub Pages.
 
 In other words: push to `main` → automatic rebuild → website updated.
 
