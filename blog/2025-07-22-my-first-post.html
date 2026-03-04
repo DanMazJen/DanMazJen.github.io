@@ -122,11 +122,11 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
   <ul class="collapse">
-  <li><a href="#the-workflow-specification" id="toc-the-workflow-specification" class="nav-link" data-scroll-target="#the-workflow-specification">2) The workflow specification</a>
+  <li><a href="#the-workflow-specification" id="toc-the-workflow-specification" class="nav-link" data-scroll-target="#the-workflow-specification">2. The workflow specification</a>
   <ul class="collapse">
-  <li><a href="#set-up-quarto" id="toc-set-up-quarto" class="nav-link" data-scroll-target="#set-up-quarto">3.2) Set up Quarto</a></li>
-  <li><a href="#install-r" id="toc-install-r" class="nav-link" data-scroll-target="#install-r">3.4) Install R</a></li>
-  <li><a href="#render-and-publish" id="toc-render-and-publish" class="nav-link" data-scroll-target="#render-and-publish">3.6) Render and Publish</a></li>
+  <li><a href="#set-up-quarto" id="toc-set-up-quarto" class="nav-link" data-scroll-target="#set-up-quarto">3.2 Set up Quarto</a></li>
+  <li><a href="#install-r" id="toc-install-r" class="nav-link" data-scroll-target="#install-r">3.4 Install R</a></li>
+  <li><a href="#render-and-publish" id="toc-render-and-publish" class="nav-link" data-scroll-target="#render-and-publish">3.6 Render and Publish</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
@@ -175,7 +175,8 @@ ul.task-list li input[type="checkbox"] {
 <p>Github is great for collaborative team working - also in the common case, where the collaborator is your future self! Here, Github serves as the external backup of your local git version control.</p>
 <p>However, Github is much more than just an external harddisk - it also does rendering, cross-platform testing, and even hosts websites on Github Pages. This past is about the latter.</p>
 <p>Take a look at this code:</p>
-<p>```{.github/publish.yml} on: workflow_dispatch: push: branches: main</p>
+<p>```{.github/publish.yml}</p>
+<p>on: workflow_dispatch: push: branches: main</p>
 <p>name: Quarto Publish</p>
 <p>jobs: build-deploy: runs-on: ubuntu-latest permissions: contents: write steps: - name: Check out repository uses: actions/checkout@v4</p>
 <pre><code>  - name: Set up Quarto
@@ -208,7 +209,7 @@ ul.task-list li input[type="checkbox"] {
 <pre><code>
 This is literally the Github action for hosting this very blog. Let's break it apart.
 
-## 1) When to trigger the action
+## 1. When to trigger the action
 
 The first lines tells Github **when** to do the action you want. Take a look:
 
@@ -226,9 +227,10 @@ on:
 </ul>
 <p>In short: every new commit to <code>main</code> rebuilds and republishes the website.</p>
 <section id="the-workflow-specification" class="level2">
-<h2 class="anchored" data-anchor-id="the-workflow-specification">2) The workflow specification</h2>
+<h2 class="anchored" data-anchor-id="the-workflow-specification">2. The workflow specification</h2>
 <p>The next few lines tells Github <strong>what</strong> to do within the action you want. Take a look:</p>
-<p>```{.github/publish.yml} …</p>
+<p>```{.github/publish.yml}</p>
+<pre><code>...</code></pre>
 <p>name: Quarto Publish</p>
 <p>jobs: build-deploy: runs-on: ubuntu-latest permissions: contents: write</p>
 <pre><code>...</code></pre>
@@ -240,26 +242,30 @@ on:
 
 So at this stage, we have defined a job that runs on a virtual Linux machine and is allowed to modify the repository.
 
-## 3) The workflow specification
+## 3. The workflow specification
 
 Next, a list of steps are specified. Let's go through them one at a time.
 
-### 3.1) Checkout
+### 3.1 Checkout
 
 ```{.github/publish.yml}
+
     ...
 
         - name: Check out repository
         uses: actions/checkout@v4
 
-    ...</code></pre>
+    ...
+</code></pre>
 <p>This step uses the official actions/checkout action.</p>
 <p>It clones your repository into the virtual machine. Without this step, the runner would not have access to your project files, and there would be nothing to render or publish.</p>
 <p>In short: this makes your code available to the workflow.</p>
 <section id="set-up-quarto" class="level3">
-<h3 class="anchored" data-anchor-id="set-up-quarto">3.2) Set up Quarto</h3>
-<p>```{.github/publish.yml} …</p>
-<pre><code>  - name: Set up Quarto
+<h3 class="anchored" data-anchor-id="set-up-quarto">3.2 Set up Quarto</h3>
+<p>```{.github/publish.yml}</p>
+<pre><code>...
+
+  - name: Set up Quarto
     uses: quarto-dev/quarto-actions/setup@v2
 
 ...</code></pre>
@@ -267,9 +273,10 @@ Next, a list of steps are specified. Let's go through them one at a time.
 
 Quarto is the publishing system used to render the blog (e.g., from `.qmd` files to HTML). Quarto uses Pandoc under the hood for this. This step ensures that the correct version of Quarto is available before rendering starts.
 
-### 3.3) Install system libs
+### 3.3 Install system libs
 
 ```{.github/publish.yml}
+
     ...
 
       # Install system dependencies for R packages
@@ -279,7 +286,8 @@ Quarto is the publishing system used to render the blog (e.g., from `.qmd` files
           sudo apt-get install -y \
             libcurl4-openssl-dev
 
-    ...</code></pre>
+    ...
+</code></pre>
 <p>Some R packages depend not only on R itself, but also on system-level libraries.</p>
 <p>Here:</p>
 <ul>
@@ -289,9 +297,11 @@ Quarto is the publishing system used to render the blog (e.g., from `.qmd` files
 <p>This is required because certain R packages (for example those handling web requests) rely on libcurl at the system level. If these libraries are missing, package installation would fail.</p>
 </section>
 <section id="install-r" class="level3">
-<h3 class="anchored" data-anchor-id="install-r">3.4) Install R</h3>
-<p>```{.github/publish.yml} …</p>
-<pre><code>  - name: Install R
+<h3 class="anchored" data-anchor-id="install-r">3.4 Install R</h3>
+<p>```{.github/publish.yml}</p>
+<pre><code>...
+
+  - name: Install R
     uses: r-lib/actions/setup-r@v2
     with:
       r-version: '4.5.0'
@@ -306,9 +316,10 @@ This step installs R itself.
 
 Now the runner has a working R installation.
 
-### 3.5) Install R Dependencies
+### 3.5 Install R Dependencies
 
 ```{.github/publish.yml}
+
     ...
 
       - name: Install R Dependencies
@@ -316,7 +327,8 @@ Now the runner has a working R installation.
         with:
           cache-version: 1
 
-    ...</code></pre>
+    ...
+</code></pre>
 <p>This step restores the R package environment using <code>renv</code>.</p>
 <p><code>renv</code> is a dependency management system for R. It ensures that:</p>
 <ul>
@@ -327,14 +339,17 @@ Now the runner has a working R installation.
 <p>The <code>cache-version: 1</code> allows GitHub to cache installed packages between workflow runs, significantly speeding up future builds.</p>
 </section>
 <section id="render-and-publish" class="level3">
-<h3 class="anchored" data-anchor-id="render-and-publish">3.6) Render and Publish</h3>
-<p>```{.github/publish.yml} …</p>
-<pre><code>  - name: Render and Publish
+<h3 class="anchored" data-anchor-id="render-and-publish">3.6 Render and Publish</h3>
+<p>```{.github/publish.yml}</p>
+<pre><code>...
+
+  - name: Render and Publish
     uses: quarto-dev/quarto-actions/publish@v2
     with:
       target: gh-pages
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}</code></pre>
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      </code></pre>
 <p>```</p>
 <p>This is the final and most important step.</p>
 <p>It does two things:</p>
@@ -357,7 +372,8 @@ Now the runner has a working R installation.
 <li>Triggers on every push to <code>main</code>.</li>
 <li>Sets up a fresh Ubuntu environment.</li>
 <li>Installs Quarto, R, and all required dependencies.</li>
-<li>Renders the website. 5 Publishes it automatically to GitHub Pages.</li>
+<li>Renders the website.</li>
+<li>Publishes it automatically to GitHub Pages.</li>
 </ol>
 <p>In other words: push to <code>main</code> → automatic rebuild → website updated.</p>
 <p>This is continuous deployment for your blog – fully automated and fully reproducible.</p>
