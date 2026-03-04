@@ -1,14 +1,255 @@
 ---
-title: "Welcome to My Blog"
+title: "Using Github Actions for hosting websites"
 date: 2025-07-22
-description: "This is my first blog post."
-categories: [General]
+description: "Setting up an action in Github is easy!"
+categories: [Github]
 ---
 
-Hello, world! This is my first post.
+# Overview 
 
-I'll now try to write more stuff. This should help me identify if it works...
+Github is great for collaborative team working - also in the common case, where the collaborator is your future self! Here, Github serves as the external backup of your local git version control.
 
-```{r}
-plot(1:10)
+However, Github is much more than just an external harddisk - it also does rendering, cross-platform testing, and even hosts websites on Github Pages. This past is about the latter.
+
+Take a look at this code:
+
+```{.github/publish.yml}
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+name: Quarto Publish
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      # Install system dependencies for R packages
+      - name: Install system libs
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcurl4-openssl-dev
+            
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+          use-public-rspm: true
+
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+      - name: Render and Publish
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+This is literally the Github action for hosting this very blog. Let's break it apart.
+
+## 1) When to trigger the action
+
+The first lines tells Github **when** to do the action you want. Take a look:
+
+```{.github/publish.yml}
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+    ...
+```
+
+There are two triggers defined here:
+
+-   `workflow_dispatch`: allows you to manually start the workflow from the GitHub web interface.
+-   `push`: with `branches: main` means that every time something is pushed to the `main` branch, the action will automatically run.
+
+In short: every new commit to `main` rebuilds and republishes the website.
+
+## 2) The workflow specification
+
+The next few lines tells Github **what** to do within the action you want. Take a look:
+
+```{.github/publish.yml}
+    ...
+
+name: Quarto Publish
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    ...
+```
+
+-   name: `Quarto Publish` gives the workflow a readable name in the GitHub Actions tab.
+-   Under `jobs`:, we define a job called `build-deploy`.
+-   runs-on: ubuntu-latest means the job runs on the latest available Ubuntu runner provided by GitHub.
+-   `permissions: contents: write` grants the workflow permission to push content back to the repository (which is required for publishing to the `gh-pages` branch).
+
+So at this stage, we have defined a job that runs on a virtual Linux machine and is allowed to modify the repository.
+
+## 3) The workflow specification
+
+Next, a list of steps are specified. Let's go through them one at a time.
+
+### 3.1) Checkout
+
+```{.github/publish.yml}
+    ...
+
+        - name: Check out repository
+        uses: actions/checkout@v4
+
+    ...
+```
+
+This step uses the official actions/checkout action.
+
+It clones your repository into the virtual machine. Without this step, the runner would not have access to your project files, and there would be nothing to render or publish.
+
+In short: this makes your code available to the workflow.
+
+### 3.2) Set up Quarto
+
+```{.github/publish.yml}
+    ...
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+    ...
+```
+Here, Quarto is installed on the runner.
+
+Quarto is the publishing system used to render the blog (e.g., from `.qmd` files to HTML). Quarto uses Pandoc under the hood for this. This step ensures that the correct version of Quarto is available before rendering starts.
+
+### 3.3) Install system libs
+
+```{.github/publish.yml}
+    ...
+
+      # Install system dependencies for R packages
+      - name: Install system libs
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcurl4-openssl-dev
+
+    ...
+```
+
+Some R packages depend not only on R itself, but also on system-level libraries.
+
+Here:
+
+-   apt-get update refreshes the package list.
+-   apt-get install installs libcurl4-openssl-dev.
+
+This is required because certain R packages (for example those handling web requests) rely on libcurl at the system level. If these libraries are missing, package installation would fail.
+
+### 3.4) Install R
+
+```{.github/publish.yml}
+    ...
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.0'
+          use-public-rspm: true
+
+    ...
+```
+
+This step installs R itself.
+
+-   `r-version: '4.5.0'` ensures a specific R version is used. This improves reproducibility.
+-   `use-public-rspm: true` enables a public RStudio Package Manager mirror for faster and more reliable package installation.
+
+Now the runner has a working R installation.
+
+### 3.5) Install R Dependencies
+
+```{.github/publish.yml}
+    ...
+
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+    ...
+```
+
+This step restores the R package environment using `renv`.
+
+`renv` is a dependency management system for R. It ensures that:
+
+-   The exact package versions specified in your project are installed.
+-   The environment is reproducible across machines.
+-   Installation is faster thanks to caching.
+
+The `cache-version: 1` allows GitHub to cache installed packages between workflow runs, significantly speeding up future builds.
+
+### 3.6) Render and Publish
+
+```{.github/publish.yml}
+    ...
+
+      - name: Render and Publish
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+This is the final and most important step.
+
+It does two things:
+
+1)  Renders the website using Quarto.
+2)  Publishes the generated site to the `gh-pages` branch.
+
+-   `target: gh-pages` tells the action to deploy to the GitHub Pages branch. **NB!** Make sure you already have this branch. Otherwise, the action will fail.
+-   `GITHUB_TOKEN` is an automatically generated token that allows the workflow to authenticate and push changes back to the repository securely.
+
+Once this step completes successfully, GitHub Pages serves the updated website.
+
+# Summary
+
+To summarize, this workflow:
+
+1)  Triggers on every push to `main`.
+2)  Sets up a fresh Ubuntu environment.
+3)  Installs Quarto, R, and all required dependencies.
+4)  Renders the website.
+5   Publishes it automatically to GitHub Pages.
+
+In other words: push to `main` → automatic rebuild → website updated.
+
+This is continuous deployment for your blog – fully automated and fully reproducible.
+
+# Ending remarks 
+
+Github actions are powerfull and can serve multiple purposes. See my other project [Medical Statistics](https://danmazjen.github.io/medicinsk-statistik/exercises/data.html) for a much more advanced use of Github actions for hosting the website on netlify or github, using pre-commit hooks to check typos, and more. 
+
+

@@ -4,7 +4,6 @@ title: "DanMazJen.github.io"
 
 Welcome to the website.
 
-Currently, this is a test. The site will expand over the next couple of months.
+Currently, this is work in progress.
 
 The content will be small blog-styled pieces of statistical material.
-

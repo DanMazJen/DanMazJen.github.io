@@ -13,27 +13,48 @@ about:
 ---
 
 ## About me
-Hi! I'm Daniel — welcome to my little corner of the internet.
 
-I'm a health science researcher with a growing interest in data modeling, reproducible analysis, and the R ecosystem. I also have a deep appreciation for specialty coffee — especially as fuel for long modeling sessions and debugging marathons.
+Hi! I'm Daniel - feel free to browse the content and contact me for any
+question or comments.
 
-This site is a mix of things: answers to questions friends and colleagues ask me, experiments with methods or tools I want to learn better, and thoughts on tech and research practices that catch my interest. You might find posts about multilevel models with `lme4`, visualizations in `ggplot2`, or just a useful little R trick I want to remember later.
+I'm a health science researcher with a growing interest in data
+modeling, reproducible analyses, and the R ecosystem. I also have a deep
+appreciation for specialty coffee — especially as fuel for inspiring
+discussion on modeling or interpretation of outcomes.
 
-If you're curious about something I post — or if you have a better way to do it — feel free to reach out. I like sharing ideas, and I'm always learning.
+This site is a mix of things: answers to questions friends and
+colleagues ask me, experiments with methods or tools I want to learn
+better, and thoughts on tech and research practices that catch my
+interest. You might find posts about multilevel models with `lme4`,
+visualizations in `ggplot2`, or just a useful little R trick I want to
+remember later.
+
+If you're curious about something I post — or if you have a better way
+to do it — feel free to reach out. I like sharing ideas, and I'm still
+learning.
 
 Thanks for stopping by.
 
 ## About the site
-Currently, this is a test. The site will expand over the next couple of months.
 
-The content will be small blog-styled pieces of statistical material that friends and colleagues recently started asking me. Some of the material will also be for my own amusement, relating to topics I'm actively exploring and trying to get a better felling of.
+The content will be small blog-styled pieces of statistical material
+that friends and colleagues recently started asking me. Some of the
+material will also be for my own amusement, relating to topics I'm
+actively exploring and trying to get a better felling of.
 
 ## My Background
-Aalborg University | Denmark | PhD-fellow enrolled to Biomedical Engineering and Neuroscience | 2022 - active
 
-Maastricht University | Netherlands | RMSc in Cognitive and Clinical Neuroscience | 2020 - 2022
+Aalborg University \| Denmark \| Assistant Professor, Health Science and
+Technology \| 2025 - active
 
-University College of Northern Denmark (UCN) | Denmark
-Lecturer | 2018 - 2020
+Aalborg University \| Denmark \| PhD-fellow enrolled to Biomedical
+Engineering and Neuroscience \| 2022 - 2025
 
-Aalborg University | Denmark | BA and MA in Music Therapy | 2013 - 2018
+Maastricht University \| Netherlands \| RMSc in Cognitive and Clinical
+Neuroscience \| 2020 - 2022
+
+University College of Northern Denmark (UCN) \| Denmark \| Lecturer and
+researcher \| 2018 - 2020
+
+Aalborg University \| Denmark \| BA and MA in Music Therapy \| 2013 -
+2018
