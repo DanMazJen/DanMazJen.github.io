@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -122,10 +157,15 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
   <ul class="collapse">
-  <li><a href="#the-workflow-specification" id="toc-the-workflow-specification" class="nav-link" data-scroll-target="#the-workflow-specification">2. The workflow specification</a>
+  <li><a href="#when-to-trigger-the-action" id="toc-when-to-trigger-the-action" class="nav-link" data-scroll-target="#when-to-trigger-the-action">1. When to trigger the action</a></li>
+  <li><a href="#the-workflow-specification" id="toc-the-workflow-specification" class="nav-link" data-scroll-target="#the-workflow-specification">2. The workflow specification</a></li>
+  <li><a href="#the-workflow-specification-1" id="toc-the-workflow-specification-1" class="nav-link" data-scroll-target="#the-workflow-specification-1">3. The workflow specification</a>
   <ul class="collapse">
+  <li><a href="#checkout" id="toc-checkout" class="nav-link" data-scroll-target="#checkout">3.1 Checkout</a></li>
   <li><a href="#set-up-quarto" id="toc-set-up-quarto" class="nav-link" data-scroll-target="#set-up-quarto">3.2 Set up Quarto</a></li>
+  <li><a href="#install-system-libs" id="toc-install-system-libs" class="nav-link" data-scroll-target="#install-system-libs">3.3 Install system libs</a></li>
   <li><a href="#install-r" id="toc-install-r" class="nav-link" data-scroll-target="#install-r">3.4 Install R</a></li>
+  <li><a href="#install-r-dependencies" id="toc-install-r-dependencies" class="nav-link" data-scroll-target="#install-r-dependencies">3.5 Install R Dependencies</a></li>
   <li><a href="#render-and-publish" id="toc-render-and-publish" class="nav-link" data-scroll-target="#render-and-publish">3.6 Render and Publish</a></li>
   </ul></li>
   </ul></li>
@@ -175,119 +215,150 @@ ul.task-list li input[type="checkbox"] {
 <p>Github is great for collaborative team working - also in the common case, where the collaborator is your future self! Here, Github serves as the external backup of your local git version control.</p>
 <p>However, Github is much more than just an external harddisk - it also does rendering, cross-platform testing, and even hosts websites on Github Pages. This past is about the latter.</p>
 <p>Take a look at this code:</p>
-<p>```{.github/publish.yml}</p>
-<p>on: workflow_dispatch: push: branches: main</p>
-<p>name: Quarto Publish</p>
-<p>jobs: build-deploy: runs-on: ubuntu-latest permissions: contents: write steps: - name: Check out repository uses: actions/checkout@v4</p>
-<pre><code>  - name: Set up Quarto
-    uses: quarto-dev/quarto-actions/setup@v2
-
-  # Install system dependencies for R packages
-  - name: Install system libs
-    run: |
-      sudo apt-get update
-      sudo apt-get install -y \
-        libcurl4-openssl-dev
-        
-  - name: Install R
-    uses: r-lib/actions/setup-r@v2
-    with:
-      r-version: '4.5.0'
-      use-public-rspm: true
-
-  - name: Install R Dependencies
-    uses: r-lib/actions/setup-renv@v2
-    with:
-      cache-version: 1
-
-  - name: Render and Publish
-    uses: quarto-dev/quarto-actions/publish@v2
-    with:
-      target: gh-pages
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}</code></pre>
-<pre><code>
-This is literally the Github action for hosting this very blog. Let's break it apart.
-
-## 1. When to trigger the action
-
-The first lines tells Github **when** to do the action you want. Take a look:
-
-```{.github/publish.yml}
-on:
-  workflow_dispatch:
-  push:
-    branches: main
-
-    ...</code></pre>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/publish.yml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename=".github/publish.yml"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>on<span class="sc">:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  workflow_dispatch<span class="sc">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  push<span class="sc">:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    branches<span class="sc">:</span> main</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>name<span class="sc">:</span> Quarto Publish</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>jobs<span class="sc">:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  build<span class="sc">-</span>deploy<span class="sc">:</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    runs<span class="sc">-</span>on<span class="sc">:</span> ubuntu<span class="sc">-</span>latest</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    permissions<span class="sc">:</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      contents<span class="sc">:</span> write</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    steps<span class="sc">:</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> name<span class="sc">:</span> Check out repository</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        uses<span class="sc">:</span> actions<span class="sc">/</span>checkout<span class="sc">@</span>v4</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> name<span class="sc">:</span> Set up Quarto</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        uses<span class="sc">:</span> quarto<span class="sc">-</span>dev<span class="sc">/</span>quarto<span class="sc">-</span>actions<span class="sc">/</span>setup<span class="sc">@</span>v2</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Install system dependencies for R packages</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> name<span class="sc">:</span> Install system libs</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        run<span class="sc">:</span> <span class="er">|</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>          sudo apt<span class="sc">-</span>get update</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>          sudo apt<span class="sc">-</span>get install <span class="sc">-</span>y \</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>            libcurl4<span class="sc">-</span>openssl<span class="sc">-</span>dev</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> name<span class="sc">:</span> Install R</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        uses<span class="sc">:</span> r<span class="sc">-</span>lib<span class="sc">/</span>actions<span class="sc">/</span>setup<span class="sc">-</span>r<span class="sc">@</span>v2</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        with<span class="sc">:</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>          r<span class="sc">-</span>version<span class="sc">:</span> <span class="st">'4.5.0'</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>          use<span class="sc">-</span>public<span class="sc">-</span>rspm<span class="sc">:</span> true</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> name<span class="sc">:</span> Install R Dependencies</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        uses<span class="sc">:</span> r<span class="sc">-</span>lib<span class="sc">/</span>actions<span class="sc">/</span>setup<span class="sc">-</span>renv<span class="sc">@</span>v2</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        with<span class="sc">:</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>          cache<span class="sc">-</span>version<span class="sc">:</span> <span class="dv">1</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> name<span class="sc">:</span> Render and Publish</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        uses<span class="sc">:</span> quarto<span class="sc">-</span>dev<span class="sc">/</span>quarto<span class="sc">-</span>actions<span class="sc">/</span>publish<span class="sc">@</span>v2</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        with<span class="sc">:</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>          target<span class="sc">:</span> gh<span class="sc">-</span>pages</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        env<span class="sc">:</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>          GITHUB_TOKEN<span class="sc">:</span> <span class="er">$</span>{{ secrets.GITHUB_TOKEN }}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This is literally the Github action for hosting this very blog. Let’s break it apart.</p>
+<section id="when-to-trigger-the-action" class="level2">
+<h2 class="anchored" data-anchor-id="when-to-trigger-the-action">1. When to trigger the action</h2>
+<p>The first lines tells Github <strong>when</strong> to do the action you want. Take a look:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/publish.yml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename=".github/publish.yml"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>on<span class="sc">:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  workflow_dispatch<span class="sc">:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  push<span class="sc">:</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    branches<span class="sc">:</span> main</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>There are two triggers defined here:</p>
 <ul>
 <li><code>workflow_dispatch</code>: allows you to manually start the workflow from the GitHub web interface.</li>
 <li><code>push</code>: with <code>branches: main</code> means that every time something is pushed to the <code>main</code> branch, the action will automatically run.</li>
 </ul>
 <p>In short: every new commit to <code>main</code> rebuilds and republishes the website.</p>
+</section>
 <section id="the-workflow-specification" class="level2">
 <h2 class="anchored" data-anchor-id="the-workflow-specification">2. The workflow specification</h2>
 <p>The next few lines tells Github <strong>what</strong> to do within the action you want. Take a look:</p>
-<p>```{.github/publish.yml}</p>
-<pre><code>...</code></pre>
-<p>name: Quarto Publish</p>
-<p>jobs: build-deploy: runs-on: ubuntu-latest permissions: contents: write</p>
-<pre><code>...</code></pre>
-<pre><code>
--   name: `Quarto Publish` gives the workflow a readable name in the GitHub Actions tab.
--   Under `jobs`:, we define a job called `build-deploy`.
--   runs-on: ubuntu-latest means the job runs on the latest available Ubuntu runner provided by GitHub.
--   `permissions: contents: write` grants the workflow permission to push content back to the repository (which is required for publishing to the `gh-pages` branch).
-
-So at this stage, we have defined a job that runs on a virtual Linux machine and is allowed to modify the repository.
-
-## 3. The workflow specification
-
-Next, a list of steps are specified. Let's go through them one at a time.
-
-### 3.1 Checkout
-
-```{.github/publish.yml}
-
-    ...
-
-        - name: Check out repository
-        uses: actions/checkout@v4
-
-    ...
-</code></pre>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/publish.yml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename=".github/publish.yml"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>name<span class="sc">:</span> Quarto Publish</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>jobs<span class="sc">:</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  build<span class="sc">-</span>deploy<span class="sc">:</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    runs<span class="sc">-</span>on<span class="sc">:</span> ubuntu<span class="sc">-</span>latest</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    permissions<span class="sc">:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      contents<span class="sc">:</span> write</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>name: <code>Quarto Publish</code> gives the workflow a readable name in the GitHub Actions tab.</li>
+<li>Under <code>jobs</code>:, we define a job called <code>build-deploy</code>.</li>
+<li>runs-on: ubuntu-latest means the job runs on the latest available Ubuntu runner provided by GitHub.</li>
+<li><code>permissions: contents: write</code> grants the workflow permission to push content back to the repository (which is required for publishing to the <code>gh-pages</code> branch).</li>
+</ul>
+<p>So at this stage, we have defined a job that runs on a virtual Linux machine and is allowed to modify the repository.</p>
+</section>
+<section id="the-workflow-specification-1" class="level2">
+<h2 class="anchored" data-anchor-id="the-workflow-specification-1">3. The workflow specification</h2>
+<p>Next, a list of steps are specified. Let’s go through them one at a time.</p>
+<section id="checkout" class="level3">
+<h3 class="anchored" data-anchor-id="checkout">3.1 Checkout</h3>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/publish.yml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename=".github/publish.yml"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="sc">-</span> name<span class="sc">:</span> Check out repository</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        uses<span class="sc">:</span> actions<span class="sc">/</span>checkout<span class="sc">@</span>v4</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>This step uses the official actions/checkout action.</p>
 <p>It clones your repository into the virtual machine. Without this step, the runner would not have access to your project files, and there would be nothing to render or publish.</p>
 <p>In short: this makes your code available to the workflow.</p>
+</section>
 <section id="set-up-quarto" class="level3">
 <h3 class="anchored" data-anchor-id="set-up-quarto">3.2 Set up Quarto</h3>
-<p>```{.github/publish.yml}</p>
-<pre><code>...
-
-  - name: Set up Quarto
-    uses: quarto-dev/quarto-actions/setup@v2
-
-...</code></pre>
-<pre><code>Here, Quarto is installed on the runner.
-
-Quarto is the publishing system used to render the blog (e.g., from `.qmd` files to HTML). Quarto uses Pandoc under the hood for this. This step ensures that the correct version of Quarto is available before rendering starts.
-
-### 3.3 Install system libs
-
-```{.github/publish.yml}
-
-    ...
-
-      # Install system dependencies for R packages
-      - name: Install system libs
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libcurl4-openssl-dev
-
-    ...
-</code></pre>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/publish.yml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename=".github/publish.yml"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> name<span class="sc">:</span> Set up Quarto</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        uses<span class="sc">:</span> quarto<span class="sc">-</span>dev<span class="sc">/</span>quarto<span class="sc">-</span>actions<span class="sc">/</span>setup<span class="sc">@</span>v2</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here, Quarto is installed on the runner.</p>
+<p>Quarto is the publishing system used to render the blog (e.g., from <code>.qmd</code> files to HTML). Quarto uses Pandoc under the hood for this. This step ensures that the correct version of Quarto is available before rendering starts.</p>
+</section>
+<section id="install-system-libs" class="level3">
+<h3 class="anchored" data-anchor-id="install-system-libs">3.3 Install system libs</h3>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/publish.yml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename=".github/publish.yml"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Install system dependencies for R packages</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> name<span class="sc">:</span> Install system libs</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        run<span class="sc">:</span> <span class="er">|</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>          sudo apt<span class="sc">-</span>get update</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>          sudo apt<span class="sc">-</span>get install <span class="sc">-</span>y \</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            libcurl4<span class="sc">-</span>openssl<span class="sc">-</span>dev</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>Some R packages depend not only on R itself, but also on system-level libraries.</p>
 <p>Here:</p>
 <ul>
@@ -298,37 +369,39 @@ Quarto is the publishing system used to render the blog (e.g., from `.qmd` files
 </section>
 <section id="install-r" class="level3">
 <h3 class="anchored" data-anchor-id="install-r">3.4 Install R</h3>
-<p>```{.github/publish.yml}</p>
-<pre><code>...
-
-  - name: Install R
-    uses: r-lib/actions/setup-r@v2
-    with:
-      r-version: '4.5.0'
-      use-public-rspm: true
-
-...</code></pre>
-<pre><code>
-This step installs R itself.
-
--   `r-version: '4.5.0'` ensures a specific R version is used. This improves reproducibility.
--   `use-public-rspm: true` enables a public RStudio Package Manager mirror for faster and more reliable package installation.
-
-Now the runner has a working R installation.
-
-### 3.5 Install R Dependencies
-
-```{.github/publish.yml}
-
-    ...
-
-      - name: Install R Dependencies
-        uses: r-lib/actions/setup-renv@v2
-        with:
-          cache-version: 1
-
-    ...
-</code></pre>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/publish.yml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename=".github/publish.yml"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> name<span class="sc">:</span> Install R</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        uses<span class="sc">:</span> r<span class="sc">-</span>lib<span class="sc">/</span>actions<span class="sc">/</span>setup<span class="sc">-</span>r<span class="sc">@</span>v2</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        with<span class="sc">:</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>          r<span class="sc">-</span>version<span class="sc">:</span> <span class="st">'4.5.0'</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>          use<span class="sc">-</span>public<span class="sc">-</span>rspm<span class="sc">:</span> true</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This step installs R itself.</p>
+<ul>
+<li><code>r-version: '4.5.0'</code> ensures a specific R version is used. This improves reproducibility.</li>
+<li><code>use-public-rspm: true</code> enables a public RStudio Package Manager mirror for faster and more reliable package installation.</li>
+</ul>
+<p>Now the runner has a working R installation.</p>
+</section>
+<section id="install-r-dependencies" class="level3">
+<h3 class="anchored" data-anchor-id="install-r-dependencies">3.5 Install R Dependencies</h3>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/publish.yml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename=".github/publish.yml"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> name<span class="sc">:</span> Install R Dependencies</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        uses<span class="sc">:</span> r<span class="sc">-</span>lib<span class="sc">/</span>actions<span class="sc">/</span>setup<span class="sc">-</span>renv<span class="sc">@</span>v2</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        with<span class="sc">:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>          cache<span class="sc">-</span>version<span class="sc">:</span> <span class="dv">1</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>This step restores the R package environment using <code>renv</code>.</p>
 <p><code>renv</code> is a dependency management system for R. It ensures that:</p>
 <ul>
@@ -340,17 +413,18 @@ Now the runner has a working R installation.
 </section>
 <section id="render-and-publish" class="level3">
 <h3 class="anchored" data-anchor-id="render-and-publish">3.6 Render and Publish</h3>
-<p>```{.github/publish.yml}</p>
-<pre><code>...
-
-  - name: Render and Publish
-    uses: quarto-dev/quarto-actions/publish@v2
-    with:
-      target: gh-pages
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      </code></pre>
-<p>```</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.github/publish.yml</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-filename=".github/publish.yml"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span> name<span class="sc">:</span> Render and Publish</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        uses<span class="sc">:</span> quarto<span class="sc">-</span>dev<span class="sc">/</span>quarto<span class="sc">-</span>actions<span class="sc">/</span>publish<span class="sc">@</span>v2</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        with<span class="sc">:</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>          target<span class="sc">:</span> gh<span class="sc">-</span>pages</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        env<span class="sc">:</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>          GITHUB_TOKEN<span class="sc">:</span> <span class="er">$</span>{{ secrets.GITHUB_TOKEN }}         </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>This is the final and most important step.</p>
 <p>It does two things:</p>
 <ol type="1">
