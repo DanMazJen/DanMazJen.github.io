@@ -13,8 +13,7 @@ However, Github is much more than just an external harddisk - it also does rende
 
 Take a look at this code:
 
-```{.github/publish.yml}
-
+```{.r filename=".github/publish.yml"}
 on:
   workflow_dispatch:
   push:
@@ -67,7 +66,7 @@ This is literally the Github action for hosting this very blog. Let's break it a
 
 The first lines tells Github **when** to do the action you want. Take a look:
 
-```{.github/publish.yml}
+```{.r filename=".github/publish.yml"}
 on:
   workflow_dispatch:
   push:
@@ -87,10 +86,8 @@ In short: every new commit to `main` rebuilds and republishes the website.
 
 The next few lines tells Github **what** to do within the action you want. Take a look:
 
-```{.github/publish.yml}
-
+```{.r filename=".github/publish.yml"}
     ...
-
 name: Quarto Publish
 
 jobs:
@@ -98,7 +95,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
     ...
 
 ```
@@ -116,15 +112,12 @@ Next, a list of steps are specified. Let's go through them one at a time.
 
 ### 3.1 Checkout
 
-```{.github/publish.yml}
-
+```{.r filename=".github/publish.yml"}
     ...
 
         - name: Check out repository
         uses: actions/checkout@v4
-
     ...
-
 ```
 
 This step uses the official actions/checkout action.
@@ -135,35 +128,29 @@ In short: this makes your code available to the workflow.
 
 ### 3.2 Set up Quarto
 
-```{.github/publish.yml}
-
+```{.r filename=".github/publish.yml"}
     ...
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-
     ...
-
 ```
+
 Here, Quarto is installed on the runner.
 
 Quarto is the publishing system used to render the blog (e.g., from `.qmd` files to HTML). Quarto uses Pandoc under the hood for this. This step ensures that the correct version of Quarto is available before rendering starts.
 
 ### 3.3 Install system libs
 
-```{.github/publish.yml}
-
+```{.r filename=".github/publish.yml"}
     ...
-
       # Install system dependencies for R packages
       - name: Install system libs
         run: |
           sudo apt-get update
           sudo apt-get install -y \
             libcurl4-openssl-dev
-
     ...
-
 ```
 
 Some R packages depend not only on R itself, but also on system-level libraries.
@@ -177,8 +164,7 @@ This is required because certain R packages (for example those handling web requ
 
 ### 3.4 Install R
 
-```{.github/publish.yml}
-
+```{.r filename=".github/publish.yml"}
     ...
 
       - name: Install R
@@ -186,9 +172,7 @@ This is required because certain R packages (for example those handling web requ
         with:
           r-version: '4.5.0'
           use-public-rspm: true
-
     ...
-
 ```
 
 This step installs R itself.
@@ -200,17 +184,13 @@ Now the runner has a working R installation.
 
 ### 3.5 Install R Dependencies
 
-```{.github/publish.yml}
-
+```{.r filename=".github/publish.yml"}
     ...
-
       - name: Install R Dependencies
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 1
-
     ...
-
 ```
 
 This step restores the R package environment using `renv`.
@@ -225,17 +205,14 @@ The `cache-version: 1` allows GitHub to cache installed packages between workflo
 
 ### 3.6 Render and Publish
 
-```{.github/publish.yml}
-
+```{.r filename=".github/publish.yml"}
     ...
-
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}         
 ```
 
 This is the final and most important step.

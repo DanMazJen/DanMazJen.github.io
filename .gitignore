@@ -2,5 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-
+/ideas_for_future_blog_posts/
 /.quarto/
+
+**/*.quarto_ipynb
