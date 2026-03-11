@@ -4,6 +4,4 @@ title: "DanMazJen.github.io"
 
 Welcome to the website.
 
-Currently, this is work in progress.
-
-The content will be small blog-styled pieces of statistical material.
+This website primarily hosts small blog-styled pieces of statistical material I want to share - with other and future me. Please go the [blog posts](/blog/index.qmd) or reach out to [me](/about.qmd) if you have any comments.

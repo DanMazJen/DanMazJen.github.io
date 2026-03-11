@@ -8,6 +8,12 @@ listing:
   categories: true
 ---
 
-Welcome to my blog!
+The blog topics are a mix of things: answers to questions friends and
+colleagues ask me, experiments with methods or tools I want to learn
+better, and thoughts on tech and research practices that catch my
+interest. You might find posts about multilevel models with `lme4`,
+visualizations in `ggplot2`, or just a useful little R trick I want to
+remember later.
 
-I'll now try to write more stuff. This should help me identify if it works...
+Check the **Categories** or scroll down for a small teaser of the material I have covered.
+

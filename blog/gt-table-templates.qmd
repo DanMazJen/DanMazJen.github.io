@@ -13,11 +13,13 @@ format:
     code-fold: false
 ---
 
+![Fig 1 with {gt}](plots/fig1_table1.jpg){.preview-image}
+
 # The Table 1
 
 The table 1 is an infamous piece of almost every experimental study involving human subjects or participants. Table 1 is typically the first table in a paper and provides an overview of the study population, summarizing key demographic and baseline characteristics such as age, sex, clinical variables, and other relevant measures. Its purpose is to give readers a quick sense of who the participants are and whether the groups being compared (for example, treatment vs. control) appear similar at baseline.
 
-The content of the table is often explicitly stated in the statistical analysis plan (SAP). In planed studies with FDA/EDA approval, such tables are submitted in advance of conducting the study in order to get the approval. Even in the case of smaller experiments, researchers are well aware of the relevant background information which goes into the Table 1.
+The content of the table is often explicitly stated in the statistical analysis plan (SAP). In planned studies with FDA/EDA approval, such tables are submitted in advance of conducting the study in order to get the approval. Even in the case of smaller experiments, researchers are well aware of the relevant background information which goes into the Table 1.
 
 ## Making a template for the Table 1
 
@@ -116,16 +118,16 @@ table1_template |>
   gt::gt(rowname_col = "label", groupname_col = "section") |>
 
   gt::cols_label(
-    no_ild = "No ILD",
-    ild = "ILD",
-    ra_ild = "RA-ILD",
-    ipf = "IPF",
-    other_ild = "Other type"
+    disorder_1 = "Neurotypical Children",
+    disorder_2 = "Neurodevelopmental Disorder",
+    disorder_3 = "Autism Spectrum Disorder",
+    disorder_4 = "Attention-Deficit Hyperactivity Disorder",
+    disorder_5 = "Other type"
   ) |>
 
   gt::tab_spanner(
-    label = "ILD subtype",
-    columns = c(ra_ild, ipf, other_ild)
+    label = "Disorder subtype",
+    columns = c(disorder_3, disorder_4, disorder_5)
   ) |>
 
   gt::cols_align(
@@ -135,7 +137,7 @@ table1_template |>
 
   gt::tab_header(
     title = gt::md(
-      "**Table 1. Descriptive characteristics of patients with lung cancer, Denmark, 2015–2024**"
+      "**Table 1. Descriptive characteristics of Adults, Denmark, 2015–2024**"
     )
   ) |>
 
@@ -151,8 +153,7 @@ table1_template |>
 
   gt::tab_source_note(
     source_note = gt::md(
-      "*Data are expressed as n (%) unless stated otherwise. 
-      ILD: Interstitial Lung Disease; IQR: Interquartile Range; SCLC: Small Cell Lung Cancer; NSCLC: Non-Small Cell Lung Cancer; ECOG: Eastern Cooperative Oncology Group Performance Status. ^ Proportions differ between the Danish Cancer Registry (DCR) and the Danish Lung Cancer Registry (DLCR) due to differences in inclusion criteria for lung cancer diagnoses.*"
+      "*Data are expressed as n (%) unless stated otherwise.*"
     )
   )
 ```
@@ -169,7 +170,7 @@ Finally, we want to populate the table, which is currently just a bunch of `NA's
 This ca be achieved by base R operations using `$` and index assingment:
 
 ```{.r}
-table1_template$no_ild[table1_template$label == "Total, N"] <- "12,431"
+table1_template$disorder_1[table1_template$label == "Total, N"] <- "12,431"
 ```
 
 However, a custom function is more convinient:
@@ -180,7 +181,12 @@ fill_cell <- function(df, row, col, value) {
   df
 }
 
-table1_template <- fill_cell(table1_template, "Total, N", "no_ild", "12,431")
+table1_template <- fill_cell(
+  table1_template,
+  "Total, N",
+  "disorder_1",
+  "12,431"
+)
 ```
 
 The only thing left to do is re-running the {gt} code block and...
