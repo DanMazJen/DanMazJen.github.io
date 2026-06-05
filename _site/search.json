@@ -411,5 +411,12 @@
     "title": "Make an elegant Table 1…",
     "section": "Done!",
     "text": "Done!\nThere you have it :tada:"
+  },
+  {
+    "objectID": "ideas_for_future_blog_posts/why_we_bayesian_slides.html#the-core-question",
+    "href": "ideas_for_future_blog_posts/why_we_bayesian_slides.html#the-core-question",
+    "title": "Why We Need Bayesian Linear Regression",
+    "section": "The Core Question",
+    "text": "The Core Question\nWhy do we need Bayesian regression if ordinary least squares already exists?\nThe answer is not:\n\nphilosophy\nelegance\nsubjective priors\n\nThe answer is:\n\n\n\nReal regression problems are often weakly identified, noisy, unstable, and geometrically pathological.\n\n\n\nBayesian regression stabilizes inference."
   }
 ]
