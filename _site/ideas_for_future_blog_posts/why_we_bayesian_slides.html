@@ -6,11 +6,11 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.37">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="Daniel Skak Mazhari-Jensen">
-  <meta name="dcterms.date" content="2026-05-20">
+  <meta name="dcterms.date" content="2026-06-08">
   <title>DanMazJen.github.io – Why We Need Bayesian Linear Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -143,23 +143,37 @@ Daniel Skak Mazhari-Jensen
 </div>
 </div>
 
-  <p class="date">2026-05-20</p>
+  <p class="date">2026-06-08</p>
 </section>
-<section>
-<section id="why-bayesian-linear-regression" class="title-slide slide level1 center">
-<h1>Why Bayesian Linear Regression?</h1>
+<section id="what-is-this-bayesian-thing-anyway" class="title-slide slide level1 center">
+<h1>What is this Bayesian thing anyway?</h1>
+<p>Chat with your neighbor for 3 minutes - where/what have you heard about Bayesian inference?</p>
+</section>
+
+<section id="raising_hand_woman-how-many-have-heard-about-bayesian-inference" class="title-slide slide level1 center">
+<h1>:raising_hand_woman: How many have heard about Bayesian inference?</h1>
 
 </section>
-<section id="the-core-question" class="slide level2 smaller">
-<h2>The Core Question</h2>
-<p>Why do we need Bayesian regression if ordinary least squares already exists?</p>
-<p>The answer is not:</p>
+
+<section id="raising_hand_woman-how-many-already-use-a-bayesian-workflow" class="title-slide slide level1 center">
+<h1>:raising_hand_woman: How many already use a Bayesian workflow?</h1>
+
+</section>
+
+<section id="walkingwalking_woman-do-you" class="title-slide slide level1 center">
+<h1>:walking::walking_woman: Do you ?????</h1>
+<p>Never &lt;——-&gt; I took a course in computer science</p>
+</section>
+
+<section id="the-core-question" class="title-slide slide level1 smaller center">
+<h1>The Core Question</h1>
+<p>Why do we need a Bayesian approach to regression - we can just use ordinary least squares?</p>
+<p>The answer is not (only):</p>
 <ul>
 <li>philosophy</li>
 <li>elegance</li>
-<li>subjective priors</li>
+<li>a matter of preference</li>
 </ul>
-<p>The answer is:</p>
 <div class="callout callout-important no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
@@ -169,10 +183,7 @@ Daniel Skak Mazhari-Jensen
 </div>
 <p>Bayesian regression stabilizes inference.</p>
 </section>
-<section class="slide level2">
 
-</section></section>
-<section>
 <section id="the-frequentist-ideal" class="title-slide slide level1 smaller center">
 <h1>The Frequentist Ideal</h1>
 <p>Ordinary Least Squares (OLS):</p>
@@ -195,10 +206,7 @@ y = X\beta + \epsilon
 \hat{\beta}_{OLS} = (X^TX)^{-1}X^Ty
 \]</span></p>
 </section>
-<section class="slide level2">
 
-</section></section>
-<section>
 <section id="the-hidden-assumption" class="title-slide slide level1 center">
 <h1>The Hidden Assumption</h1>
 <p>OLS works well when:</p>
@@ -210,10 +218,7 @@ y = X\beta + \epsilon
 </ul>
 <p>But real data often violate all of these simultaneously.</p>
 </section>
-<section class="slide level2">
 
-</section></section>
-<section>
 <section id="a-more-realistic-situation" class="title-slide slide level1 smaller center">
 <h1>A More Realistic Situation</h1>
 <p>Suppose we have:</p>
@@ -233,10 +238,7 @@ y = X\beta + \epsilon
 <li>policy research</li>
 </ul>
 </section>
-<section class="slide level2">
 
-</section></section>
-<section>
 <section id="the-data-generating-process" class="title-slide slide level1 smaller center">
 <h1>The Data Generating Process</h1>
 <p>The truth is simple.</p>
@@ -247,10 +249,7 @@ y = 1.5x_1 + \epsilon
 <p>All other predictors have zero effect.</p>
 <p>Yet predictors are highly correlated.</p>
 </section>
-<section class="slide level2">
 
-</section></section>
-<section>
 <section id="the-mechanism-of-failure" class="title-slide slide level1 smaller center">
 <h1>The Mechanism of Failure</h1>
 <p>With correlated predictors:</p>
@@ -276,10 +275,7 @@ y = 1.5x_1 + \epsilon
 </div>
 </div>
 </section>
-<section class="slide level2">
 
-</section></section>
-<section>
 <section id="the-geometry-problem" class="title-slide slide level1 center">
 <h1>The Geometry Problem</h1>
 <p>Collinearity creates unstable directions in parameter space.</p>
@@ -296,10 +292,7 @@ y = 1.5x_1 + \epsilon
 <li>interpretation collapses</li>
 </ul>
 </section>
-<section class="slide level2">
 
-</section></section>
-<section>
 <section id="the-bayesian-solution" class="title-slide slide level1 center">
 <h1>The Bayesian Solution</h1>
 <p>Bayesian regression adds prior information:</p>
@@ -315,24 +308,22 @@ p(y \mid \beta)p(\beta)
 <p>The prior regularizes weakly identified directions.</p>
 <p>This changes the geometry of inference.</p>
 </section>
-<section class="slide level2">
 
-</section></section>
-<section>
 <section id="important-clarification" class="title-slide slide level1 center">
 <h1>Important Clarification</h1>
 <p>Bayesian priors are not magic.</p>
 <p>They encode structural skepticism.</p>
 <p>The prior says:</p>
-<div class="{.callout-tip,appearance=&quot;simple&quot;,icon=false}">
+<div class="callout callout-tip no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
 <p>Large coefficients should require strong evidence.</p>
+</div>
+</div>
 </div>
 <p>This is often scientifically reasonable.</p>
 </section>
-<section class="slide level2">
 
-</section></section>
-<section>
 <section id="simulation-setup" class="title-slide slide level1 center">
 <h1>Simulation Setup</h1>
 <p>We now simulate the failure directly.</p>
@@ -348,27 +339,25 @@ y = 1.5x_1 + \epsilon
 \]</span></p>
 <p>Only x1 matters.</p>
 </section>
-<section class="slide level2">
 
-</section></section>
 <section id="simulating-correlated-predictors" class="title-slide slide level1 center">
 <h1>Simulating Correlated Predictors</h1>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>           y         x1         x2          x3          x4         x5
-1 -1.4945893  0.9787966  2.0069782  1.46823744  1.32958150  1.0851342
-2 -3.8782794 -1.3450758 -0.9907533 -1.96162158 -1.76900667 -1.6908131
-3 -0.2312386  1.2013276  0.7689111  0.96750698  0.95121278  0.5949958
-4  0.8839116  0.8715254  0.6563015  0.90734856  1.13139020  1.1180865
-5  6.0522160  1.8309888  1.8802449  1.99860899  1.97621777  1.7125465
-6  2.1064994  0.4372708  0.3930453  0.05017331 -0.08733418 -0.2159247
-          x6         x7         x8         x9        x10
-1  1.2299784  1.5000926  1.1665261  1.8702454  1.4881442
-2 -1.0749145 -1.4872344 -1.5063274 -1.3866025 -1.8328887
-3  0.7300105  1.1544915  0.9964974  1.0198121  0.7419948
-4  0.5816613  1.1067206  0.5095085  1.0984728  0.7952753
-5  1.8276451  2.3351894  1.5130296  1.9599703  2.0218498
-6  0.1448011  0.2237012  0.4909243  0.5924115  0.5684702</code></pre>
+<pre><code>           y         x1         x2          x3         x4         x5         x6
+1 -0.1961518  1.8444216  1.1755859  1.36242693  1.5860268  1.0522241  1.9153715
+2 -3.9610212 -1.4002369 -0.8728670 -1.92798876 -1.4382048 -1.5916873 -1.4279640
+3 -0.3485932  1.1230911  0.9519902  1.05839819  1.0142105  0.7056207  0.6561048
+4  1.0940988  1.0116503  0.6106419  0.89936157  1.0724128  0.7439559  0.5383437
+5  6.6848562  2.2527489  1.8064046  2.03291815  1.7752270  1.4767093  1.8077183
+6  2.1736365  0.4820288  0.1111457  0.02908052  0.1636623  0.1411899  0.5134158
+          x7         x8         x9        x10
+1  1.7029546  1.3211725  1.0272723  1.1362584
+2 -1.1635603 -1.8412016 -1.6486445 -1.7328827
+3  0.8502600  0.6490287  0.9064352  1.2116213
+4  0.8910805  1.3111822  0.6863198  1.0113422
+5  1.9829103  2.1388573  1.8764620  1.9063351
+6  0.5513129 -0.3090752  0.3712641  0.5435139</code></pre>
 </div>
 
 </div>
@@ -394,24 +383,24 @@ Residuals:
 -3.6106 -0.9145  0.0206  0.9531  2.8211 
 
 Coefficients:
-             Estimate Std. Error t value Pr(&gt;|t|)   
-(Intercept) -0.287789   0.390160  -0.738  0.46976   
-x1           5.654656   1.656637   3.413  0.00292 **
-x2           1.958427   1.320500   1.483  0.15445   
-x3           0.579451   1.368035   0.424  0.67664   
-x4          -0.160394   1.404485  -0.114  0.91028   
-x5           0.008161   1.322346   0.006  0.99514   
-x6          -2.607333   1.734259  -1.503  0.14917   
-x7           0.592398   1.668748   0.355  0.72650   
-x8          -1.503409   1.279752  -1.175  0.25460   
-x9          -1.911340   1.105880  -1.728  0.10014   
-x10         -0.509328   1.407301  -0.362  0.72141   
+            Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)  -0.2878     0.3902  -0.738   0.4698  
+x1            1.3994     2.0225   0.692   0.4973  
+x2            2.1853     1.4517   1.505   0.1487  
+x3            0.4486     1.3222   0.339   0.7381  
+x4           -1.4188     1.4441  -0.982   0.3382  
+x5           -1.0092     1.3241  -0.762   0.4553  
+x6            0.0313     1.2184   0.026   0.9798  
+x7           -0.8261     1.2949  -0.638   0.5311  
+x8            0.4908     1.0258   0.478   0.6378  
+x9           -3.1719     1.5098  -2.101   0.0492 *
+x10           3.9719     1.5610   2.544   0.0198 *
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 1.924 on 19 degrees of freedom
-Multiple R-squared:  0.6462,    Adjusted R-squared:   0.46 
-F-statistic: 3.471 on 10 and 19 DF,  p-value: 0.009486</code></pre>
+Multiple R-squared:  0.6575,    Adjusted R-squared:  0.4772 
+F-statistic: 3.647 on 10 and 19 DF,  p-value: 0.007397</code></pre>
 </div>
 </div>
 </figure>
@@ -453,21 +442,21 @@ F-statistic: 3.471 on 10 and 19 DF,  p-value: 0.009486</code></pre>
  predictors:   11
 ------
             Median MAD_SD
-(Intercept) -0.05   0.42 
-x1           1.33   0.86 
-x2           0.15   0.77 
-x3           0.14   0.79 
-x4           0.24   0.77 
-x5           0.50   0.73 
-x6          -0.36   0.80 
-x7           0.42   0.77 
-x8          -0.16   0.76 
-x9          -0.59   0.75 
-x10          0.19   0.80 
+(Intercept) -0.06   0.36 
+x1           0.47   0.83 
+x2           0.66   0.76 
+x3           0.19   0.72 
+x4          -0.41   0.80 
+x5           0.10   0.78 
+x6           0.04   0.71 
+x7          -0.10   0.72 
+x8           0.71   0.69 
+x9          -0.50   0.77 
+x10          0.93   0.78 
 
 Auxiliary parameter(s):
       Median MAD_SD
-sigma 2.06   0.30  
+sigma 1.97   0.28  
 
 ------
 * For help interpreting the printed output see ?print.stanreg
@@ -521,12 +510,20 @@ sigma 2.06   0.30
 <section id="posterior-interpretation" class="title-slide slide level1 center">
 <h1>Posterior Interpretation</h1>
 <p>Frequentist confidence interval:</p>
-<div class="{.callout-warning,appearance=&quot;simple&quot;,icon=false}">
+<div class="callout callout-warning no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
 <p>Does NOT mean: “There is a 95% probability the parameter lies here.”</p>
 </div>
+</div>
+</div>
 <p>Bayesian posterior interval:</p>
-<div class="{.callout-important,appearance=&quot;simple&quot;,icon=false}">
+<div class="callout callout-important no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
 <p>Literally means: “Given model and data, there is 95% posterior probability the parameter lies here.”</p>
+</div>
+</div>
 </div>
 </section>
 
@@ -539,8 +536,12 @@ sigma 2.06   0.30
 <li>lack of information</li>
 </ul>
 <p>Sometimes the correct scientific answer is:</p>
-<div class="{.callout-note,appearance=&quot;simple&quot;,icon=false}">
+<div class="callout callout-note no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
 <p>“We do not know very much.”</p>
+</div>
+</div>
 </div>
 <p>OLS often hides this instability behind noisy point estimates.</p>
 </section>
@@ -604,12 +605,20 @@ p(y \mid \beta)p(\beta)
 <section id="final-thought" class="title-slide slide level1 center">
 <h1>Final Thought</h1>
 <p>The Bayesian question is not:</p>
-<div class="{.callout-note,appearance=&quot;simple&quot;,icon=false}">
+<div class="callout callout-note no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
 <p>“What coefficient minimizes error?”</p>
 </div>
+</div>
+</div>
 <p>The Bayesian question is:</p>
-<div class="{.callout-important,appearance=&quot;simple&quot;,icon=false}">
+<div class="callout callout-important no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
 <p>“What parameter values remain plausible after combining data with scientific structure?”</p>
+</div>
+</div>
 </div>
 <p>That is usually the more meaningful scientific question.</p>
 </section>
@@ -836,80 +845,42 @@ p(y \mid \beta)p(\beta)
       });
     </script>
     
-
     <script>
-
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-
       // slide changes (different for each slide format).
-
       (function () {
-
         // dispatch for htmlwidgets
-
         function fireSlideEnter() {
-
           const event = window.document.createEvent("Event");
-
           event.initEvent("slideenter", true, true);
-
           window.document.dispatchEvent(event);
-
         }
-
-    
 
         function fireSlideChanged(previousSlide, currentSlide) {
-
           fireSlideEnter();
 
-    
-
           // dispatch for shiny
-
           if (window.jQuery) {
-
             if (previousSlide) {
-
               window.jQuery(previousSlide).trigger("hidden");
-
             }
-
             if (currentSlide) {
-
               window.jQuery(currentSlide).trigger("shown");
-
             }
-
           }
-
         }
-
-    
 
         // hookup for slidy
-
         if (window.w3c_slidy) {
-
           window.w3c_slidy.add_observer(function (slide_num) {
-
             // slide_num starts at position 1
-
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-
           });
-
         }
 
-    
-
       })();
-
     </script>
-
-    
 
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {

@@ -1,0 +1,138 @@
+---
+title: "Setting up a new Mac for work"
+subtitle: "Using Homebrew and the terminal"
+author: "Daniel S. Mazhari-Jensen"
+description: "It can be tedious setting up a new computer. In this blog, I share my tricks for a more enjoyable experience"
+date: 2026-06-05
+reading-time: 5 min
+file-modified: 2026-06-05
+categories: [Mac, Homebrew]
+format:
+  html:
+    toc: true
+    code-fold: true
+---
+
+# Congrats with the your Mac!
+
+It's great getting a new computer - it's faster, has more CPU/GPU, and it's a great way to "start fresh".
+However... fresh starts can be tedious, cumbersome and frustrating if you have to make a comprehensive setup.
+This blog post is for future me (and maybe you), if you need to start from scratch with your Mac OS.
+
+## Setting up a Mac
+
+We need some basic functionality:
+
+1)  Xcode
+    A framework?
+2)  Curl 
+    Internet API from the terminal
+3)  Homebrew
+    The package manager for Mac OS
+
+For all the tools, we'll use the terminal. Mac OS is a unix system and uses zsh as default. 
+
+
+::: {.callout-tip collapse="true"}
+
+# The terminal
+
+A terminal uses an IDE (iTerm2) and a coding language underneath (bash/zsh).
+It's benefinical to learn quickly!
+
+:::
+
+
+
+
+### Step 1: Xcode-select 
+
+Xcode-select —install
+
+git —version 
+
+### Step 2: Homebrew
+/bin/bash -c “$(curl -fsSL …
+
+Follow “Next Steps”
+
+echo >>
+
+### Step 3: Happy brew install
+
+brew install gh
+
+gh auth login
+
+brew tap r-lib/rig
+
+brew install —cask rig
+
+rig add release
+
+brew install —cask quarto
+
+brew install —cask positron
+
+brew install —cask zsh
+
+brew install —cask iterm2
+
+### Bonus: Making the terminal a nicer placer to be
+
+https://dev.to/gabriel_perez_337aabb5cfd/supercharge-your-mac-terminal-a-step-by-step-guide-to-iterm2-oh-my-zsh-powerlevel10k-41am
+
+https://github.com/romkatv/powerlevel10k
+
+open -e ~/.zshrc
+open -e ~/.p10k.zsh
+
+
+	plugins=(git)
+
+	source $ZSH/oh-my-zsh.sh
+
+	# User configuration
+	[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+brew install zsh-autosuggestions
+brew install zsh-syntax-highlighting
+brew install autojump
+
+
+brew install just
+
+brew install uv
+
+brew install --cask raycast
+
+
+install --cask discord
+
+install --cask espanso
+
+
+## Future hotkeys to practice:
+
+brew update
+brew outdated
+brew upgrade
+
+upgrade_oh_my_zsh
+
+I use a system-wide hotkey (ctrl + `) to open iTerm2 from anywhere.
+
+option + space = Reycast
+
+Minimize current window: Press Command (⌘) + M.
+
+espanso restart # after adding things in match
+
+### terminal tricks 
+
+```{.zsh}
+j espanso
+```
+
+will jump to the folder for making espanso scripts.

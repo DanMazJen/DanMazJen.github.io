@@ -1,0 +1,545 @@
+---
+title: "Why We Need Bayesian Linear Regression"
+subtitle: "Mechanism, Interpretation, and Failure Modes of Frequentist OLS"
+author: "Daniel Skak Mazhari-Jensen"
+date: today
+format:
+  revealjs:
+    theme: moon
+    slide-number: true
+    code-fold: true
+    scrollable: true
+---
+
+# What is this Bayesian thing anyway?
+
+Chat with your neighbor for 3 minutes - where/what have you heard about Bayesian inference?
+
+# :raising_hand_woman: How many have heard about Bayesian inference? {.center}
+
+# :raising_hand_woman: How many already use a Bayesian workflow? {.center}
+
+# :walking::walking_woman: Do you ????? {.center}
+
+Never <------->
+I took a course in computer science
+
+# The Core Question {.smaller}
+
+Why do we need a Bayesian approach to regression - we can just use ordinary least squares?
+
+The answer is not (only):
+
+-  philosophy
+-  elegance
+-  a matter of preference
+
+::: {.callout-important appearance="simple" icon=false}
+Real regression problems are often weakly identified, noisy, unstable, and geometrically pathological.
+:::
+
+Bayesian regression stabilizes inference.
+
+# The Frequentist Ideal {.smaller}
+
+Ordinary Least Squares (OLS):
+
+-  minimizes squared residuals
+-  produces unbiased estimators
+-  provides confidence intervals and *p*-values
+-  works beautifully asymptotically
+
+The classical linear model:
+
+$$
+y = X\beta + \epsilon
+$$
+
+with
+
+$$
+\epsilon \sim \mathcal{N}(0, \sigma^2)
+$$
+
+OLS estimator:
+
+$$
+\hat{\beta}_{OLS} = (X^TX)^{-1}X^Ty
+$$
+
+# The Hidden Assumption
+
+OLS works well when:
+
+-  predictors are not highly collinear
+-  sample size is large
+-  signal-to-noise ratio is reasonable
+-  parameters are strongly identified
+
+But real data often violate all of these simultaneously.
+
+# A More Realistic Situation {.smaller}
+
+Suppose we have:
+
+-  30 observations
+-  10 predictors
+-  strong predictor correlation
+-  weak signal
+-  uncertain mechanisms
+
+This is extremely common in:
+
+-  social science
+-  biology
+-  psychology
+-  economics
+-  policy research
+
+# The Data Generating Process {.smaller}
+
+The truth is simple.
+
+Only one predictor matters.
+
+$$
+y = 1.5x_1 + \epsilon
+$$
+
+All other predictors have zero effect.
+
+Yet predictors are highly correlated.
+
+# The Mechanism of Failure {.smaller}
+
+With correlated predictors:
+
+-  many coefficient combinations fit equally well
+-  the likelihood becomes nearly flat
+-  tiny noise changes estimates dramatically
+
+OLS asks:
+
+::: {.callout-note appearance="simple" icon=false}
+Which coefficients minimize prediction error?
+:::
+
+But it never asks:
+
+::: {.callout-warning appearance="simple" icon=false}
+Are these coefficient magnitudes plausible?
+:::
+
+
+# The Geometry Problem
+
+Collinearity creates unstable directions in parameter space.
+
+The matrix:
+
+$$
+(X^TX)^{-1}
+$$
+
+becomes nearly singular.
+
+As a result:
+
+-  coefficients explode
+-  signs flip
+-  uncertainty becomes enormous
+-  interpretation collapses
+
+
+
+# The Bayesian Solution
+
+Bayesian regression adds prior information:
+
+$$
+\beta_j \sim \mathcal{N}(0,1)
+$$
+
+Posterior:
+
+$$
+p(\beta \mid y)
+\propto
+p(y \mid \beta)p(\beta)
+$$
+
+The prior regularizes weakly identified directions.
+
+This changes the geometry of inference.
+
+
+
+# Important Clarification
+
+Bayesian priors are not magic.
+
+They encode structural skepticism.
+
+The prior says:
+
+::: {.callout-tip appearance="simple" icon=false}
+Large coefficients should require strong evidence.
+:::
+
+This is often scientifically reasonable.
+
+
+
+# Simulation Setup
+
+We now simulate the failure directly.
+
+-  small sample
+-  many predictors
+-  high collinearity
+-  weak signal
+
+The true model:
+
+$$
+y = 1.5x_1 + \epsilon
+$$
+
+Only x1 matters.
+
+
+
+# Simulating Correlated Predictors
+
+```{r modeling}
+#| echo: false
+#| output: false
+library(MASS)
+library(corrplot)
+
+set.seed(12)
+
+n <- 30
+p <- 10
+
+Sigma <- matrix(0.9, p, p)
+diag(Sigma) <- 1
+
+X <- mvrnorm(n, mu = rep(0, p), Sigma = Sigma)
+
+colnames(X) <- paste0("x", 1:p)
+
+# Generating the Outcome
+beta_true <- c(1.5, rep(0, 9))
+
+y <- X %*% beta_true + rnorm(n, 0, 2)
+
+dat <- data.frame(y, X)
+
+# Freq
+fit_lm <- lm(y ~ ., data = dat)
+
+# Bayes
+library(rstanarm)
+
+fit_bayes <- stan_glm(
+  y ~ .,
+  data = dat,
+  prior = normal(0, 1),
+  prior_intercept = normal(0, 5),
+  chains = 4,
+  iter = 2000,
+  refresh = 0
+)
+```
+
+```{r}
+#| label: fig-correlation
+#| fig-cap: "Correlation structure among predictors."
+corrplot(cor(X), method = "color")
+
+head(dat)
+```
+
+
+# Frequentist OLS
+
+```{r}
+#| label: tbl-ols
+summary(fit_lm)
+```
+
+# Why This Happens
+
+Predictors are interchangeable.
+
+The model can fit equally well using:
+
+-   huge positive x1
+-   huge negative x2
+
+OLS has no mechanism preventing absurd parameter values.
+
+It only optimizes fit.
+
+# The Frequentist Interpretation Problem
+
+Researchers now face impossible interpretation.
+
+Questions become unstable:
+
+-   Which variables matter?
+-   Which signs are trustworthy?
+-   Which effects are real?
+
+*p*-values fluctuate wildly across samples.
+
+
+# Bayesian Regression
+
+```{r}
+#| label: bayes-fit
+#| 
+print(fit_bayes, digits = 2)
+```
+
+# Let's have a look 
+
+```{r}
+#| label: model-plot
+#| fig-cap: "model estimates and ground truth."
+bayes_draws <- fit_bayes |>
+  #tidybayes::spread_draws(`(Intercept)`, `^x\\d+`, regex = TRUE) |>
+  tidybayes::spread_draws(`^x\\d+`, regex = TRUE) |>
+  tidyr::pivot_longer(
+    #cols = c(`(Intercept)`, tidyselect::starts_with("x")),
+    cols = tidyselect::starts_with("x"),
+    names_to = "term",
+    values_to = "estimate"
+  ) |>
+  dplyr::mutate(model = "Bayesian")
+
+
+freq_df <- broom::tidy(fit_lm, conf.int = TRUE) |>
+  dplyr::select(term, estimate, conf.low, conf.high) |>
+  dplyr::mutate(model = "Frequentist")
+
+truth_df <- tibble::tibble(
+  term = c("(Intercept)", paste0("x", 1:p)),
+  truth = c(0, beta_true),
+  model = "Truth"
+)
+
+bayes_summary <- bayes_draws |>
+  dplyr::group_by(term) |>
+  tidybayes::median_qi(estimate, .width = 0.95) |>
+  dplyr::transmute(
+    term,
+    estimate,
+    conf.low = .lower,
+    conf.high = .upper,
+    model = "Bayesian"
+  )
+
+
+freq_plot <- freq_df |>
+  dplyr::transmute(
+    term,
+    estimate,
+    conf.low,
+    conf.high,
+    model = "Frequentist"
+  )
+
+plot_df <- dplyr::bind_rows(
+  bayes_summary,
+  freq_plot
+)
+
+ggplot2::ggplot(
+  plot_df,
+  ggplot2::aes(
+    x = estimate,
+    y = term,
+    color = model
+  )
+) +
+
+  ggdist::geom_pointinterval(
+    ggplot2::aes(
+      xmin = conf.low,
+      xmax = conf.high
+    ),
+    position = ggplot2::position_dodge(width = 0.5)
+  ) +
+
+  ggplot2::geom_point(
+    data = truth_df,
+    ggplot2::aes(x = truth, y = term),
+    inherit.aes = FALSE,
+    color = "blue",
+    shape = 4,
+    size = 3,
+    stroke = 1.2
+  ) +
+
+  ggplot2::geom_vline(
+    xintercept = 0,
+    linetype = 2
+  ) +
+
+  ggplot2::theme_bw()
+```
+
+# What the Prior Does
+
+The prior shrinks implausible coefficients toward zero.
+
+Not aggressively.
+
+Just enough to stabilize weakly identified directions.
+
+This is called:
+
+-   regularization
+-   shrinkage
+-   partial pooling of uncertainty
+
+# Bias-Variance Tradeoff
+
+Frequentist OLS emphasizes unbiasedness.
+
+But unbiased estimators can have enormous variance.
+
+Bayesian regression accepts:
+
+-   tiny bias
+-   dramatically lower variance
+
+This often improves:
+
+-   prediction
+-   calibration
+-   scientific interpretation
+
+# The Deep Point
+
+OLS treats the model as fixed truth.
+
+Bayesian workflow treats models as uncertain approximations.
+
+This distinction is profound.
+
+# Posterior Interpretation
+
+Frequentist confidence interval:
+
+::: {.callout-warning appearance="simple" icon=false}
+Does NOT mean:
+"There is a 95% probability the parameter lies here."
+:::
+
+Bayesian posterior interval:
+
+::: {.callout-important appearance="simple" icon=false}
+Literally means:
+"Given model and data, there is 95% posterior probability the parameter lies here."
+:::
+
+# Weak Identification
+
+The Bayesian posterior honestly expresses:
+
+-   uncertainty
+-   partial identifiability
+-   lack of information
+
+Sometimes the correct scientific answer is:
+
+::: {.callout-note appearance="simple" icon=false}
+"We do not know very much."
+:::
+
+OLS often hides this instability behind noisy point estimates.
+
+# Posterior Predictive Thinking
+
+Bayesian models naturally support:
+
+-   posterior predictive checks
+-   hierarchical models
+-   measurement error
+-   causal modeling
+-   uncertainty propagation
+
+This enables model criticism rather than blind estimation.
+
+# A More Extreme Failure
+
+Increase:
+
+-   predictors from 10 to 20
+-   correlation from 0.9 to 0.95
+
+OLS becomes nearly meaningless.
+
+Coefficients:
+
+-   explode
+-   reverse sign
+-   become sample-dependent noise
+
+Bayesian regularization still produces stable inference.
+
+# The Core Mechanism
+
+Frequentist OLS:
+
+$hat{β}$ =arg min RSS
+
+Bayesian regression:
+
+$$
+p(\beta \mid y)
+\propto
+p(y \mid \beta)p(\beta)
+$$
+
+The prior changes the geometry of inference.
+
+This is the key idea.
+
+# Final Takeaway
+
+Bayesian regression matters because:
+
+-   real models are weakly identified
+-   finite samples are noisy
+-   predictors are correlated
+-   unconstrained likelihoods become pathological
+
+Priors repair inferential geometry.
+
+# Final Thought
+
+The Bayesian question is not:
+
+::: {.callout-note appearance="simple" icon=false}
+"What coefficient minimizes error?"
+:::
+
+The Bayesian question is:
+
+::: {.callout-important appearance="simple" icon=false}
+"What parameter values remain plausible after combining data with scientific structure?"
+:::
+
+That is usually the more meaningful scientific question.
+
+# References {#sec-references}
+
+Gelman, A., et al. Bayesian Data Analysis
+McElreath, R. Statistical Rethinking
+Vehtari, A., Gelman, A., Gabry, J. (2017)
+"Practical Bayesian model evaluation using leave-one-out cross-validation"
+Hastie, Tibshirani, Friedman. Elements of Statistical Learning
