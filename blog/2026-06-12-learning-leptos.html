@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -120,7 +155,20 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#my-first-leptos-app" id="toc-my-first-leptos-app" class="nav-link active" data-scroll-target="#my-first-leptos-app">My first leptos app</a></li>
+  <li><a href="#rust-apps-running-within-quarto-static-websites-hosted-on-github-pages" id="toc-rust-apps-running-within-quarto-static-websites-hosted-on-github-pages" class="nav-link active" data-scroll-target="#rust-apps-running-within-quarto-static-websites-hosted-on-github-pages">Rust apps running within Quarto static websites hosted on Github Pages</a>
+  <ul class="collapse">
+  <li><a href="#the-guide" id="toc-the-guide" class="nav-link" data-scroll-target="#the-guide">The guide:</a>
+  <ul class="collapse">
+  <li><a href="#make-a-leptos-csr-client-side-rendering-using-trunk." id="toc-make-a-leptos-csr-client-side-rendering-using-trunk." class="nav-link" data-scroll-target="#make-a-leptos-csr-client-side-rendering-using-trunk.">1) Make a leptos csr (Client-side rendering) using <code>Trunk</code>.</a></li>
+  <li><a href="#ingest-the-leptos-app-in-our-quarto-webpage-setup" id="toc-ingest-the-leptos-app-in-our-quarto-webpage-setup" class="nav-link" data-scroll-target="#ingest-the-leptos-app-in-our-quarto-webpage-setup">2) Ingest the leptos app in our Quarto webpage setup</a></li>
+  <li><a href="#adjust-quarto-project-setup" id="toc-adjust-quarto-project-setup" class="nav-link" data-scroll-target="#adjust-quarto-project-setup">3) Adjust quarto project setup</a></li>
+  <li><a href="#embed-the-leptos-html-app-in-a-.qmd-file" id="toc-embed-the-leptos-html-app-in-a-.qmd-file" class="nav-link" data-scroll-target="#embed-the-leptos-html-app-in-a-.qmd-file">4) Embed the leptos html app in a .qmd file</a></li>
+  </ul></li>
+  <li><a href="#caveats" id="toc-caveats" class="nav-link" data-scroll-target="#caveats">Caveats</a>
+  <ul class="collapse">
+  <li><a href="#quarto-preview-doesnt-work-with-the-leptos-.html" id="toc-quarto-preview-doesnt-work-with-the-leptos-.html" class="nav-link" data-scroll-target="#quarto-preview-doesnt-work-with-the-leptos-.html">1) quarto preview doesn’t work with the leptos .html</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -130,20 +178,130 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="my-first-leptos-app" class="level2">
-<h2 class="anchored" data-anchor-id="my-first-leptos-app">My first leptos app</h2>
-<p>here:</p>
+<section id="rust-apps-running-within-quarto-static-websites-hosted-on-github-pages" class="level1">
+<h1>Rust apps running within Quarto static websites hosted on Github Pages</h1>
+<p>Sound magic, right?</p>
+<ul>
+<li>The speed and safety from Rust, gracefully provided via binary compiling, strong type-setting, and memory allocation</li>
+<li>The easy of making website from Quarto, provided by Pandoc</li>
+<li>The ease of hosting websites and automatically updating them through Github Pages CI</li>
+</ul>
+<p><strong>But is this even possible?</strong></p>
+<p>TLDR; <em>it is</em> 🎉🥳</p>
+<p>Here’s a “hallo-leptos” script sources from a quarto (.qmd) file:</p>
 <iframe src="../apps/hallo-leptos/index.html" width="100%" height="300" style="border: none;">
 </iframe>
+<section id="the-guide" class="level2">
+<h2 class="anchored" data-anchor-id="the-guide">The guide:</h2>
+<section id="make-a-leptos-csr-client-side-rendering-using-trunk." class="level3">
+<h3 class="anchored" data-anchor-id="make-a-leptos-csr-client-side-rendering-using-trunk.">1) Make a leptos csr (Client-side rendering) using <code>Trunk</code>.</h3>
+<p>Continuously monitor the progress using</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>~/hallo-leptos/</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="~/hallo-leptos/"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trunk</span> serve <span class="at">--open</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>When the app is ready for deployment, run:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>~/hallo-leptos/</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="~/hallo-leptos/"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">trunk</span> build <span class="at">--release</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><a href="https://book.leptos.dev/getting_started/index.html">link to leptos guide</a> for a deeper explanation.</p>
+</section>
+<section id="ingest-the-leptos-app-in-our-quarto-webpage-setup" class="level3">
+<h3 class="anchored" data-anchor-id="ingest-the-leptos-app-in-our-quarto-webpage-setup">2) Ingest the leptos app in our Quarto webpage setup</h3>
+<p>First, make an <code>apps</code> folder and include all apps here, e.g.:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>~/my-quarto-website-root/</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="~/my-quarto-website-root/"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> apps</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> apps</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> hallo-leptos</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>now, copy-past the files from <code>/dist</code> in our leptos project into the apps folder within the subfolder <code>hallo-leptos</code>.</p>
+</section>
+<section id="adjust-quarto-project-setup" class="level3">
+<h3 class="anchored" data-anchor-id="adjust-quarto-project-setup">3) Adjust quarto project setup</h3>
+<p>go to the project roots <code>_quarto.yml</code> and add:</p>
+<p><code>markdown filename="~/my-quarto-website-root/_quarto.yml" resources:   - apps/**</code></p>
+<p>Because the leptos app initially made a html with a directory without Quarto in mind, now go a correct the dir:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>~/my-quarto-website-root/apps/hallo-leptos/index.html</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="~/my-quarto-website-root/apps/hallo-leptos/index.html"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>/leptos-tutorial_101-68a2266496ae0b94.js</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>should be:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>~/my-quarto-website-root/apps/hallo-leptos/index.html</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="~/my-quarto-website-root/apps/hallo-leptos/index.html"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>/apps/hallo-leptos/leptos-tutorial_101-68a2266496ae0b94.js</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>and</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>~/my-quarto-website-root/apps/hallo-leptos/index.html</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="~/my-quarto-website-root/apps/hallo-leptos/index.html"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>'/leptos-tutorial_101-68a2266496ae0b94_bg.wasm'</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>will become:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>~/my-quarto-website-root/apps/hallo-leptos/index.html</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="~/my-quarto-website-root/apps/hallo-leptos/index.html"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>'/apps/hallo-leptos/leptos-tutorial_101-68a2266496ae0b94_bg.wasm'</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><em>note: your file names will have different names</em></p>
+</section>
+<section id="embed-the-leptos-html-app-in-a-.qmd-file" class="level3">
+<h3 class="anchored" data-anchor-id="embed-the-leptos-html-app-in-a-.qmd-file">4) Embed the leptos html app in a .qmd file</h3>
+<p>Finally, we can go to a page which we want to embed our leptos html in.</p>
+<p>You can either:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>~/my-quarto-website-root/some-folder/specific-page.qmd</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="~/my-quarto-website-root/some-folder/specific-page.qmd"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Open app</span><span class="co">](/apps/hallo-leptos/index.html)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>or use <code>iframe</code></p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>~/my-quarto-website-root/some-folder/specific-page.qmd</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-filename="~/my-quarto-website-root/some-folder/specific-page.qmd"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">iframe</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ot">  src</span><span class="op">=</span><span class="st">"/apps/hallo-leptos/index.html"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ot">  width</span><span class="op">=</span><span class="st">"100%"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ot">  height</span><span class="op">=</span><span class="st">"300"</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ot">  style</span><span class="op">=</span><span class="st">"border: none;"</span><span class="dt">&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">iframe</span><span class="dt">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <!--
 ![](apps/hallo-leptos/index.html){width="100%" height="600px"}
 -->
-<p>testing again</p>
+<p>This will produce the following:</p>
 <p><a href="../apps/hallo-leptos/index.html">Open app</a></p>
-<iframe src="about:blank" width="100%" height="300" style="border:5px solid red;">
+<iframe src="../apps/hallo-leptos/index.html" width="100%" height="300" style="border: none;">
 </iframe>
+</section>
+</section>
+<section id="caveats" class="level2">
+<h2 class="anchored" data-anchor-id="caveats">Caveats</h2>
+<p>While this is amazing and exciting, I’m still puzzled by some issues:</p>
+<section id="quarto-preview-doesnt-work-with-the-leptos-.html" class="level3">
+<h3 class="anchored" data-anchor-id="quarto-preview-doesnt-work-with-the-leptos-.html">1) quarto preview doesn’t work with the leptos .html</h3>
+<p>One of the amazing things about Quarto is it’s ease and quick <code>quarto preview</code> CLI functionality.</p>
+<p>Unfortunately, this doesn’t work with the leptos .html. In fact, opening the <code>ìndex.html</code> in the browser (directly from the file) will also simply render a blank page.</p>
+<p>After doing some reading, it seems that the leptos framework require a secure http url.</p>
+<p>Quarto only hosts locally (local port) and opening the file directly opens a <code>file:</code> url. Maybe there’s a trick to solve this?</p>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
