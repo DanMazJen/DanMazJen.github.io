@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head><link rel="modulepreload" href="/apps/leptos-click-counter/leptos-click-counter-1df4349422846e75.js" crossorigin="anonymous" integrity="sha384-RZLS+n62135RVe7SapArqPLxLVxOtW7g+xRgS5Jae8aIj0s7rjIw7ezpbyWnGPrU"><link rel="preload" href="/apps/leptos-click-counter/leptos-click-counter-1df4349422846e75_bg.wasm" crossorigin="anonymous" integrity="sha384-YElWOP1cW/IfGsjRsT9wQXiGFO2K5x41FXmLlyX4KiOytd4xtec/FNt+YLDrlxSU" as="fetch" type="application/wasm"></head>
+  <body>
+<script type="module">
+import init, * as bindings from '/apps/leptos-click-counter/leptos-click-counter-1df4349422846e75.js';
+const wasm = await init({ module_or_path: '/apps/leptos-click-counter/leptos-click-counter-1df4349422846e75_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script></body>
+</html>

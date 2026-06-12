@@ -1,16 +1,16 @@
 # Rust apps running within Quarto static websites hosted on Github Pages
 
-Sound magic, right?
+Sound magic, right? ✨ 
 
-- The speed and safety from Rust, gracefully provided via binary compiling, strong type-setting, and memory allocation
-- The easy of making website from Quarto, provided by Pandoc
+- The speed and safety from Rust, gracefully provided via binary compiling and strong type-setting
+- The easy of making websites from Quarto, provided by Pandoc
 - The ease of hosting websites and automatically updating them through Github Pages CI
 
 **But is this even possible?**
 
 TLDR; *it is* 🎉🥳
 
-Here's a "hallo-leptos" script sources from a quarto (.qmd) file: 
+Here's a "hallo-leptos" script sourced from a quarto (.qmd) file: 
 
 <iframe
   src="/apps/hallo-leptos/index.html"
@@ -21,9 +21,31 @@ Here's a "hallo-leptos" script sources from a quarto (.qmd) file:
 
 ## The guide:
 
-### 1) Make a leptos csr (Client-side rendering) using `Trunk`.
+### 1) Make a `Leptos` CSR (client-side rendering) using `Trunk`.
 
-Continuously monitor the progress using
+You may start building your app anywhere using the workflow from cargo and Leptos:
+
+Start by adding Leptos as a dependency:
+
+```{.zsh filename="~/hallo-leptos/"}
+cargo add leptos --features=csr
+```
+
+Make sure you've added the wasm32-unknown-unknown target so that Rust can compile your code to WebAssembly to run in the browser.
+
+```{.zsh filename="~/hallo-leptos/"}
+rustup target add wasm32-unknown-unknown
+```
+
+Finally, add your `.html`
+
+```
+touch index.html
+```
+
+[link to leptos guide](https://book.leptos.dev/getting_started/index.html) for a deeper explanation.
+
+Continuously monitor the progress using:
  
  ```{.zsh filename="~/hallo-leptos/"}
 trunk serve --open
@@ -35,11 +57,11 @@ When the app is ready for deployment, run:
  trunk build --release 
  ```
 
-[link to leptos guide](https://book.leptos.dev/getting_started/index.html) for a deeper explanation.
+ In a nutshell, Leptos and Trunk bundles some Javascript which will source the Leptos UI compiled to WebAssembly. This wasm drive the interactivity in our CSR website.
 
-### 2) Ingest the leptos app in our Quarto webpage setup
+### 2) Ingest the `Leptos` app in your Quarto webpage setup
 
-First, make an `apps` folder and include all apps here, e.g.:
+First, make an `/apps` folder and include all apps here, e.g.:
 
  ```{.zsh filename="~/my-quarto-website-root/"}
  mkdir apps
@@ -47,18 +69,27 @@ First, make an `apps` folder and include all apps here, e.g.:
  mkdir hallo-leptos
  ```
 
- now, copy-past the files from `/dist` in our leptos project into the apps folder within the subfolder `hallo-leptos`.
+ Now, copy the files within `/dist` in our Leptos project, and past them into the apps folder you just created within a subfolder, e.g.: `hallo-leptos`.
+
+ There should at least be:
+
+  ```{.zsh filename="~/my-quarto-website-root/hallo-leptos/"}
+ls 
+# .wasm  AND .html AND. .js
+```
 
 ### 3) Adjust quarto project setup
 
-go to the project roots `_quarto.yml` and add:
+Go to the project roots `_quarto.yml` and add:
 
-``` markdown filename="~/my-quarto-website-root/_quarto.yml"
+```{.markdown filename="~/my-quarto-website-root/_quarto.yml"}
 resources: 
  - apps/**
 ```
 
-Because the leptos app initially made a html with a directory without Quarto in mind, now go a correct the dir:
+Because the Leptos app initially created the `.html` with a directory without Quarto in mind, we will manually adjust this.
+
+Go to the `.html` and correct the paths:
 
 ```{.html filename="~/my-quarto-website-root/apps/hallo-leptos/index.html"} 
 /leptos-tutorial_101-68a2266496ae0b94.js
@@ -82,11 +113,11 @@ will become:
 '/apps/hallo-leptos/leptos-tutorial_101-68a2266496ae0b94_bg.wasm'
 ```
 
-*note: your file names will have different names*
+*note: your file names will have different names*.
 
 ### 4) Embed the leptos html app in a .qmd file
 
-Finally, we can go to a page which we want to embed our leptos html in.
+Finally, we can go to a page which we want to embed our Leptos `.html` in.
 
 You can either:
 
@@ -112,10 +143,10 @@ or use `iframe`
 
 This will produce the following:
 
-[Open app](/apps/hallo-leptos/index.html)
+[Open app](/apps/leptos-click-counter/index.html)
 
 <iframe
-  src="/apps/hallo-leptos/index.html"
+  src="/apps/leptos-click-counter/index.html"
   width="100%"
   height="300"
   style="border: none;">
@@ -125,12 +156,16 @@ This will produce the following:
 
 While this is amazing and exciting, I'm still puzzled by some issues:
 
-### 1) quarto preview doesn't work with the leptos .html
+### 1) `quarto preview` doesn't work with the leptos `.html`
+
+**UPDATE:** Suddenly, after making the click-counter UI, the `quarto preview` suddenly work flawlessly. 
 
 One of the amazing things about Quarto is it's ease and quick `quarto preview` CLI functionality. 
 
-Unfortunately, this doesn't work with the leptos .html. In fact, opening the `ìndex.html` in the browser (directly from the file) will also simply render a blank page.
+Unfortunately, this doesn't work with the Leptos `.html`: it will render a blank page. In fact, opening the `ìndex.html` in the browser (directly from the file) will also simply render a blank page.
 
-After doing some reading, it seems that the leptos framework require a secure http url. 
+After doing some reading, it seems that the Leptos framework require a secure http url. 
 
-Quarto only hosts locally (local port) and opening the file directly opens a `file:` url. Maybe there's a trick to solve this?
+Quarto only hosts locally (local port) and opening the file directly opens a `file:` url. Maybe there's a trick to solving this?
+
+[miniserve](https://github.com/svenstaro/miniserve) might be a solution?
