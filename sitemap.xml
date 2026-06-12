@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://DanMazJen.github.io/blog/2025-11-20-ATE-ATT-ATU-CATE.html</loc>
-    <lastmod>2026-06-05T10:52:21.320Z</lastmod>
-  </url>
-  <url>
-    <loc>https://DanMazJen.github.io/blog/gt-table-templates.html</loc>
-    <lastmod>2026-06-05T10:52:21.320Z</lastmod>
-  </url>
-  <url>
-    <loc>https://DanMazJen.github.io/blog/2025-07-22-my-first-post.html</loc>
-    <lastmod>2026-06-05T10:52:21.319Z</lastmod>
-  </url>
-  <url>
-    <loc>https://DanMazJen.github.io/ideas_for_future_blog_posts/pooling_in_multilevel_models.html</loc>
-    <lastmod>2026-06-05T10:52:21.327Z</lastmod>
-  </url>
-  <url>
-    <loc>https://DanMazJen.github.io/about.html</loc>
-    <lastmod>2026-06-05T10:52:21.319Z</lastmod>
-  </url>
-  <url>
     <loc>https://DanMazJen.github.io/index.html</loc>
-    <lastmod>2026-06-05T10:52:21.327Z</lastmod>
+    <lastmod>2026-06-12T10:24:22.329Z</lastmod>
   </url>
   <url>
-    <loc>https://DanMazJen.github.io/blog/2025-08-22-effect-of-RIonly_RIRS.html</loc>
-    <lastmod>2026-06-05T10:52:21.320Z</lastmod>
+    <loc>https://DanMazJen.github.io/slides/why_we_bayesian_slides.html</loc>
+    <lastmod>2026-06-12T10:24:22.331Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/blog/2025-11-20-ATE-ATT-ATU-CATE.html</loc>
+    <lastmod>2026-06-12T10:24:22.321Z</lastmod>
   </url>
   <url>
     <loc>https://DanMazJen.github.io/blog/index.html</loc>
-    <lastmod>2026-06-05T10:52:21.320Z</lastmod>
+    <lastmod>2026-06-12T10:24:22.321Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/blog/2025-07-22-my-first-post.html</loc>
+    <lastmod>2026-06-12T10:24:22.320Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/blog/gt-table-templates.html</loc>
+    <lastmod>2026-06-12T10:24:22.321Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/blog/2026-06-12-learning-leptos.html</loc>
+    <lastmod>2026-06-12T10:24:22.321Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/blog/why_we_bayesian.html</loc>
+    <lastmod>2026-06-12T10:24:22.325Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/blog/2026-05-06-new-mac.html</loc>
+    <lastmod>2026-06-12T10:24:22.321Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/blog/2025-08-22-effect-of-RIonly_RIRS.html</loc>
+    <lastmod>2026-06-12T10:24:22.321Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/ideas_for_future_blog_posts/pooling_in_multilevel_models.html</loc>
+    <lastmod>2026-06-12T10:24:22.329Z</lastmod>
+  </url>
+  <url>
+    <loc>https://DanMazJen.github.io/about.html</loc>
+    <lastmod>2026-06-12T10:24:22.320Z</lastmod>
   </url>
 </urlset>
