@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head><link rel="modulepreload" href="/apps/hallo-leptos/leptos-tutorial_101-68a2266496ae0b94.js" crossorigin="anonymous" integrity="sha384-XjjC69UhRzSSkRuOPuA6UZE+9nFrHnkWUB1oq7I7xaqQKUpIluhKhRX0pCyP+dg6"><link rel="preload" href="/apps/hallo-leptos/leptos-tutorial_101-68a2266496ae0b94_bg.wasm" crossorigin="anonymous" integrity="sha384-eo4Y2azVSlqVgP5K3t2BQH28HdCx9jIFs+3SxX0anTR+td90oq0YQpkPew+Bzd22" as="fetch" type="application/wasm"></head>
+  <body>
+<script type="module">
+import init, * as bindings from '/apps/hallo-leptos/leptos-tutorial_101-68a2266496ae0b94.js';
+const wasm = await init({ module_or_path: '/apps/hallo-leptos/leptos-tutorial_101-68a2266496ae0b94_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script></body>
+</html>

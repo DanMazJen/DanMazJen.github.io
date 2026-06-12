@@ -1,0 +1,289 @@
+---
+title: "Why be a Bayesian"
+subtitle: "A non-technical introduction to the Bayesian approach"
+author: "Daniel S. Mazhari-Jensen"
+description: "Bayesian inference is not only elegant and intuitive, but also helpful for overcoming common challenges with data from the life sciences"
+date: 2026-05-26
+reading-time: 10 min
+file-modified: 2026-05-26
+categories: [Bayesian, AI life science, course material]
+format:
+  html:
+    toc: true
+    code-fold: true
+---
+
+> [**Slides**](../_site/ideas_for_future_blog_posts/why_we_bayesian_slides.html)
+
+<div>
+
+```{=html}
+<iframe class="slide-deck" src="../slides/why_we_bayesian_slides.html"></iframe>
+```
+
+</div>
+
+::: {.callout-note collapse="true"}
+## Teacher note
+
+The slides contain speaking notes that you can view by pressing 'S' on the
+keyboard.
+:::
+
+# Why be a Bayesian?
+
+There are many reasons to be a Bayesian.
+
+# What is the alternative?
+
+Frequentist statistics
+
+# Is there a fight?
+
+No! That fight ended in the 90's
+
+# When to use Frequentist and when to use Bayesian approaches?
+
+Frequentist are often sufficient and comparable to Bayesian stats.
+
+# But sometimes, they are very different!
+
+
+```{r}
+# install.packages(c("MASS", "rstanarm", "tidyverse"))
+
+library(MASS)
+library(rstanarm)
+library(tidyverse)
+
+set.seed(12)
+
+# -----------------------------
+# Simulate correlated predictors
+# -----------------------------
+
+n <- 30
+p <- 10
+
+Sigma <- matrix(0.9, p, p)
+diag(Sigma) <- 1
+
+X <- MASS::mvrnorm(n, mu = rep(0, p), Sigma = Sigma)
+
+colnames(X) <- paste0("x", 1:p)
+
+# True data-generating process:
+# only x1 matters
+
+beta_true <- c(1.5, rep(0, p - 1))
+
+y <- X %*% beta_true + rnorm(n, 0, 2)
+
+dat <- data.frame(y, X, id = 1:n)
+dat <- dat |>
+  dplyr::mutate(
+    id = as.factor(id)
+  )
+
+dat_long <- dat |>
+  tidyr::pivot_longer(
+    cols = starts_with("x"),
+    names_to = "predictor",
+    values_to = "value",
+  )
+
+# -----------------------------
+# Frequentist OLS
+# -----------------------------
+
+fit_lm <- lm(y ~ ., data = dat)
+fit_lm_long <- lm(y ~ ., data = dat_long)
+
+summary(fit_lm)
+
+# -----------------------------
+# Bayesian regression
+# -----------------------------
+
+fit_bayes <- rstanarm::stan_glm(
+  y ~ .,
+  data = dat,
+  prior = rstanarm::normal(0, 1),
+  prior_intercept = rstanarm::normal(0, 5),
+  chains = 4,
+  iter = 2000,
+  refresh = 0
+)
+
+print(fit_bayes, digits = 2)
+```
+
+
+
+```{r}
+fit_bayes |>
+  tidybayes::spread_draws(
+    #`(Intercept)`,
+    `^x\\d+`,
+    regex = TRUE
+  ) |>
+  #tidybayes::median_qi(condition_mean = `(Intercept)` + b, .width = c(.95, .66)) |>
+  tidybayes::median_qi(x1, .width = c(.95, .66)) |>
+  #ggplot2::ggplot(aes(y = group, x = condition_mean, xmin = .lower, xmax = .upper)) +
+  ggplot2::ggplot(aes(y = x1, x = x1, xmin = .lower, xmax = .upper)) +
+  ggdist::geom_pointinterval()
+
+
+####
+
+bayes_draws <- fit_bayes |>
+  #tidybayes::spread_draws(`(Intercept)`, `^x\\d+`, regex = TRUE) |>
+  tidybayes::spread_draws(`^x\\d+`, regex = TRUE) |>
+  tidyr::pivot_longer(
+    #cols = c(`(Intercept)`, tidyselect::starts_with("x")),
+    cols = tidyselect::starts_with("x"),
+    names_to = "term",
+    values_to = "estimate"
+  ) |>
+  dplyr::mutate(model = "Bayesian")
+
+
+freq_df <- broom::tidy(fit_lm, conf.int = TRUE) |>
+  dplyr::select(term, estimate, conf.low, conf.high) |>
+  dplyr::mutate(model = "Frequentist")
+
+
+truth_df <- tibble::tibble(
+  term = c("(Intercept)", paste0("x", 1:p)),
+  truth = c(0, beta_true),
+  model = "Truth"
+)
+
+ggplot2::ggplot() +
+
+  # Bayesian posterior intervals
+  ggdist::stat_pointinterval(
+    data = bayes_draws,
+    aes(x = estimate, y = term),
+    .width = c(.5, .8, .95)
+  ) +
+
+  # Frequentist estimates + CI
+  ggdist::geom_pointinterval(
+    data = freq_df,
+    aes(
+      x = estimate,
+      xmin = conf.low,
+      xmax = conf.high,
+      y = term
+    ),
+    color = "red"
+  ) +
+
+  # Truth
+  ggplot2::geom_point(
+    data = truth_df,
+    ggplot2::aes(x = truth, y = term),
+    color = "blue",
+    size = 3,
+    shape = 4,
+    stroke = 1.5
+  ) +
+
+  ggplot2::facet_wrap(~model) +
+
+  ggplot2::theme_bw()
+
+
+## other approach
+
+bayes_summary <- bayes_draws |>
+  dplyr::group_by(term) |>
+  tidybayes::median_qi(estimate, .width = 0.95) |>
+  dplyr::transmute(
+    term,
+    estimate,
+    conf.low = .lower,
+    conf.high = .upper,
+    model = "Bayesian"
+  )
+
+
+freq_plot <- freq_df |>
+  dplyr::transmute(
+    term,
+    estimate,
+    conf.low,
+    conf.high,
+    model = "Frequentist"
+  )
+
+plot_df <- dplyr::bind_rows(
+  bayes_summary,
+  freq_plot
+)
+
+ggplot2::ggplot(
+  plot_df,
+  ggplot2::aes(
+    x = estimate,
+    y = term,
+    color = model
+  )
+) +
+
+  ggdist::geom_pointinterval(
+    ggplot2::aes(
+      xmin = conf.low,
+      xmax = conf.high
+    ),
+    position = ggplot2::position_dodge(width = 0.5)
+  ) +
+
+  ggplot2::geom_point(
+    data = truth_df,
+    ggplot2::aes(x = truth, y = term),
+    inherit.aes = FALSE,
+    color = "blue",
+    shape = 4,
+    size = 3,
+    stroke = 1.2
+  ) +
+
+  ggplot2::geom_vline(
+    xintercept = 0,
+    linetype = 2
+  ) +
+
+  ggplot2::theme_bw()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

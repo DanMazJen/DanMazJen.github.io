@@ -1,0 +1,25 @@
+## My first leptos app
+
+here:
+
+<iframe
+  src="/apps/hallo-leptos/index.html"
+  width="100%"
+  height="300"
+  style="border: none;">
+</iframe>
+
+<!--
+![](apps/hallo-leptos/index.html){width="100%" height="600px"}
+-->
+
+testing again
+
+[Open app](/apps/hallo-leptos/index.html)
+
+<iframe
+  src="about:blank"
+  width="100%"
+  height="300"
+  style="border:5px solid red;">
+</iframe>
