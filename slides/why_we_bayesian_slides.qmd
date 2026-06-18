@@ -1,6 +1,6 @@
 ---
-title: "Why We Need Bayesian Linear Regression"
-subtitle: "Mechanism, Interpretation, and Failure Modes of Frequentist OLS"
+title: "Why be a Bayesian"
+subtitle: "A non-technical introduction to the Bayesian approach"
 author: "Daniel Skak Mazhari-Jensen"
 date: today
 format:
@@ -8,25 +8,32 @@ format:
     theme: moon
     slide-number: true
     code-fold: true
-    scrollable: true
+    smaller: true
 ---
 
-# What is this Bayesian thing anyway?
+## What is this Bayesian thing anyway? {.center}
 
-Chat with your neighbor for 3 minutes - where/what have you heard about Bayesian inference?
+**Chat with your neighbor for 3 minutes**:
 
-# :raising_hand_woman: How many have heard about Bayesian inference? {.center}
+- Have you heard about Bayesian models/inference/approach?
+- If yes, in which context?
+- What do you think it means (no guarantee it's the "right" answer, but give it a try!)
 
-# :raising_hand_woman: How many already use a Bayesian workflow? {.center}
+## 🙋‍♀️🙋  How many have heard about Bayesian inference? {.center}
 
-# :walking::walking_woman: Do you ????? {.center}
+## 🙋‍♀️🙋  How many already use a Bayesian workflow? {.center}
 
-Never <------->
-I took a course in computer science
+## 🙋‍♀️🙋  How many have read a paper using Bayesian stats? {.center}
 
-# The Core Question {.smaller}
+## 🙋‍♀️🙋  How many (of you) understood that paper using Bayesian stats? {.center}
 
-Why do we need a Bayesian approach to regression - we can just use ordinary least squares?
+## 🎉🥳  Are you ready to get a non-technical introduction? {.center}
+
+## The Core Question {.smaller}
+
+Why do we need a Bayesian approach to regression 
+
+> we can just use ordinary least squares?
 
 The answer is not (only):
 
@@ -38,9 +45,119 @@ The answer is not (only):
 Real regression problems are often weakly identified, noisy, unstable, and geometrically pathological.
 :::
 
-Bayesian regression stabilizes inference.
+## The ultra-quick answer {.center}
 
-# The Frequentist Ideal {.smaller}
+Bayesian regression stabilizes inference by:
+
+1. Explicitly stating expectations
+2. Constraining parameters, offering regularization 
+3. Constraining model, offering stability in parametrization of the model
+
+## Is there a fight? {.auto-animate .center}
+
+![](assets/Kong-Godzilla.png)
+
+## Is there a fight? {.auto-animate .center}
+
+![](assets/Kong-Godzilla-Doge.png)
+
+## When to use Frequentist and when to use Bayesian approaches? {.center}
+
+Frequentist are often sufficient and comparable to Bayesian stats!
+
+## The data
+```{r data1}
+#| echo: true
+set.seed(18062026)
+
+# Data
+n <- 100
+x <- rnorm(n)
+y <- 2 + 3*x + rnorm(n)
+```
+
+## The models
+
+**Frequentist:**
+
+```{r freq-data1}
+#| echo: true
+# Frequentist OLS
+fit_freq <- lm(y ~ x)
+```
+
+**Bayesian:**
+```{r bayes-data1}
+#| echo: true
+# Bayesian regression with flat priors
+library(rstanarm)
+fit_bayes <- stan_glm(
+  y ~ x,
+  prior = NULL,            # flat prior on coefficients
+  prior_intercept = NULL,
+  chains = 2, iter = 2000, refresh = 0
+)
+```
+
+## What did we find?
+
+**Frequentist:**
+```{r data1-freq-results}
+#| echo: true
+parameters::parameters(fit_freq, ci = 0.95) |> 
+  dplyr::select(Parameter, Coefficient, CI, CI_low, CI_high)
+```
+
+**Bayesian:**
+
+```{r data1-bayes-results}
+#| echo: true
+parameters::parameters(fit_bayes, ci = 0.95) |> 
+  dplyr::select(Parameter, Median, CI, CI_low, CI_high)
+```
+
+## THEN WHY DO WE BOTHER!? {.center}
+
+## When to use Frequentist and when to use Bayesian approaches? {.r-stretch}
+
+![](assets/chainsaw-cake.jpg)
+
+## An example
+
+Suppose you have
+
+:::: {.columns}
+::: {.column}
+30
+:::
+::: {.column}
+30
+:::
+::::
+
+## Talk to your neighbor {.center}
+
+*what do you think will happen*?
+
+- think about the model specification
+- does the same happen in the Frequentist and Bayesian models?
+
+
+## The model results when p=30 and n=30 {.r-strecht}
+![](assets/30p30n.png)
+
+:::{.fragment}
+[x30 doesn't even have an estimate due to unindentifiability!]{style="color: red;"}
+:::
+
+## The model results when p=30 and n=32 {.r-strecht}
+![](assets/p30n32.png)
+
+:::{.fragment}
+[coliniarity inflates CIs!]{style="color: red;"}
+:::
+
+## The Frequentist Ideal {.smaller .scrollable}
 
 Ordinary Least Squares (OLS):
 
@@ -67,7 +184,7 @@ $$
 \hat{\beta}_{OLS} = (X^TX)^{-1}X^Ty
 $$
 
-# The Hidden Assumption
+## The Hidden Assumption
 
 OLS works well when:
 
@@ -78,7 +195,7 @@ OLS works well when:
 
 But real data often violate all of these simultaneously.
 
-# A More Realistic Situation {.smaller}
+## A More Realistic Situation {.smaller}
 
 Suppose we have:
 
@@ -96,7 +213,7 @@ This is extremely common in:
 -  economics
 -  policy research
 
-# The Data Generating Process {.smaller}
+## The Data Generating Process {.smaller}
 
 The truth is simple.
 
@@ -110,7 +227,7 @@ All other predictors have zero effect.
 
 Yet predictors are highly correlated.
 
-# The Mechanism of Failure {.smaller}
+## The Mechanism of Failure {.smaller}
 
 With correlated predictors:
 
@@ -131,7 +248,7 @@ Are these coefficient magnitudes plausible?
 :::
 
 
-# The Geometry Problem
+## The Geometry Problem
 
 Collinearity creates unstable directions in parameter space.
 
@@ -152,7 +269,7 @@ As a result:
 
 
 
-# The Bayesian Solution
+## The Bayesian Solution
 
 Bayesian regression adds prior information:
 
@@ -174,7 +291,7 @@ This changes the geometry of inference.
 
 
 
-# Important Clarification
+## Important Clarification
 
 Bayesian priors are not magic.
 
@@ -190,7 +307,7 @@ This is often scientifically reasonable.
 
 
 
-# Simulation Setup
+## Simulation Setup
 
 We now simulate the failure directly.
 
@@ -209,7 +326,7 @@ Only x1 matters.
 
 
 
-# Simulating Correlated Predictors
+## Simulating Correlated Predictors {.r-stretch}
 
 ```{r modeling}
 #| echo: false
@@ -262,14 +379,14 @@ head(dat)
 ```
 
 
-# Frequentist OLS
+## Frequentist OLS
 
 ```{r}
 #| label: tbl-ols
 summary(fit_lm)
 ```
 
-# Why This Happens
+## Why This Happens
 
 Predictors are interchangeable.
 
@@ -282,7 +399,7 @@ OLS has no mechanism preventing absurd parameter values.
 
 It only optimizes fit.
 
-# The Frequentist Interpretation Problem
+## The Frequentist Interpretation Problem
 
 Researchers now face impossible interpretation.
 
@@ -295,7 +412,7 @@ Questions become unstable:
 *p*-values fluctuate wildly across samples.
 
 
-# Bayesian Regression
+## Bayesian Regression
 
 ```{r}
 #| label: bayes-fit
@@ -303,7 +420,7 @@ Questions become unstable:
 print(fit_bayes, digits = 2)
 ```
 
-# Let's have a look 
+## Let's have a look 
 
 ```{r}
 #| label: model-plot
@@ -391,7 +508,7 @@ ggplot2::ggplot(
   ggplot2::theme_bw()
 ```
 
-# What the Prior Does
+## What the Prior Does
 
 The prior shrinks implausible coefficients toward zero.
 
@@ -405,7 +522,7 @@ This is called:
 -   shrinkage
 -   partial pooling of uncertainty
 
-# Bias-Variance Tradeoff
+## Bias-Variance Tradeoff
 
 Frequentist OLS emphasizes unbiasedness.
 
@@ -422,7 +539,7 @@ This often improves:
 -   calibration
 -   scientific interpretation
 
-# The Deep Point
+## The Deep Point
 
 OLS treats the model as fixed truth.
 
@@ -430,7 +547,7 @@ Bayesian workflow treats models as uncertain approximations.
 
 This distinction is profound.
 
-# Posterior Interpretation
+## Posterior Interpretation
 
 Frequentist confidence interval:
 
@@ -446,7 +563,7 @@ Literally means:
 "Given model and data, there is 95% posterior probability the parameter lies here."
 :::
 
-# Weak Identification
+## Weak Identification
 
 The Bayesian posterior honestly expresses:
 
@@ -462,7 +579,7 @@ Sometimes the correct scientific answer is:
 
 OLS often hides this instability behind noisy point estimates.
 
-# Posterior Predictive Thinking
+## Posterior Predictive Thinking
 
 Bayesian models naturally support:
 
@@ -474,7 +591,7 @@ Bayesian models naturally support:
 
 This enables model criticism rather than blind estimation.
 
-# A More Extreme Failure
+## A More Extreme Failure
 
 Increase:
 
@@ -491,7 +608,7 @@ Coefficients:
 
 Bayesian regularization still produces stable inference.
 
-# The Core Mechanism
+## The Core Mechanism
 
 Frequentist OLS:
 
@@ -509,7 +626,7 @@ The prior changes the geometry of inference.
 
 This is the key idea.
 
-# Final Takeaway
+## Final Takeaway
 
 Bayesian regression matters because:
 
@@ -520,7 +637,7 @@ Bayesian regression matters because:
 
 Priors repair inferential geometry.
 
-# Final Thought
+## Final Thought
 
 The Bayesian question is not:
 
@@ -536,10 +653,13 @@ The Bayesian question is:
 
 That is usually the more meaningful scientific question.
 
-# References {#sec-references}
+## References {#sec-references}
 
-Gelman, A., et al. Bayesian Data Analysis
-McElreath, R. Statistical Rethinking
-Vehtari, A., Gelman, A., Gabry, J. (2017)
-"Practical Bayesian model evaluation using leave-one-out cross-validation"
-Hastie, Tibshirani, Friedman. Elements of Statistical Learning
+- Gelman, A., et al. Bayesian Data Analysis
+- McElreath, R. Statistical Rethinking
+- Vehtari, A., Gelman, A., Gabry, J. (2017) "Practical Bayesian model evaluation using leave-one-out cross-validation"
+- Hastie, Tibshirani, Friedman. Elements of Statistical Learning
+
+## Exercise:
+
+See exercises at website...

@@ -1,3 +1,18 @@
+---
+title: "Rust apps running within Quarto static websites hosted on Github Pages"
+subtitle: "A proof-of-concept guide for the interested learner"
+author: "Daniel S. Mazhari-Jensen"
+description: "Explores how Rust apps may be integrated within a Quarto static website, which can be hosted on Github Pages"
+date: 2026-06-12
+reading-time: 5 min
+file-modified: 2026-06-12
+categories: [Leptos, Rust, Quarto]
+format:
+  html:
+    toc: true
+    code-fold: true
+---
+
 # Rust apps running within Quarto static websites hosted on Github Pages
 
 Sound magic, right? ✨ 
