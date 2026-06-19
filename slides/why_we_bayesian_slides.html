@@ -10,8 +10,8 @@
   <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="Daniel Skak Mazhari-Jensen">
-  <meta name="dcterms.date" content="2026-06-12">
-  <title>DanMazJen.github.io – Why We Need Bayesian Linear Regression</title>
+  <meta name="dcterms.date" content="2026-06-19">
+  <title>DanMazJen.github.io – Why be a Bayesian</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -32,6 +32,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-84b150702567ae7e15cad124fb9039e2.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -49,7 +115,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -132,8 +197,8 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Why We Need Bayesian Linear Regression</h1>
-  <p class="subtitle">Mechanism, Interpretation, and Failure Modes of Frequentist OLS</p>
+  <h1 class="title">Why be a Bayesian</h1>
+  <p class="subtitle">A non-technical introduction to the Bayesian approach</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -143,31 +208,54 @@ Daniel Skak Mazhari-Jensen
 </div>
 </div>
 
-  <p class="date">2026-06-12</p>
+  <p class="date">2026-06-19</p>
 </section>
-<section id="what-is-this-bayesian-thing-anyway" class="title-slide slide level1 center">
-<h1>What is this Bayesian thing anyway?</h1>
-<p>Chat with your neighbor for 3 minutes - where/what have you heard about Bayesian inference?</p>
+<section id="what-is-this-bayesian-thing-anyway" class="slide level2 center">
+<h2>What is this Bayesian thing anyway?</h2>
+<p><strong>Chat with your neighbor for 3 minutes</strong>:</p>
+<ul>
+<li>Have you heard about Bayesian models/inference/approach?</li>
+<li>If yes, in which context?</li>
+<li>What do you think it means (no guarantee it’s the “right” answer, but give it a try!)</li>
+</ul>
 </section>
-
-<section id="raising_hand_woman-how-many-have-heard-about-bayesian-inference" class="title-slide slide level1 center">
-<h1>:raising_hand_woman: How many have heard about Bayesian inference?</h1>
-
+<section id="how-many-have-heard-about-bayesian-inference" class="slide level2 center">
+<h2>How many have heard about Bayesian inference? 🙋‍♀️🙋</h2>
 </section>
-
-<section id="raising_hand_woman-how-many-already-use-a-bayesian-workflow" class="title-slide slide level1 center">
-<h1>:raising_hand_woman: How many already use a Bayesian workflow?</h1>
-
+<section id="how-many-already-use-a-bayesian-workflow" class="slide level2 center">
+<h2>How many already use a Bayesian workflow? 🙋‍♀️🙋</h2>
 </section>
-
-<section id="walkingwalking_woman-do-you" class="title-slide slide level1 center">
-<h1>:walking::walking_woman: Do you ?????</h1>
-<p>Never &lt;——-&gt; I took a course in computer science</p>
+<section id="how-many-have-read-a-paper-using-bayesian-stats" class="slide level2 center">
+<h2>How many have read a paper using Bayesian stats? 🙋‍♀️🙋</h2>
 </section>
+<section id="how-many-of-you-understood-that-paper-using-bayesian-stats" class="slide level2 center">
+<h2>How many (of you) understood that paper using Bayesian stats? 🙋‍♀️🙋</h2>
+</section>
+<section id="are-you-ready-to-get-a-non-technical-introduction" class="slide level2 center">
+<h2>Are you ready to get a non-technical introduction? 🎉🥳</h2>
+</section>
+<section id="bayes-in-the-style-of-xkcd" class="slide level2">
+<h2>Bayes in the style of xkcd</h2>
 
-<section id="the-core-question" class="title-slide slide level1 smaller center">
-<h1>The Core Question</h1>
-<p>Why do we need a Bayesian approach to regression - we can just use ordinary least squares?</p>
+<img data-src="assets/XKCD-bayes-seashell.jpg" class="r-stretch"></section>
+<section id="but-why-is-this-different-from-other-stats" class="slide level2">
+<h2>But why is this different from other stats?</h2>
+
+<img data-src="assets/kxcd-bayes-freq.png" class="r-stretch"></section>
+<section id="is-there-a-fight" class="slide level2 auto-animate center">
+<h2>Is there a fight?</h2>
+
+<img data-src="assets/Kong-Godzilla.png" class="r-stretch"></section>
+<section id="is-there-a-fight-1" class="slide level2 auto-animate center">
+<h2>Is there a fight?</h2>
+
+<img data-src="assets/Kong-Godzilla-Doge.png" class="r-stretch"></section>
+<section id="the-core-question" class="slide level2 smaller">
+<h2>The Core Question</h2>
+<blockquote>
+<p>Why do we need a Bayesian approach to regression?</p>
+</blockquote>
+<p>Can’t we just use ordinary least squares?</p>
 <p>The answer is not (only):</p>
 <ul>
 <li>philosophy</li>
@@ -181,11 +269,164 @@ Daniel Skak Mazhari-Jensen
 </div>
 </div>
 </div>
-<p>Bayesian regression stabilizes inference.</p>
 </section>
+<section id="the-ultra-quick-answer" class="slide level2 center">
+<h2>The ultra-quick answer</h2>
+<p>Bayesian regression stabilizes inference by:</p>
+<ol type="1">
+<li>Explicitly stating expectations</li>
+<li>Constraining parameters, offering regularization</li>
+<li>Constraining model, offering stability in parametrization of the model</li>
+</ol>
+</section>
+<section id="when-to-use-frequentist-and-when-to-use-bayesian-approaches" class="slide level2 center">
+<h2>When to use Frequentist and when to use Bayesian approaches?</h2>
+<p>Frequentist are often sufficient and comparable to Bayesian stats!</p>
+</section>
+<section id="the-data" class="slide level2">
+<h2>The data</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">set.seed</span>(<span class="dv">18062026</span>)</span>
+<span id="cb1-2"><a></a></span>
+<span id="cb1-3"><a></a><span class="co"># Data</span></span>
+<span id="cb1-4"><a></a>n <span class="ot">&lt;-</span> <span class="dv">100</span>                 <span class="co"># samples</span></span>
+<span id="cb1-5"><a></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)            <span class="co"># x = N(0,1)      </span></span>
+<span id="cb1-6"><a></a>y <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(n)  <span class="co"># α = 2, β = 3, ε = N(0,1) </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="the-models" class="slide level2">
+<h2>The models</h2>
+<p><strong>Frequentist:</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="co"># Frequentist OLS</span></span>
+<span id="cb2-2"><a></a>fit_freq <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><strong>Bayesian:</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="co"># Bayesian regression with flat priors</span></span>
+<span id="cb3-2"><a></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb3-3"><a></a>fit_bayes <span class="ot">&lt;-</span> <span class="fu">stan_glm</span>(</span>
+<span id="cb3-4"><a></a>  y <span class="sc">~</span> x,</span>
+<span id="cb3-5"><a></a>  <span class="at">prior =</span> <span class="cn">NULL</span>,            <span class="co"># flat prior on coefficients</span></span>
+<span id="cb3-6"><a></a>  <span class="at">prior_intercept =</span> <span class="cn">NULL</span>,</span>
+<span id="cb3-7"><a></a>  <span class="at">chains =</span> <span class="dv">2</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb3-8"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="what-did-we-find" class="slide level2">
+<h2>What did we find?</h2>
+<p><strong>Frequentist:</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a>parameters<span class="sc">::</span><span class="fu">parameters</span>(fit_freq, <span class="at">ci =</span> <span class="fl">0.95</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Parameter, Coefficient, CI, CI_low, CI_high)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># Fixed Effects
 
-<section id="the-frequentist-ideal" class="title-slide slide level1 smaller center">
-<h1>The Frequentist Ideal</h1>
+Parameter   | Coefficient |       95% CI
+----------------------------------------
+(Intercept) |        2.09 | [1.91, 2.28]
+x           |        3.01 | [2.82, 3.20]</code></pre>
+</div>
+</div>
+<p><strong>Bayesian:</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>parameters<span class="sc">::</span><span class="fu">parameters</span>(fit_bayes, <span class="at">ci =</span> <span class="fl">0.95</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Parameter, Median, CI, CI_low, CI_high)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># Fixed Effects
+
+Parameter   | Median |       95% CI
+-----------------------------------
+(Intercept) |   2.09 | [1.91, 2.27]
+x           |   3.00 | [2.82, 3.20]</code></pre>
+</div>
+</div>
+</section>
+<section id="then-why-do-we-bother" class="slide level2 center">
+<h2>THEN WHY DO WE BOTHER!?</h2>
+</section>
+<section id="when-to-use-frequentist-and-when-to-use-bayesian-approaches-1" class="slide level2 r-stretch">
+<h2>When to use Frequentist and when to use Bayesian approaches?</h2>
+
+<img data-src="assets/chainsaw-cake.jpg" class="r-stretch"></section>
+<section id="a-more-realistic-example" class="slide level2 smaller">
+<h2>A More Realistic example</h2>
+<div class="columns">
+<div class="column">
+<p>Suppose we have:</p>
+<ul>
+<li>30 observations</li>
+<li>10 predictors</li>
+<li>strong predictor correlation</li>
+<li>weak signal</li>
+<li>uncertain mechanisms</li>
+</ul>
+</div><div class="column">
+<p>This is extremely common in:</p>
+<ul>
+<li>social science</li>
+<li>biology</li>
+<li>psychology</li>
+<li>economics</li>
+<li>policy research</li>
+</ul>
+</div></div>
+</section>
+<section id="simulating-correlated-predictors" class="slide level2 r-stretch">
+<h2>Simulating Correlated Predictors</h2>
+
+<img data-src="why_we_bayesian_slides_files/figure-revealjs/fig-correlation-1.png" width="960" class="r-stretch quarto-figure-center" id="fig-correlation"><p class="caption">
+Figure&nbsp;1: Correlation structure among predictors.
+</p></section>
+<section id="the-data-generating-process" class="slide level2 smaller">
+<h2>The Data Generating Process</h2>
+<p>The truth is simple.</p>
+<p>Only one predictor matters.</p>
+<p><span class="math display">\[
+y = 1.5x_1 + \epsilon
+\]</span></p>
+<p>All other predictors have zero effect.</p>
+<p>Yet predictors are highly correlated.</p>
+</section>
+<section id="talk-to-your-neighbor" class="slide level2 center">
+<h2>Talk to your neighbor</h2>
+<p><em>what do you think will happen</em>?</p>
+<ul>
+<li>think about the model specification</li>
+<li>does the same happen in the Frequentist and Bayesian models?</li>
+</ul>
+</section>
+<section id="the-model-results-when-p30-and-n30" class="slide level2 r-strecht">
+<h2>The model results when p=30 and n=30</h2>
+
+<img data-src="assets/30p30n.png" class="r-stretch"><div class="fragment">
+<p><span style="color: red;">x30 doesn’t even have an estimate due to unindentifiability!</span></p>
+</div>
+</section>
+<section id="the-model-results-when-p30-and-n32" class="slide level2 r-strecht">
+<h2>The model results when p=30 and n=32</h2>
+
+<img data-src="assets/p30n32.png" class="r-stretch"><div class="fragment">
+<p><span style="color: red;">coliniarity inflates CIs!</span></p>
+</div>
+</section>
+<section id="the-frequentist-ideal" class="slide level2 smaller scrollable">
+<h2>The Frequentist Ideal</h2>
 <p>Ordinary Least Squares (OLS):</p>
 <ul>
 <li>minimizes squared residuals</li>
@@ -206,9 +447,8 @@ y = X\beta + \epsilon
 \hat{\beta}_{OLS} = (X^TX)^{-1}X^Ty
 \]</span></p>
 </section>
-
-<section id="the-hidden-assumption" class="title-slide slide level1 center">
-<h1>The Hidden Assumption</h1>
+<section id="the-hidden-assumption" class="slide level2">
+<h2>The Hidden Assumption</h2>
 <p>OLS works well when:</p>
 <ul>
 <li>predictors are not highly collinear</li>
@@ -218,40 +458,8 @@ y = X\beta + \epsilon
 </ul>
 <p>But real data often violate all of these simultaneously.</p>
 </section>
-
-<section id="a-more-realistic-situation" class="title-slide slide level1 smaller center">
-<h1>A More Realistic Situation</h1>
-<p>Suppose we have:</p>
-<ul>
-<li>30 observations</li>
-<li>10 predictors</li>
-<li>strong predictor correlation</li>
-<li>weak signal</li>
-<li>uncertain mechanisms</li>
-</ul>
-<p>This is extremely common in:</p>
-<ul>
-<li>social science</li>
-<li>biology</li>
-<li>psychology</li>
-<li>economics</li>
-<li>policy research</li>
-</ul>
-</section>
-
-<section id="the-data-generating-process" class="title-slide slide level1 smaller center">
-<h1>The Data Generating Process</h1>
-<p>The truth is simple.</p>
-<p>Only one predictor matters.</p>
-<p><span class="math display">\[
-y = 1.5x_1 + \epsilon
-\]</span></p>
-<p>All other predictors have zero effect.</p>
-<p>Yet predictors are highly correlated.</p>
-</section>
-
-<section id="the-mechanism-of-failure" class="title-slide slide level1 smaller center">
-<h1>The Mechanism of Failure</h1>
+<section id="the-mechanism-of-failure" class="slide level2 smaller">
+<h2>The Mechanism of Failure</h2>
 <p>With correlated predictors:</p>
 <ul>
 <li>many coefficient combinations fit equally well</li>
@@ -275,9 +483,8 @@ y = 1.5x_1 + \epsilon
 </div>
 </div>
 </section>
-
-<section id="the-geometry-problem" class="title-slide slide level1 center">
-<h1>The Geometry Problem</h1>
+<section id="the-geometry-problem" class="slide level2">
+<h2>The Geometry Problem</h2>
 <p>Collinearity creates unstable directions in parameter space.</p>
 <p>The matrix:</p>
 <p><span class="math display">\[
@@ -292,9 +499,8 @@ y = 1.5x_1 + \epsilon
 <li>interpretation collapses</li>
 </ul>
 </section>
-
-<section id="the-bayesian-solution" class="title-slide slide level1 center">
-<h1>The Bayesian Solution</h1>
+<section id="the-bayesian-solution" class="slide level2">
+<h2>The Bayesian Solution</h2>
 <p>Bayesian regression adds prior information:</p>
 <p><span class="math display">\[
 \beta_j \sim \mathcal{N}(0,1)
@@ -308,9 +514,8 @@ p(y \mid \beta)p(\beta)
 <p>The prior regularizes weakly identified directions.</p>
 <p>This changes the geometry of inference.</p>
 </section>
-
-<section id="important-clarification" class="title-slide slide level1 center">
-<h1>Important Clarification</h1>
+<section id="important-clarification" class="slide level2">
+<h2>Important Clarification</h2>
 <p>Bayesian priors are not magic.</p>
 <p>They encode structural skepticism.</p>
 <p>The prior says:</p>
@@ -323,92 +528,22 @@ p(y \mid \beta)p(\beta)
 </div>
 <p>This is often scientifically reasonable.</p>
 </section>
-
-<section id="simulation-setup" class="title-slide slide level1 center">
-<h1>Simulation Setup</h1>
-<p>We now simulate the failure directly.</p>
+<section id="explaining-the-simulation-setup" class="slide level2">
+<h2>Explaining the simulation Setup</h2>
+<p>We simulated the failure directly:</p>
 <ul>
 <li>small sample</li>
 <li>many predictors</li>
 <li>high collinearity</li>
 <li>weak signal</li>
 </ul>
-<p>The true model:</p>
-<p><span class="math display">\[
-y = 1.5x_1 + \epsilon
-\]</span></p>
-<p>Only x1 matters.</p>
 </section>
+<section id="frequentist-ols" class="slide level2">
+<h2>Frequentist OLS</h2>
 
-<section id="simulating-correlated-predictors" class="title-slide slide level1 center">
-<h1>Simulating Correlated Predictors</h1>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>           y         x1         x2         x3         x4         x5         x6
-1 -0.3619515  1.7338885  1.1572440  1.5663605  1.2414470  1.5872303  1.9987247
-2 -3.8819137 -1.3474986 -0.8599374 -1.5168523 -1.3935671 -1.7076858 -1.4030663
-3 -0.4420222  1.0608052  0.9437309  0.8560202  0.5639471  0.8984077  0.7050452
-4  1.1413268  1.0431356  0.6160122  0.9800491  0.8826097  1.3451461  0.5586863
-5  6.5306421  2.1499395  1.7871217  2.1808851  1.5457269  2.1541810  1.9213977
-6  2.2434021  0.5285393  0.1133341  0.2129800  0.2390573 -0.2156071  0.5303573
-          x7         x8         x9        x10
-1  1.5714507  1.0637851  0.9605804  1.2430034
-2 -1.3452645 -2.0385995 -1.7664969 -1.6662695
-3  1.0833713  0.8642306  0.8842084  1.2669940
-4  0.6985452  0.9410241  0.7149090  0.9961733
-5  1.6695037  1.7713908  1.9117235  1.9644211
-6  0.4675085 -0.1350402  0.2512964  0.6051131</code></pre>
-</div>
-
-</div>
-<img data-src="why_we_bayesian_slides_files/figure-revealjs/fig-correlation-1.png" width="960" class="r-stretch quarto-figure-center" id="fig-correlation"><p class="caption">
-Figure&nbsp;1: Correlation structure among predictors.
-</p></section>
-
-<section id="frequentist-ols" class="title-slide slide level1 center">
-<h1>Frequentist OLS</h1>
-<div id="tbl-ols" class="cell quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-tbl">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-ols-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1
-</figcaption>
-<div aria-describedby="tbl-ols-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = y ~ ., data = dat)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--3.6106 -0.9145  0.0206  0.9531  2.8211 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)  
-(Intercept) -0.28779    0.39016  -0.738   0.4698  
-x1           1.00890    1.93193   0.522   0.6075  
-x2           2.12201    1.42615   1.488   0.1532  
-x3          -0.03971    1.39036  -0.029   0.9775  
-x4          -1.13206    1.67655  -0.675   0.5077  
-x5          -0.13701    1.21925  -0.112   0.9117  
-x6           0.22854    1.22996   0.186   0.8546  
-x7          -2.27213    1.11660  -2.035   0.0561 .
-x8           1.27474    1.05771   1.205   0.2429  
-x9          -2.74290    1.50399  -1.824   0.0840 .
-x10          3.79090    1.60541   2.361   0.0290 *
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 1.924 on 19 degrees of freedom
-Multiple R-squared:  0.6488,    Adjusted R-squared:  0.464 
-F-statistic: 3.511 on 10 and 19 DF,  p-value: 0.008964</code></pre>
-</div>
-</div>
-</figure>
-</div>
-</section>
-
-<section id="why-this-happens" class="title-slide slide level1 center">
-<h1>Why This Happens</h1>
+<img data-src="assets/p30n32.png" class="r-stretch"></section>
+<section id="why-this-happens" class="slide level2">
+<h2>Why This Happens</h2>
 <p>Predictors are interchangeable.</p>
 <p>The model can fit equally well using:</p>
 <ul>
@@ -418,9 +553,8 @@ F-statistic: 3.511 on 10 and 19 DF,  p-value: 0.008964</code></pre>
 <p>OLS has no mechanism preventing absurd parameter values.</p>
 <p>It only optimizes fit.</p>
 </section>
-
-<section id="the-frequentist-interpretation-problem" class="title-slide slide level1 center">
-<h1>The Frequentist Interpretation Problem</h1>
+<section id="the-frequentist-interpretation-problem" class="slide level2">
+<h2>The Frequentist Interpretation Problem</h2>
 <p>Researchers now face impossible interpretation.</p>
 <p>Questions become unstable:</p>
 <ul>
@@ -430,48 +564,16 @@ F-statistic: 3.511 on 10 and 19 DF,  p-value: 0.008964</code></pre>
 </ul>
 <p><em>p</em>-values fluctuate wildly across samples.</p>
 </section>
+<section id="bayesian-regression" class="slide level2">
+<h2>Bayesian Regression</h2>
 
-<section id="bayesian-regression" class="title-slide slide level1 center">
-<h1>Bayesian Regression</h1>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>stan_glm
- family:       gaussian [identity]
- formula:      y ~ .
- observations: 30
- predictors:   11
-------
-            Median MAD_SD
-(Intercept) -0.05   0.37 
-x1           0.44   0.80 
-x2           0.63   0.75 
-x3           0.28   0.77 
-x4           0.11   0.80 
-x5           0.18   0.72 
-x6           0.05   0.70 
-x7          -0.79   0.72 
-x8           0.63   0.66 
-x9          -0.32   0.79 
-x10          0.83   0.82 
+<img data-src="assets/30p30n.png" class="r-stretch quarto-figure-center"><p class="caption"><em>How did it do that?</em></p></section>
+<section id="lets-have-a-look" class="slide level2">
+<h2>Let’s have a look</h2>
 
-Auxiliary parameter(s):
-      Median MAD_SD
-sigma 1.97   0.29  
-
-------
-* For help interpreting the printed output see ?print.stanreg
-* For info on the priors used see ?prior_summary.stanreg</code></pre>
-</div>
-</div>
-</section>
-
-<section id="lets-have-a-look" class="title-slide slide level1 center">
-<h1>Let’s have a look</h1>
-
-<img data-src="why_we_bayesian_slides_files/figure-revealjs/model-plot-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">model estimates and ground truth.</p></section>
-
-<section id="what-the-prior-does" class="title-slide slide level1 center">
-<h1>What the Prior Does</h1>
+<img data-src="assets/classic-bayes-plot-example.png" class="r-stretch quarto-figure-center"><p class="caption">Scientific sceptisism saves us from statistical model stupidity</p></section>
+<section id="what-the-prior-does" class="slide level2">
+<h2>What the Prior Does</h2>
 <p>The prior shrinks implausible coefficients toward zero.</p>
 <p>Not aggressively.</p>
 <p>Just enough to stabilize weakly identified directions.</p>
@@ -482,9 +584,8 @@ sigma 1.97   0.29
 <li>partial pooling of uncertainty</li>
 </ul>
 </section>
-
-<section id="bias-variance-tradeoff" class="title-slide slide level1 center">
-<h1>Bias-Variance Tradeoff</h1>
+<section id="bias-variance-tradeoff" class="slide level2">
+<h2>Bias-Variance Tradeoff</h2>
 <p>Frequentist OLS emphasizes unbiasedness.</p>
 <p>But unbiased estimators can have enormous variance.</p>
 <p>Bayesian regression accepts:</p>
@@ -499,16 +600,14 @@ sigma 1.97   0.29
 <li>scientific interpretation</li>
 </ul>
 </section>
-
-<section id="the-deep-point" class="title-slide slide level1 center">
-<h1>The Deep Point</h1>
+<section id="the-deep-point" class="slide level2">
+<h2>The Deep Point</h2>
 <p>OLS treats the model as fixed truth.</p>
 <p>Bayesian workflow treats models as uncertain approximations.</p>
 <p>This distinction is profound.</p>
 </section>
-
-<section id="posterior-interpretation" class="title-slide slide level1 center">
-<h1>Posterior Interpretation</h1>
+<section id="posterior-interpretation" class="slide level2">
+<h2>Posterior Interpretation</h2>
 <p>Frequentist confidence interval:</p>
 <div class="callout callout-warning no-icon callout-style-simple">
 <div class="callout-body">
@@ -526,9 +625,8 @@ sigma 1.97   0.29
 </div>
 </div>
 </section>
-
-<section id="weak-identification" class="title-slide slide level1 center">
-<h1>Weak Identification</h1>
+<section id="weak-identification" class="slide level2">
+<h2>Weak Identification</h2>
 <p>The Bayesian posterior honestly expresses:</p>
 <ul>
 <li>uncertainty</li>
@@ -545,9 +643,8 @@ sigma 1.97   0.29
 </div>
 <p>OLS often hides this instability behind noisy point estimates.</p>
 </section>
-
-<section id="posterior-predictive-thinking" class="title-slide slide level1 center">
-<h1>Posterior Predictive Thinking</h1>
+<section id="posterior-predictive-thinking" class="slide level2">
+<h2>Posterior Predictive Thinking</h2>
 <p>Bayesian models naturally support:</p>
 <ul>
 <li>posterior predictive checks</li>
@@ -558,9 +655,8 @@ sigma 1.97   0.29
 </ul>
 <p>This enables model criticism rather than blind estimation.</p>
 </section>
-
-<section id="a-more-extreme-failure" class="title-slide slide level1 center">
-<h1>A More Extreme Failure</h1>
+<section id="a-more-extreme-failure" class="slide level2">
+<h2>A More Extreme Failure</h2>
 <p>Increase:</p>
 <ul>
 <li>predictors from 10 to 20</li>
@@ -575,9 +671,8 @@ sigma 1.97   0.29
 </ul>
 <p>Bayesian regularization still produces stable inference.</p>
 </section>
-
-<section id="the-core-mechanism" class="title-slide slide level1 center">
-<h1>The Core Mechanism</h1>
+<section id="the-core-mechanism" class="slide level2">
+<h2>The Core Mechanism</h2>
 <p>Frequentist OLS:</p>
 <p><span class="math inline">\(hat{β}\)</span> =arg min RSS</p>
 <p>Bayesian regression:</p>
@@ -589,9 +684,8 @@ p(y \mid \beta)p(\beta)
 <p>The prior changes the geometry of inference.</p>
 <p>This is the key idea.</p>
 </section>
-
-<section id="final-takeaway" class="title-slide slide level1 center">
-<h1>Final Takeaway</h1>
+<section id="final-takeaway" class="slide level2">
+<h2>Final Takeaway</h2>
 <p>Bayesian regression matters because:</p>
 <ul>
 <li>real models are weakly identified</li>
@@ -601,9 +695,8 @@ p(y \mid \beta)p(\beta)
 </ul>
 <p>Priors repair inferential geometry.</p>
 </section>
-
-<section id="final-thought" class="title-slide slide level1 center">
-<h1>Final Thought</h1>
+<section id="final-thought" class="slide level2">
+<h2>Final Thought</h2>
 <p>The Bayesian question is not:</p>
 <div class="callout callout-note no-icon callout-style-simple">
 <div class="callout-body">
@@ -622,10 +715,18 @@ p(y \mid \beta)p(\beta)
 </div>
 <p>That is usually the more meaningful scientific question.</p>
 </section>
-
-<section id="sec-references" class="title-slide slide level1 center">
-<h1>References</h1>
-<p>Gelman, A., et al.&nbsp;Bayesian Data Analysis McElreath, R. Statistical Rethinking Vehtari, A., Gelman, A., Gabry, J. (2017) “Practical Bayesian model evaluation using leave-one-out cross-validation” Hastie, Tibshirani, Friedman. Elements of Statistical Learning</p>
+<section id="sec-references" class="slide level2">
+<h2>References</h2>
+<ul>
+<li>Gelman, A., et al.&nbsp;Bayesian Data Analysis</li>
+<li>McElreath, R. Statistical Rethinking</li>
+<li>Vehtari, A., Gelman, A., Gabry, J. (2017) “Practical Bayesian model evaluation using leave-one-out cross-validation”</li>
+<li>Hastie, Tibshirani, Friedman. Elements of Statistical Learning</li>
+</ul>
+</section>
+<section id="exercise" class="slide level2">
+<h2>Exercise:</h2>
+<p>See exercises at website…</p>
 
 
 </section>
@@ -665,7 +766,7 @@ p(y \mid \beta)p(\beta)
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: false,

@@ -7,6 +7,342 @@
     "text": "Welcome to the website.\nThis website primarily hosts small blog-styled pieces of statistical material I want to share - with other and future me. Please go the blog posts or reach out to me if you have any comments."
   },
   {
+    "objectID": "slides/why_we_bayesian_slides.html#what-is-this-bayesian-thing-anyway",
+    "href": "slides/why_we_bayesian_slides.html#what-is-this-bayesian-thing-anyway",
+    "title": "Why be a Bayesian",
+    "section": "What is this Bayesian thing anyway?",
+    "text": "What is this Bayesian thing anyway?\nChat with your neighbor for 3 minutes:\n\nHave you heard about Bayesian models/inference/approach?\nIf yes, in which context?\nWhat do you think it means (no guarantee it’s the “right” answer, but give it a try!)"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#how-many-have-heard-about-bayesian-inference",
+    "href": "slides/why_we_bayesian_slides.html#how-many-have-heard-about-bayesian-inference",
+    "title": "Why be a Bayesian",
+    "section": "How many have heard about Bayesian inference? 🙋‍♀️🙋",
+    "text": "How many have heard about Bayesian inference? 🙋‍♀️🙋"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#how-many-already-use-a-bayesian-workflow",
+    "href": "slides/why_we_bayesian_slides.html#how-many-already-use-a-bayesian-workflow",
+    "title": "Why be a Bayesian",
+    "section": "How many already use a Bayesian workflow? 🙋‍♀️🙋",
+    "text": "How many already use a Bayesian workflow? 🙋‍♀️🙋"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#how-many-have-read-a-paper-using-bayesian-stats",
+    "href": "slides/why_we_bayesian_slides.html#how-many-have-read-a-paper-using-bayesian-stats",
+    "title": "Why be a Bayesian",
+    "section": "How many have read a paper using Bayesian stats? 🙋‍♀️🙋",
+    "text": "How many have read a paper using Bayesian stats? 🙋‍♀️🙋"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#how-many-of-you-understood-that-paper-using-bayesian-stats",
+    "href": "slides/why_we_bayesian_slides.html#how-many-of-you-understood-that-paper-using-bayesian-stats",
+    "title": "Why be a Bayesian",
+    "section": "How many (of you) understood that paper using Bayesian stats? 🙋‍♀️🙋",
+    "text": "How many (of you) understood that paper using Bayesian stats? 🙋‍♀️🙋"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#are-you-ready-to-get-a-non-technical-introduction",
+    "href": "slides/why_we_bayesian_slides.html#are-you-ready-to-get-a-non-technical-introduction",
+    "title": "Why be a Bayesian",
+    "section": "Are you ready to get a non-technical introduction? 🎉🥳",
+    "text": "Are you ready to get a non-technical introduction? 🎉🥳"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#bayes-in-the-style-of-xkcd",
+    "href": "slides/why_we_bayesian_slides.html#bayes-in-the-style-of-xkcd",
+    "title": "Why be a Bayesian",
+    "section": "Bayes in the style of xkcd",
+    "text": "Bayes in the style of xkcd"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#but-why-is-this-different-from-other-stats",
+    "href": "slides/why_we_bayesian_slides.html#but-why-is-this-different-from-other-stats",
+    "title": "Why be a Bayesian",
+    "section": "But why is this different from other stats?",
+    "text": "But why is this different from other stats?"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#is-there-a-fight",
+    "href": "slides/why_we_bayesian_slides.html#is-there-a-fight",
+    "title": "Why be a Bayesian",
+    "section": "Is there a fight?",
+    "text": "Is there a fight?"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#is-there-a-fight-1",
+    "href": "slides/why_we_bayesian_slides.html#is-there-a-fight-1",
+    "title": "Why be a Bayesian",
+    "section": "Is there a fight?",
+    "text": "Is there a fight?"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-core-question",
+    "href": "slides/why_we_bayesian_slides.html#the-core-question",
+    "title": "Why be a Bayesian",
+    "section": "The Core Question",
+    "text": "The Core Question\n\nWhy do we need a Bayesian approach to regression?\n\nCan’t we just use ordinary least squares?\nThe answer is not (only):\n\nphilosophy\nelegance\na matter of preference\n\n\n\n\nReal regression problems are often weakly identified, noisy, unstable, and geometrically pathological."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-ultra-quick-answer",
+    "href": "slides/why_we_bayesian_slides.html#the-ultra-quick-answer",
+    "title": "Why be a Bayesian",
+    "section": "The ultra-quick answer",
+    "text": "The ultra-quick answer\nBayesian regression stabilizes inference by:\n\nExplicitly stating expectations\nConstraining parameters, offering regularization\nConstraining model, offering stability in parametrization of the model"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#when-to-use-frequentist-and-when-to-use-bayesian-approaches",
+    "href": "slides/why_we_bayesian_slides.html#when-to-use-frequentist-and-when-to-use-bayesian-approaches",
+    "title": "Why be a Bayesian",
+    "section": "When to use Frequentist and when to use Bayesian approaches?",
+    "text": "When to use Frequentist and when to use Bayesian approaches?\nFrequentist are often sufficient and comparable to Bayesian stats!"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-data",
+    "href": "slides/why_we_bayesian_slides.html#the-data",
+    "title": "Why be a Bayesian",
+    "section": "The data",
+    "text": "The data\n\n\nCode\nset.seed(18062026)\n\n# Data\nn &lt;- 100                 # samples\nx &lt;- rnorm(n)            # x = N(0,1)      \ny &lt;- 2 + 3*x + rnorm(n)  # α = 2, β = 3, ε = N(0,1)"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-models",
+    "href": "slides/why_we_bayesian_slides.html#the-models",
+    "title": "Why be a Bayesian",
+    "section": "The models",
+    "text": "The models\nFrequentist:\n\n\nCode\n# Frequentist OLS\nfit_freq &lt;- lm(y ~ x)\n\n\nBayesian:\n\n\nCode\n# Bayesian regression with flat priors\nlibrary(rstanarm)\nfit_bayes &lt;- stan_glm(\n  y ~ x,\n  prior = NULL,            # flat prior on coefficients\n  prior_intercept = NULL,\n  chains = 2, iter = 2000, refresh = 0\n)"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#what-did-we-find",
+    "href": "slides/why_we_bayesian_slides.html#what-did-we-find",
+    "title": "Why be a Bayesian",
+    "section": "What did we find?",
+    "text": "What did we find?\nFrequentist:\n\n\nCode\nparameters::parameters(fit_freq, ci = 0.95) |&gt; \n  dplyr::select(Parameter, Coefficient, CI, CI_low, CI_high)\n\n\n# Fixed Effects\n\nParameter   | Coefficient |       95% CI\n----------------------------------------\n(Intercept) |        2.09 | [1.91, 2.28]\nx           |        3.01 | [2.82, 3.20]\n\n\nBayesian:\n\n\nCode\nparameters::parameters(fit_bayes, ci = 0.95) |&gt; \n  dplyr::select(Parameter, Median, CI, CI_low, CI_high)\n\n\n# Fixed Effects\n\nParameter   | Median |       95% CI\n-----------------------------------\n(Intercept) |   2.09 | [1.91, 2.27]\nx           |   3.00 | [2.82, 3.20]"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#then-why-do-we-bother",
+    "href": "slides/why_we_bayesian_slides.html#then-why-do-we-bother",
+    "title": "Why be a Bayesian",
+    "section": "THEN WHY DO WE BOTHER!?",
+    "text": "THEN WHY DO WE BOTHER!?"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#when-to-use-frequentist-and-when-to-use-bayesian-approaches-1",
+    "href": "slides/why_we_bayesian_slides.html#when-to-use-frequentist-and-when-to-use-bayesian-approaches-1",
+    "title": "Why be a Bayesian",
+    "section": "When to use Frequentist and when to use Bayesian approaches?",
+    "text": "When to use Frequentist and when to use Bayesian approaches?"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#a-more-realistic-example",
+    "href": "slides/why_we_bayesian_slides.html#a-more-realistic-example",
+    "title": "Why be a Bayesian",
+    "section": "A More Realistic example",
+    "text": "A More Realistic example\n\n\nSuppose we have:\n\n30 observations\n10 predictors\nstrong predictor correlation\nweak signal\nuncertain mechanisms\n\n\nThis is extremely common in:\n\nsocial science\nbiology\npsychology\neconomics\npolicy research"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#simulating-correlated-predictors",
+    "href": "slides/why_we_bayesian_slides.html#simulating-correlated-predictors",
+    "title": "Why be a Bayesian",
+    "section": "Simulating Correlated Predictors",
+    "text": "Simulating Correlated Predictors\n\n\nFigure 1: Correlation structure among predictors."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-data-generating-process",
+    "href": "slides/why_we_bayesian_slides.html#the-data-generating-process",
+    "title": "Why be a Bayesian",
+    "section": "The Data Generating Process",
+    "text": "The Data Generating Process\nThe truth is simple.\nOnly one predictor matters.\n\\[\ny = 1.5x_1 + \\epsilon\n\\]\nAll other predictors have zero effect.\nYet predictors are highly correlated."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#talk-to-your-neighbor",
+    "href": "slides/why_we_bayesian_slides.html#talk-to-your-neighbor",
+    "title": "Why be a Bayesian",
+    "section": "Talk to your neighbor",
+    "text": "Talk to your neighbor\nwhat do you think will happen?\n\nthink about the model specification\ndoes the same happen in the Frequentist and Bayesian models?"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-model-results-when-p30-and-n30",
+    "href": "slides/why_we_bayesian_slides.html#the-model-results-when-p30-and-n30",
+    "title": "Why be a Bayesian",
+    "section": "The model results when p=30 and n=30",
+    "text": "The model results when p=30 and n=30\n\n\nx30 doesn’t even have an estimate due to unindentifiability!"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-model-results-when-p30-and-n32",
+    "href": "slides/why_we_bayesian_slides.html#the-model-results-when-p30-and-n32",
+    "title": "Why be a Bayesian",
+    "section": "The model results when p=30 and n=32",
+    "text": "The model results when p=30 and n=32\n\n\ncoliniarity inflates CIs!"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-frequentist-ideal",
+    "href": "slides/why_we_bayesian_slides.html#the-frequentist-ideal",
+    "title": "Why be a Bayesian",
+    "section": "The Frequentist Ideal",
+    "text": "The Frequentist Ideal\nOrdinary Least Squares (OLS):\n\nminimizes squared residuals\nproduces unbiased estimators\nprovides confidence intervals and p-values\nworks beautifully asymptotically\n\nThe classical linear model:\n\\[\ny = X\\beta + \\epsilon\n\\]\nwith\n\\[\n\\epsilon \\sim \\mathcal{N}(0, \\sigma^2)\n\\]\nOLS estimator:\n\\[\n\\hat{\\beta}_{OLS} = (X^TX)^{-1}X^Ty\n\\]"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-hidden-assumption",
+    "href": "slides/why_we_bayesian_slides.html#the-hidden-assumption",
+    "title": "Why be a Bayesian",
+    "section": "The Hidden Assumption",
+    "text": "The Hidden Assumption\nOLS works well when:\n\npredictors are not highly collinear\nsample size is large\nsignal-to-noise ratio is reasonable\nparameters are strongly identified\n\nBut real data often violate all of these simultaneously."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-mechanism-of-failure",
+    "href": "slides/why_we_bayesian_slides.html#the-mechanism-of-failure",
+    "title": "Why be a Bayesian",
+    "section": "The Mechanism of Failure",
+    "text": "The Mechanism of Failure\nWith correlated predictors:\n\nmany coefficient combinations fit equally well\nthe likelihood becomes nearly flat\ntiny noise changes estimates dramatically\n\nOLS asks:\n\n\n\nWhich coefficients minimize prediction error?\n\n\n\nBut it never asks:\n\n\n\nAre these coefficient magnitudes plausible?"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-geometry-problem",
+    "href": "slides/why_we_bayesian_slides.html#the-geometry-problem",
+    "title": "Why be a Bayesian",
+    "section": "The Geometry Problem",
+    "text": "The Geometry Problem\nCollinearity creates unstable directions in parameter space.\nThe matrix:\n\\[\n(X^TX)^{-1}\n\\]\nbecomes nearly singular.\nAs a result:\n\ncoefficients explode\nsigns flip\nuncertainty becomes enormous\ninterpretation collapses"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-bayesian-solution",
+    "href": "slides/why_we_bayesian_slides.html#the-bayesian-solution",
+    "title": "Why be a Bayesian",
+    "section": "The Bayesian Solution",
+    "text": "The Bayesian Solution\nBayesian regression adds prior information:\n\\[\n\\beta_j \\sim \\mathcal{N}(0,1)\n\\]\nPosterior:\n\\[\np(\\beta \\mid y)\n\\propto\np(y \\mid \\beta)p(\\beta)\n\\]\nThe prior regularizes weakly identified directions.\nThis changes the geometry of inference."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#important-clarification",
+    "href": "slides/why_we_bayesian_slides.html#important-clarification",
+    "title": "Why be a Bayesian",
+    "section": "Important Clarification",
+    "text": "Important Clarification\nBayesian priors are not magic.\nThey encode structural skepticism.\nThe prior says:\n\n\n\nLarge coefficients should require strong evidence.\n\n\n\nThis is often scientifically reasonable."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#explaining-the-simulation-setup",
+    "href": "slides/why_we_bayesian_slides.html#explaining-the-simulation-setup",
+    "title": "Why be a Bayesian",
+    "section": "Explaining the simulation Setup",
+    "text": "Explaining the simulation Setup\nWe simulated the failure directly:\n\nsmall sample\nmany predictors\nhigh collinearity\nweak signal"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#frequentist-ols",
+    "href": "slides/why_we_bayesian_slides.html#frequentist-ols",
+    "title": "Why be a Bayesian",
+    "section": "Frequentist OLS",
+    "text": "Frequentist OLS"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#why-this-happens",
+    "href": "slides/why_we_bayesian_slides.html#why-this-happens",
+    "title": "Why be a Bayesian",
+    "section": "Why This Happens",
+    "text": "Why This Happens\nPredictors are interchangeable.\nThe model can fit equally well using:\n\nhuge positive x1\nhuge negative x2\n\nOLS has no mechanism preventing absurd parameter values.\nIt only optimizes fit."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-frequentist-interpretation-problem",
+    "href": "slides/why_we_bayesian_slides.html#the-frequentist-interpretation-problem",
+    "title": "Why be a Bayesian",
+    "section": "The Frequentist Interpretation Problem",
+    "text": "The Frequentist Interpretation Problem\nResearchers now face impossible interpretation.\nQuestions become unstable:\n\nWhich variables matter?\nWhich signs are trustworthy?\nWhich effects are real?\n\np-values fluctuate wildly across samples."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#bayesian-regression",
+    "href": "slides/why_we_bayesian_slides.html#bayesian-regression",
+    "title": "Why be a Bayesian",
+    "section": "Bayesian Regression",
+    "text": "Bayesian Regression\n\nHow did it do that?"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#lets-have-a-look",
+    "href": "slides/why_we_bayesian_slides.html#lets-have-a-look",
+    "title": "Why be a Bayesian",
+    "section": "Let’s have a look",
+    "text": "Let’s have a look\n\nScientific sceptisism saves us from statistical model stupidity"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#what-the-prior-does",
+    "href": "slides/why_we_bayesian_slides.html#what-the-prior-does",
+    "title": "Why be a Bayesian",
+    "section": "What the Prior Does",
+    "text": "What the Prior Does\nThe prior shrinks implausible coefficients toward zero.\nNot aggressively.\nJust enough to stabilize weakly identified directions.\nThis is called:\n\nregularization\nshrinkage\npartial pooling of uncertainty"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#bias-variance-tradeoff",
+    "href": "slides/why_we_bayesian_slides.html#bias-variance-tradeoff",
+    "title": "Why be a Bayesian",
+    "section": "Bias-Variance Tradeoff",
+    "text": "Bias-Variance Tradeoff\nFrequentist OLS emphasizes unbiasedness.\nBut unbiased estimators can have enormous variance.\nBayesian regression accepts:\n\ntiny bias\ndramatically lower variance\n\nThis often improves:\n\nprediction\ncalibration\nscientific interpretation"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-deep-point",
+    "href": "slides/why_we_bayesian_slides.html#the-deep-point",
+    "title": "Why be a Bayesian",
+    "section": "The Deep Point",
+    "text": "The Deep Point\nOLS treats the model as fixed truth.\nBayesian workflow treats models as uncertain approximations.\nThis distinction is profound."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#posterior-interpretation",
+    "href": "slides/why_we_bayesian_slides.html#posterior-interpretation",
+    "title": "Why be a Bayesian",
+    "section": "Posterior Interpretation",
+    "text": "Posterior Interpretation\nFrequentist confidence interval:\n\n\n\nDoes NOT mean: “There is a 95% probability the parameter lies here.”\n\n\n\nBayesian posterior interval:\n\n\n\nLiterally means: “Given model and data, there is 95% posterior probability the parameter lies here.”"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#weak-identification",
+    "href": "slides/why_we_bayesian_slides.html#weak-identification",
+    "title": "Why be a Bayesian",
+    "section": "Weak Identification",
+    "text": "Weak Identification\nThe Bayesian posterior honestly expresses:\n\nuncertainty\npartial identifiability\nlack of information\n\nSometimes the correct scientific answer is:\n\n\n\n“We do not know very much.”\n\n\n\nOLS often hides this instability behind noisy point estimates."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#posterior-predictive-thinking",
+    "href": "slides/why_we_bayesian_slides.html#posterior-predictive-thinking",
+    "title": "Why be a Bayesian",
+    "section": "Posterior Predictive Thinking",
+    "text": "Posterior Predictive Thinking\nBayesian models naturally support:\n\nposterior predictive checks\nhierarchical models\nmeasurement error\ncausal modeling\nuncertainty propagation\n\nThis enables model criticism rather than blind estimation."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#a-more-extreme-failure",
+    "href": "slides/why_we_bayesian_slides.html#a-more-extreme-failure",
+    "title": "Why be a Bayesian",
+    "section": "A More Extreme Failure",
+    "text": "A More Extreme Failure\nIncrease:\n\npredictors from 10 to 20\ncorrelation from 0.9 to 0.95\n\nOLS becomes nearly meaningless.\nCoefficients:\n\nexplode\nreverse sign\nbecome sample-dependent noise\n\nBayesian regularization still produces stable inference."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-core-mechanism",
+    "href": "slides/why_we_bayesian_slides.html#the-core-mechanism",
+    "title": "Why be a Bayesian",
+    "section": "The Core Mechanism",
+    "text": "The Core Mechanism\nFrequentist OLS:\n\\(hat{β}\\) =arg min RSS\nBayesian regression:\n\\[\np(\\beta \\mid y)\n\\propto\np(y \\mid \\beta)p(\\beta)\n\\]\nThe prior changes the geometry of inference.\nThis is the key idea."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#final-takeaway",
+    "href": "slides/why_we_bayesian_slides.html#final-takeaway",
+    "title": "Why be a Bayesian",
+    "section": "Final Takeaway",
+    "text": "Final Takeaway\nBayesian regression matters because:\n\nreal models are weakly identified\nfinite samples are noisy\npredictors are correlated\nunconstrained likelihoods become pathological\n\nPriors repair inferential geometry."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#final-thought",
+    "href": "slides/why_we_bayesian_slides.html#final-thought",
+    "title": "Why be a Bayesian",
+    "section": "Final Thought",
+    "text": "Final Thought\nThe Bayesian question is not:\n\n\n\n“What coefficient minimizes error?”\n\n\n\nThe Bayesian question is:\n\n\n\n“What parameter values remain plausible after combining data with scientific structure?”\n\n\n\nThat is usually the more meaningful scientific question."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#sec-references",
+    "href": "slides/why_we_bayesian_slides.html#sec-references",
+    "title": "Why be a Bayesian",
+    "section": "References",
+    "text": "References\n\nGelman, A., et al. Bayesian Data Analysis\nMcElreath, R. Statistical Rethinking\nVehtari, A., Gelman, A., Gabry, J. (2017) “Practical Bayesian model evaluation using leave-one-out cross-validation”\nHastie, Tibshirani, Friedman. Elements of Statistical Learning"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#exercise",
+    "href": "slides/why_we_bayesian_slides.html#exercise",
+    "title": "Why be a Bayesian",
+    "section": "Exercise:",
+    "text": "Exercise:\nSee exercises at website…"
+  },
+  {
     "objectID": "blog/2025-11-20-ATE-ATT-ATU-CATE.html",
     "href": "blog/2025-11-20-ATE-ATT-ATU-CATE.html",
     "title": "Estimating causal effects using a simplified R implementation",
@@ -39,7 +375,7 @@
     "href": "blog/index.html",
     "title": "Blog",
     "section": "",
-    "text": "The blog topics are a mix of things: answers to questions friends and colleagues ask me, experiments with methods or tools I want to learn better, and thoughts on tech and research practices that catch my interest. You might find posts about multilevel models with lme4, visualizations in ggplot2, or just a useful little R trick I want to remember later.\nCheck the Categories or scroll down for a small teaser of the material I have covered.\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nRust apps running within Quarto static websites hosted on Github Pages\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSetting up a new Mac for work\n\n\nUsing Homebrew and the terminal\n\n\n\nMac\n\nHomebrew\n\n\n\nIt can be tedious setting up a new computer. In this blog, I share my tricks for a more enjoyable experience\n\n\n\n\n\nJun 5, 2026\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nWhy be a Bayesian\n\n\nA non-technical introduction to the Bayesian approach\n\n\n\nBayesian\n\nAI life science\n\ncourse material\n\n\n\nBayesian inference is not only elegant and intuitive, but also helpful for overcoming common challenges with data from the life sciences\n\n\n\n\n\nMay 26, 2026\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nMake an elegant Table 1…\n\n\n… using {gt} and {tibble}\n\n\n\nR\n\ngt\n\ntable\n\nproduction\n\n\n\nUsing tibble for the template and gt for formatting, making a table 1 becomes a joy\n\n\n\n\n\nMar 11, 2026\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nEstimating causal effects using a simplified R implementation\n\n\nHow {marginaleffects} can make your causal inferece scripts readable\n\n\n\nR\n\nmarginaleffects\n\ncausal inference\n\nATE\n\n\n\nUsing marginaleffects, I show how to estimate ATE, ATT, ATU, and CATE in an RCT study\n\n\n\n\n\nNov 20, 2025\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nWhy random slopes matters…\n\n\n… and why random intercepts are often not enough\n\n\n\nR\n\nlme4\n\nmultilevel regression\n\n\n\nUsing lme4, I show why random slopes is often needed in biomedical research and experiments\n\n\n\n\n\nJul 23, 2025\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Github Actions for hosting websites\n\n\n\n\n\n\nGithub\n\n\n\nSetting up an action in Github is easy!\n\n\n\n\n\nJul 22, 2025\n\n\n\n\n\nNo matching items"
+    "text": "The blog topics are a mix of things: answers to questions friends and colleagues ask me, experiments with methods or tools I want to learn better, and thoughts on tech and research practices that catch my interest. You might find posts about multilevel models with lme4, visualizations in ggplot2, or just a useful little R trick I want to remember later.\nCheck the Categories or scroll down for a small teaser of the material I have covered.\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nRust apps running within Quarto static websites hosted on Github Pages\n\n\nA proof-of-concept guide for the interested learner\n\n\n\nLeptos\n\nRust\n\nQuarto\n\n\n\nExplores how Rust apps may be integrated within a Quarto static website, which can be hosted on Github Pages\n\n\n\n\n\nJun 12, 2026\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nSetting up a new Mac for work\n\n\nUsing Homebrew and the terminal\n\n\n\nMac\n\nHomebrew\n\n\n\nIt can be tedious setting up a new computer. In this blog, I share my tricks for a more enjoyable experience\n\n\n\n\n\nJun 5, 2026\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nWhy be a Bayesian\n\n\nA non-technical introduction to the Bayesian approach\n\n\n\nBayesian\n\nAI life science\n\ncourse material\n\n\n\nBayesian inference is not only elegant and intuitive, but also helpful for overcoming common challenges with data from the life sciences\n\n\n\n\n\nMay 26, 2026\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nMake an elegant Table 1…\n\n\n… using {gt} and {tibble}\n\n\n\nR\n\ngt\n\ntable\n\nproduction\n\n\n\nUsing tibble for the template and gt for formatting, making a table 1 becomes a joy\n\n\n\n\n\nMar 11, 2026\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nEstimating causal effects using a simplified R implementation\n\n\nHow {marginaleffects} can make your causal inferece scripts readable\n\n\n\nR\n\nmarginaleffects\n\ncausal inference\n\nATE\n\n\n\nUsing marginaleffects, I show how to estimate ATE, ATT, ATU, and CATE in an RCT study\n\n\n\n\n\nNov 20, 2025\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nWhy random slopes matters…\n\n\n… and why random intercepts are often not enough\n\n\n\nR\n\nlme4\n\nmultilevel regression\n\n\n\nUsing lme4, I show why random slopes is often needed in biomedical research and experiments\n\n\n\n\n\nJul 23, 2025\n\n\nDaniel S. Mazhari-Jensen\n\n\n\n\n\n\n\n\n\n\n\n\nUsing Github Actions for hosting websites\n\n\n\n\n\n\nGithub\n\n\n\nSetting up an action in Github is easy!\n\n\n\n\n\nJul 22, 2025\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "blog/2025-07-22-my-first-post.html",
@@ -130,7 +466,14 @@
     "href": "blog/why_we_bayesian.html",
     "title": "Why be a Bayesian",
     "section": "",
-    "text": "Slides\n\n\n\n\n\n\n\n\n\n\nNoteTeacher note\n\n\n\n\n\nThe slides contain speaking notes that you can view by pressing ‘S’ on the keyboard.\n\n\n\n\nWhy be a Bayesian?\nThere are many reasons to be a Bayesian.\n\n\nWhat is the alternative?\nFrequentist statistics\n\n\nIs there a fight?\nNo! That fight ended in the 90’s\n\n\nWhen to use Frequentist and when to use Bayesian approaches?\nFrequentist are often sufficient and comparable to Bayesian stats.\n\n\nBut sometimes, they are very different!\n\n\nCode\n# install.packages(c(\"MASS\", \"rstanarm\", \"tidyverse\"))\n\nlibrary(MASS)\nlibrary(rstanarm)\n\n\nLoading required package: Rcpp\n\n\nThis is rstanarm version 2.32.2\n\n\n- See https://mc-stan.org/rstanarm/articles/priors for changes to default priors!\n\n\n- Default priors may change, so it's safest to specify priors, even if equivalent to the defaults.\n\n\n- For execution on a local, multicore CPU with excess RAM we recommend calling\n\n\n  options(mc.cores = parallel::detectCores())\n\n\nCode\nlibrary(tidyverse)\n\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.3     ✔ tibble    3.3.1\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.2     \n\n\n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\n✖ dplyr::select() masks MASS::select()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\n\nCode\nset.seed(12)\n\n# -----------------------------\n# Simulate correlated predictors\n# -----------------------------\n\nn &lt;- 30\np &lt;- 10\n\nSigma &lt;- matrix(0.9, p, p)\ndiag(Sigma) &lt;- 1\n\nX &lt;- MASS::mvrnorm(n, mu = rep(0, p), Sigma = Sigma)\n\ncolnames(X) &lt;- paste0(\"x\", 1:p)\n\n# True data-generating process:\n# only x1 matters\n\nbeta_true &lt;- c(1.5, rep(0, p - 1))\n\ny &lt;- X %*% beta_true + rnorm(n, 0, 2)\n\ndat &lt;- data.frame(y, X, id = 1:n)\ndat &lt;- dat |&gt;\n  dplyr::mutate(\n    id = as.factor(id)\n  )\n\ndat_long &lt;- dat |&gt;\n  tidyr::pivot_longer(\n    cols = starts_with(\"x\"),\n    names_to = \"predictor\",\n    values_to = \"value\",\n  )\n\n# -----------------------------\n# Frequentist OLS\n# -----------------------------\n\nfit_lm &lt;- lm(y ~ ., data = dat)\nfit_lm_long &lt;- lm(y ~ ., data = dat_long)\n\nsummary(fit_lm)\n\n\n\nCall:\nlm(formula = y ~ ., data = dat)\n\nResiduals:\nALL 30 residuals are 0: no residual degrees of freedom!\n\nCoefficients: (10 not defined because of singularities)\n            Estimate Std. Error t value Pr(&gt;|t|)\n(Intercept)  -3.3873        NaN     NaN      NaN\nx1          -27.4343        NaN     NaN      NaN\nx2           36.6169        NaN     NaN      NaN\nx3           44.9134        NaN     NaN      NaN\nx4           12.6781        NaN     NaN      NaN\nx5           -4.3991        NaN     NaN      NaN\nx6           32.5898        NaN     NaN      NaN\nx7          -29.7243        NaN     NaN      NaN\nx8          -63.8061        NaN     NaN      NaN\nx9           12.4932        NaN     NaN      NaN\nx10         -26.9036        NaN     NaN      NaN\nid2         -74.7875        NaN     NaN      NaN\nid3          43.2553        NaN     NaN      NaN\nid4          41.7687        NaN     NaN      NaN\nid5          24.3886        NaN     NaN      NaN\nid6           3.5718        NaN     NaN      NaN\nid7          -0.6418        NaN     NaN      NaN\nid8          87.4302        NaN     NaN      NaN\nid9           0.6060        NaN     NaN      NaN\nid10         29.8794        NaN     NaN      NaN\nid11         63.7978        NaN     NaN      NaN\nid12         22.6777        NaN     NaN      NaN\nid13         56.9841        NaN     NaN      NaN\nid14         50.2156        NaN     NaN      NaN\nid15         11.9500        NaN     NaN      NaN\nid16         44.2689        NaN     NaN      NaN\nid17         21.7949        NaN     NaN      NaN\nid18        -28.4541        NaN     NaN      NaN\nid19        -59.0872        NaN     NaN      NaN\nid20        -10.5432        NaN     NaN      NaN\nid21              NA         NA      NA       NA\nid22              NA         NA      NA       NA\nid23              NA         NA      NA       NA\nid24              NA         NA      NA       NA\nid25              NA         NA      NA       NA\nid26              NA         NA      NA       NA\nid27              NA         NA      NA       NA\nid28              NA         NA      NA       NA\nid29              NA         NA      NA       NA\nid30              NA         NA      NA       NA\n\nResidual standard error: NaN on 0 degrees of freedom\nMultiple R-squared:      1, Adjusted R-squared:    NaN \nF-statistic:   NaN on 29 and 0 DF,  p-value: NA\n\n\nCode\n# -----------------------------\n# Bayesian regression\n# -----------------------------\n\nfit_bayes &lt;- rstanarm::stan_glm(\n  y ~ .,\n  data = dat,\n  prior = rstanarm::normal(0, 1),\n  prior_intercept = rstanarm::normal(0, 5),\n  chains = 4,\n  iter = 2000,\n  refresh = 0\n)\n\nprint(fit_bayes, digits = 2)\n\n\nstan_glm\n family:       gaussian [identity]\n formula:      y ~ .\n observations: 30\n predictors:   40\n------\n            Median MAD_SD\n(Intercept) -0.07   0.37 \nx1           0.40   0.82 \nx2           0.63   0.80 \nx3           0.30   0.76 \nx4           0.09   0.78 \nx5           0.17   0.74 \nx6          -0.02   0.72 \nx7          -0.79   0.71 \nx8           0.65   0.68 \nx9          -0.24   0.79 \nx10          0.79   0.81 \nid2         -0.19   0.90 \nid3         -0.61   0.89 \nid4         -0.23   0.92 \nid5          0.65   0.93 \nid6          0.51   0.88 \nid7         -0.05   0.89 \nid8          0.13   0.91 \nid9          0.94   0.91 \nid10        -0.01   0.91 \nid11         0.06   0.88 \nid12         0.02   0.89 \nid13         0.27   0.90 \nid14         0.50   0.89 \nid15        -0.64   0.92 \nid16        -0.03   0.88 \nid17        -0.55   0.89 \nid18         0.07   0.89 \nid19        -0.18   0.90 \nid20        -0.96   0.90 \nid21         0.51   0.89 \nid22         0.01   0.89 \nid23        -0.55   0.93 \nid24         0.22   0.92 \nid25        -0.32   0.90 \nid26         0.25   0.89 \nid27        -0.05   0.90 \nid28         0.39   0.90 \nid29         0.19   0.88 \nid30         0.59   0.91 \n\nAuxiliary parameter(s):\n      Median MAD_SD\nsigma 1.76   0.32  \n\n------\n* For help interpreting the printed output see ?print.stanreg\n* For info on the priors used see ?prior_summary.stanreg\n\n\n\n\nCode\nfit_bayes |&gt;\n  tidybayes::spread_draws(\n    #`(Intercept)`,\n    `^x\\\\d+`,\n    regex = TRUE\n  ) |&gt;\n  #tidybayes::median_qi(condition_mean = `(Intercept)` + b, .width = c(.95, .66)) |&gt;\n  tidybayes::median_qi(x1, .width = c(.95, .66)) |&gt;\n  #ggplot2::ggplot(aes(y = group, x = condition_mean, xmin = .lower, xmax = .upper)) +\n  ggplot2::ggplot(aes(y = x1, x = x1, xmin = .lower, xmax = .upper)) +\n  ggdist::geom_pointinterval()\n\n\n\n\n\n\n\n\n\nCode\n####\n\nbayes_draws &lt;- fit_bayes |&gt;\n  #tidybayes::spread_draws(`(Intercept)`, `^x\\\\d+`, regex = TRUE) |&gt;\n  tidybayes::spread_draws(`^x\\\\d+`, regex = TRUE) |&gt;\n  tidyr::pivot_longer(\n    #cols = c(`(Intercept)`, tidyselect::starts_with(\"x\")),\n    cols = tidyselect::starts_with(\"x\"),\n    names_to = \"term\",\n    values_to = \"estimate\"\n  ) |&gt;\n  dplyr::mutate(model = \"Bayesian\")\n\n\nfreq_df &lt;- broom::tidy(fit_lm, conf.int = TRUE) |&gt;\n  dplyr::select(term, estimate, conf.low, conf.high) |&gt;\n  dplyr::mutate(model = \"Frequentist\")\n\n\nWarning in qt(a, object$df.residual): NaNs produced\n\n\nCode\ntruth_df &lt;- tibble::tibble(\n  term = c(\"(Intercept)\", paste0(\"x\", 1:p)),\n  truth = c(0, beta_true),\n  model = \"Truth\"\n)\n\nggplot2::ggplot() +\n\n  # Bayesian posterior intervals\n  ggdist::stat_pointinterval(\n    data = bayes_draws,\n    aes(x = estimate, y = term),\n    .width = c(.5, .8, .95)\n  ) +\n\n  # Frequentist estimates + CI\n  ggdist::geom_pointinterval(\n    data = freq_df,\n    aes(\n      x = estimate,\n      xmin = conf.low,\n      xmax = conf.high,\n      y = term\n    ),\n    color = \"red\"\n  ) +\n\n  # Truth\n  ggplot2::geom_point(\n    data = truth_df,\n    ggplot2::aes(x = truth, y = term),\n    color = \"blue\",\n    size = 3,\n    shape = 4,\n    stroke = 1.5\n  ) +\n\n  ggplot2::facet_wrap(~model) +\n\n  ggplot2::theme_bw()\n\n\nWarning: Removed 40 rows containing missing values or values outside the scale range\n(`geom_segment()`).\n\n\n\n\n\n\n\n\n\nCode\n## other approach\n\nbayes_summary &lt;- bayes_draws |&gt;\n  dplyr::group_by(term) |&gt;\n  tidybayes::median_qi(estimate, .width = 0.95) |&gt;\n  dplyr::transmute(\n    term,\n    estimate,\n    conf.low = .lower,\n    conf.high = .upper,\n    model = \"Bayesian\"\n  )\n\n\nfreq_plot &lt;- freq_df |&gt;\n  dplyr::transmute(\n    term,\n    estimate,\n    conf.low,\n    conf.high,\n    model = \"Frequentist\"\n  )\n\nplot_df &lt;- dplyr::bind_rows(\n  bayes_summary,\n  freq_plot\n)\n\nggplot2::ggplot(\n  plot_df,\n  ggplot2::aes(\n    x = estimate,\n    y = term,\n    color = model\n  )\n) +\n\n  ggdist::geom_pointinterval(\n    ggplot2::aes(\n      xmin = conf.low,\n      xmax = conf.high\n    ),\n    position = ggplot2::position_dodge(width = 0.5)\n  ) +\n\n  ggplot2::geom_point(\n    data = truth_df,\n    ggplot2::aes(x = truth, y = term),\n    inherit.aes = FALSE,\n    color = \"blue\",\n    shape = 4,\n    size = 3,\n    stroke = 1.2\n  ) +\n\n  ggplot2::geom_vline(\n    xintercept = 0,\n    linetype = 2\n  ) +\n\n  ggplot2::theme_bw()\n\n\nWarning: Removed 40 rows containing missing values or values outside the scale range\n(`geom_segment()`)."
+    "text": "Slides"
+  },
+  {
+    "objectID": "blog/why_we_bayesian.html#visualizing-the-model",
+    "href": "blog/why_we_bayesian.html#visualizing-the-model",
+    "title": "Why be a Bayesian",
+    "section": "Visualizing the model:",
+    "text": "Visualizing the model:\n\n\nCode\n# -----------------------------\n# Prior-only model\n# -----------------------------\n\nfit_prior &lt;- stan_glm(\n  form,\n  data = dat,\n  prior = normal(0, 1.5),\n  prior_intercept = normal(0, 0.25),\n  chains = 4,\n  iter = 2000,\n  refresh = 0,\n  prior_PD = TRUE\n)\n\n# -----------------------------\n# Extract prior/posterior draws\n# -----------------------------\n\ncoef_name &lt;- \"x1\"  # coefficient of interest\n\npost_draws &lt;- posterior::as_draws_df(fit_bayes) |&gt;\n  dplyr::transmute(b = .data[[coef_name]])\n\n\nWarning: Dropping 'draws_df' class as required metadata was removed.\n\n\nCode\nprior_draws &lt;- posterior::as_draws_df(fit_prior) |&gt;\n  dplyr::transmute(b = .data[[coef_name]])\n\n\nWarning: Dropping 'draws_df' class as required metadata was removed.\n\n\nCode\ndraws &lt;- dplyr::bind_rows(\n  prior = prior_draws,\n  posterior = post_draws,\n  .id = \"dist\"\n)\n\n# -----------------------------\n# Approximate likelihood\n# -----------------------------\n\nbhat &lt;- coef(summary(fit_lm))[coef_name, \"Estimate\"]\nse   &lt;- coef(summary(fit_lm))[coef_name, \"Std. Error\"]\n\nlikelihood_data &lt;- tibble::tibble(\n  b = seq(bhat - 4 * se, bhat + 4 * se, length.out = 500)\n) |&gt;\n  dplyr::mutate(\n    density = dnorm(b, mean = bhat, sd = se),\n    dist = \"likelihood\"\n  )\n\n# -----------------------------\n# Plot\n# -----------------------------\n\nlibrary(ggplot2)\n\nggplot(draws, aes(x = b, fill = dist)) +\n  ggdist::stat_slab(alpha = 0.5) +\n  geom_area(\n    data = likelihood_data,\n    aes(x = b, y = density, fill = \"likelihood\"),\n    inherit.aes = FALSE,\n    alpha = 0.5\n  ) +\n  scale_fill_manual(\n    values = c(\n      setNames(\n        viridisLite::viridis(length(unique(draws$dist)),\n                             option = \"D\", end = .85),\n        unique(draws$dist)\n      ),\n      likelihood = \"#CCBB44\"\n    )\n  ) +\n  theme_linedraw()"
   },
   {
     "objectID": "blog/2026-05-06-new-mac.html",
