@@ -423,43 +423,43 @@
     "objectID": "slides/why_we_bayesian_slides.html#how-many-have-heard-about-bayesian-inference",
     "href": "slides/why_we_bayesian_slides.html#how-many-have-heard-about-bayesian-inference",
     "title": "Why be a Bayesian",
-    "section": "🙋‍♀️🙋 How many have heard about Bayesian inference?",
-    "text": "🙋‍♀️🙋 How many have heard about Bayesian inference?"
+    "section": "How many have heard about Bayesian inference? 🙋‍♀️🙋",
+    "text": "How many have heard about Bayesian inference? 🙋‍♀️🙋"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#how-many-already-use-a-bayesian-workflow",
     "href": "slides/why_we_bayesian_slides.html#how-many-already-use-a-bayesian-workflow",
     "title": "Why be a Bayesian",
-    "section": "🙋‍♀️🙋 How many already use a Bayesian workflow?",
-    "text": "🙋‍♀️🙋 How many already use a Bayesian workflow?"
+    "section": "How many already use a Bayesian workflow? 🙋‍♀️🙋",
+    "text": "How many already use a Bayesian workflow? 🙋‍♀️🙋"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#how-many-have-read-a-paper-using-bayesian-stats",
     "href": "slides/why_we_bayesian_slides.html#how-many-have-read-a-paper-using-bayesian-stats",
     "title": "Why be a Bayesian",
-    "section": "🙋‍♀️🙋 How many have read a paper using Bayesian stats?",
-    "text": "🙋‍♀️🙋 How many have read a paper using Bayesian stats?"
+    "section": "How many have read a paper using Bayesian stats? 🙋‍♀️🙋",
+    "text": "How many have read a paper using Bayesian stats? 🙋‍♀️🙋"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#how-many-of-you-understood-that-paper-using-bayesian-stats",
     "href": "slides/why_we_bayesian_slides.html#how-many-of-you-understood-that-paper-using-bayesian-stats",
     "title": "Why be a Bayesian",
-    "section": "🙋‍♀️🙋 How many (of you) understood that paper using Bayesian stats?",
-    "text": "🙋‍♀️🙋 How many (of you) understood that paper using Bayesian stats?"
+    "section": "How many (of you) understood that paper using Bayesian stats? 🙋‍♀️🙋",
+    "text": "How many (of you) understood that paper using Bayesian stats? 🙋‍♀️🙋"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#are-you-ready-to-get-a-non-technical-introduction",
     "href": "slides/why_we_bayesian_slides.html#are-you-ready-to-get-a-non-technical-introduction",
     "title": "Why be a Bayesian",
-    "section": "🎉🥳 Are you ready to get a non-technical introduction?",
-    "text": "🎉🥳 Are you ready to get a non-technical introduction?"
+    "section": "Are you ready to get a non-technical introduction? 🎉🥳",
+    "text": "Are you ready to get a non-technical introduction? 🎉🥳"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-core-question",
     "href": "slides/why_we_bayesian_slides.html#the-core-question",
     "title": "Why be a Bayesian",
     "section": "The Core Question",
-    "text": "The Core Question\nWhy do we need a Bayesian approach to regression\n\nwe can just use ordinary least squares?\n\nThe answer is not (only):\n\nphilosophy\nelegance\na matter of preference\n\n\n\n\nReal regression problems are often weakly identified, noisy, unstable, and geometrically pathological."
+    "text": "The Core Question\n\nWhy do we need a Bayesian approach to regression?\n\nCan’t we just use ordinary least squares?\nThe answer is not (only):\n\nphilosophy\nelegance\na matter of preference\n\n\n\n\nReal regression problems are often weakly identified, noisy, unstable, and geometrically pathological."
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-ultra-quick-answer",
@@ -515,7 +515,7 @@
     "href": "slides/why_we_bayesian_slides.html#the-data",
     "title": "Why be a Bayesian",
     "section": "The data",
-    "text": "The data\n\n\nCode\nset.seed(18062026)\n\n# Data\nn &lt;- 100\nx &lt;- rnorm(n)\ny &lt;- 2 + 3*x + rnorm(n)"
+    "text": "The data\n\n\nCode\nset.seed(18062026)\n\n# Data\nn &lt;- 100                 # samples\nx &lt;- rnorm(n)            # x = N(0,1)      \ny &lt;- 2 + 3*x + rnorm(n)  # α = 2, β = 3, ε = N(0,1)"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-frequentist-model",
@@ -634,14 +634,14 @@
     "href": "slides/why_we_bayesian_slides.html#simulating-correlated-predictors",
     "title": "Why be a Bayesian",
     "section": "Simulating Correlated Predictors",
-    "text": "Simulating Correlated Predictors\n\n\n           y         x1         x2          x3         x4         x5         x6\n1 -0.1961518  1.8444216  1.1755859  1.36242693  1.5860268  1.0522241  1.9153715\n2 -3.9610212 -1.4002369 -0.8728670 -1.92798876 -1.4382048 -1.5916873 -1.4279640\n3 -0.3485932  1.1230911  0.9519902  1.05839819  1.0142105  0.7056207  0.6561048\n4  1.0940988  1.0116503  0.6106419  0.89936157  1.0724128  0.7439559  0.5383437\n5  6.6848562  2.2527489  1.8064046  2.03291815  1.7752270  1.4767093  1.8077183\n6  2.1736365  0.4820288  0.1111457  0.02908052  0.1636623  0.1411899  0.5134158\n          x7         x8         x9        x10\n1  1.7029546  1.3211725  1.0272723  1.1362584\n2 -1.1635603 -1.8412016 -1.6486445 -1.7328827\n3  0.8502600  0.6490287  0.9064352  1.2116213\n4  0.8910805  1.3111822  0.6863198  1.0113422\n5  1.9829103  2.1388573  1.8764620  1.9063351\n6  0.5513129 -0.3090752  0.3712641  0.5435139\n\n\n\n\nFigure 1: Correlation structure among predictors."
+    "text": "Simulating Correlated Predictors\n\n\nFigure 1: Correlation structure among predictors."
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#frequentist-ols",
     "href": "slides/why_we_bayesian_slides.html#frequentist-ols",
     "title": "Why be a Bayesian",
     "section": "Frequentist OLS",
-    "text": "Frequentist OLS\n\n\n\nTable 1\n\n\n\n\nCall:\nlm(formula = y ~ ., data = dat)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-3.6106 -0.9145  0.0206  0.9531  2.8211 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)  \n(Intercept)  -0.2878     0.3902  -0.738   0.4698  \nx1            1.3994     2.0225   0.692   0.4973  \nx2            2.1853     1.4517   1.505   0.1487  \nx3            0.4486     1.3222   0.339   0.7381  \nx4           -1.4188     1.4441  -0.982   0.3382  \nx5           -1.0092     1.3241  -0.762   0.4553  \nx6            0.0313     1.2184   0.026   0.9798  \nx7           -0.8261     1.2949  -0.638   0.5311  \nx8            0.4908     1.0258   0.478   0.6378  \nx9           -3.1719     1.5098  -2.101   0.0492 *\nx10           3.9719     1.5610   2.544   0.0198 *\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 1.924 on 19 degrees of freedom\nMultiple R-squared:  0.6575,    Adjusted R-squared:  0.4772 \nF-statistic: 3.647 on 10 and 19 DF,  p-value: 0.007397"
+    "text": "Frequentist OLS"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#why-this-happens",
@@ -662,14 +662,14 @@
     "href": "slides/why_we_bayesian_slides.html#bayesian-regression",
     "title": "Why be a Bayesian",
     "section": "Bayesian Regression",
-    "text": "Bayesian Regression\n\n\nstan_glm\n family:       gaussian [identity]\n formula:      y ~ .\n observations: 30\n predictors:   11\n------\n            Median MAD_SD\n(Intercept) -0.06   0.36 \nx1           0.47   0.83 \nx2           0.66   0.76 \nx3           0.19   0.72 \nx4          -0.41   0.80 \nx5           0.10   0.78 \nx6           0.04   0.71 \nx7          -0.10   0.72 \nx8           0.71   0.69 \nx9          -0.50   0.77 \nx10          0.93   0.78 \n\nAuxiliary parameter(s):\n      Median MAD_SD\nsigma 1.97   0.28  \n\n------\n* For help interpreting the printed output see ?print.stanreg\n* For info on the priors used see ?prior_summary.stanreg"
+    "text": "Bayesian Regression\n\nHow did it do that?"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#lets-have-a-look",
     "href": "slides/why_we_bayesian_slides.html#lets-have-a-look",
     "title": "Why be a Bayesian",
     "section": "Let’s have a look",
-    "text": "Let’s have a look\n\nmodel estimates and ground truth."
+    "text": "Let’s have a look\n\nscientific sceptisism saves us from statistical model stupidity"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#what-the-prior-does",
@@ -746,7 +746,7 @@
     "href": "slides/why_we_bayesian_slides.html#sec-references",
     "title": "Why be a Bayesian",
     "section": "References",
-    "text": "References\nGelman, A., et al. Bayesian Data Analysis McElreath, R. Statistical Rethinking Vehtari, A., Gelman, A., Gabry, J. (2017) “Practical Bayesian model evaluation using leave-one-out cross-validation” Hastie, Tibshirani, Friedman. Elements of Statistical Learning"
+    "text": "References\n\nGelman, A., et al. Bayesian Data Analysis\nMcElreath, R. Statistical Rethinking\nVehtari, A., Gelman, A., Gabry, J. (2017) “Practical Bayesian model evaluation using leave-one-out cross-validation”\nHastie, Tibshirani, Friedman. Elements of Statistical Learning"
   },
   {
     "objectID": "blog/why_we_bayesian.html#goal",
@@ -768,5 +768,47 @@
     "title": "Why be a Bayesian",
     "section": "Step 1 — Define a prior belief",
     "text": "Step 1 — Define a prior belief\nBefore collecting data, you assume that any value between 0 and 1 is possible.\nThis corresponds to:\n[ Beta(1,1) ]\nThis is a uniform distribution.\nIn R, visualize this prior:\ncurve(dbeta(x, 1, 1),\n      from = 0,\n      to = 1,\n      ylab = \"Density\",\n      xlab = expression(theta))"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#exercise",
+    "href": "slides/why_we_bayesian_slides.html#exercise",
+    "title": "Why be a Bayesian",
+    "section": "Exercise:",
+    "text": "Exercise:\nSee exercises at website…"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#bayes-in-the-style-of-xkcd",
+    "href": "slides/why_we_bayesian_slides.html#bayes-in-the-style-of-xkcd",
+    "title": "Why be a Bayesian",
+    "section": "Bayes in the style of xkcd",
+    "text": "Bayes in the style of xkcd"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#but-why-is-this-different-from-other-stats",
+    "href": "slides/why_we_bayesian_slides.html#but-why-is-this-different-from-other-stats",
+    "title": "Why be a Bayesian",
+    "section": "But why is this different from other stats?",
+    "text": "But why is this different from other stats?"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#a-more-realistic-example",
+    "href": "slides/why_we_bayesian_slides.html#a-more-realistic-example",
+    "title": "Why be a Bayesian",
+    "section": "A More Realistic example",
+    "text": "A More Realistic example\n\n\nSuppose we have:\n\n30 observations\n10 predictors\nstrong predictor correlation\nweak signal\nuncertain mechanisms\n\n\nThis is extremely common in:\n\nsocial science\nbiology\npsychology\neconomics\npolicy research"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#explaining-the-simulation-setup",
+    "href": "slides/why_we_bayesian_slides.html#explaining-the-simulation-setup",
+    "title": "Why be a Bayesian",
+    "section": "Explaining the simulation Setup",
+    "text": "Explaining the simulation Setup\nWe simulated the failure directly:\n\nsmall sample\nmany predictors\nhigh collinearity\nweak signal"
+  },
+  {
+    "objectID": "blog/why_we_bayesian.html#visualizing-the-model",
+    "href": "blog/why_we_bayesian.html#visualizing-the-model",
+    "title": "Why be a Bayesian",
+    "section": "Visualizing the model:",
+    "text": "Visualizing the model:\n\n\nCode\n# -----------------------------\n# Prior-only model\n# -----------------------------\n\nfit_prior &lt;- stan_glm(\n  form,\n  data = dat,\n  prior = normal(0, 1.5),\n  prior_intercept = normal(0, 0.25),\n  chains = 4,\n  iter = 2000,\n  refresh = 0,\n  prior_PD = TRUE\n)\n\n# -----------------------------\n# Extract prior/posterior draws\n# -----------------------------\n\ncoef_name &lt;- \"x1\"  # coefficient of interest\n\npost_draws &lt;- posterior::as_draws_df(fit_bayes) |&gt;\n  dplyr::transmute(b = .data[[coef_name]])\n\n\nWarning: Dropping 'draws_df' class as required metadata was removed.\n\n\nCode\nprior_draws &lt;- posterior::as_draws_df(fit_prior) |&gt;\n  dplyr::transmute(b = .data[[coef_name]])\n\n\nWarning: Dropping 'draws_df' class as required metadata was removed.\n\n\nCode\ndraws &lt;- dplyr::bind_rows(\n  prior = prior_draws,\n  posterior = post_draws,\n  .id = \"dist\"\n)\n\n# -----------------------------\n# Approximate likelihood\n# -----------------------------\n\nbhat &lt;- coef(summary(fit_lm))[coef_name, \"Estimate\"]\nse   &lt;- coef(summary(fit_lm))[coef_name, \"Std. Error\"]\n\nlikelihood_data &lt;- tibble::tibble(\n  b = seq(bhat - 4 * se, bhat + 4 * se, length.out = 500)\n) |&gt;\n  dplyr::mutate(\n    density = dnorm(b, mean = bhat, sd = se),\n    dist = \"likelihood\"\n  )\n\n# -----------------------------\n# Plot\n# -----------------------------\n\nlibrary(ggplot2)\n\nggplot(draws, aes(x = b, fill = dist)) +\n  ggdist::stat_slab(alpha = 0.5) +\n  geom_area(\n    data = likelihood_data,\n    aes(x = b, y = density, fill = \"likelihood\"),\n    inherit.aes = FALSE,\n    alpha = 0.5\n  ) +\n  scale_fill_manual(\n    values = c(\n      setNames(\n        viridisLite::viridis(length(unique(draws$dist)),\n                             option = \"D\", end = .85),\n        unique(draws$dist)\n      ),\n      likelihood = \"#CCBB44\"\n    )\n  ) +\n  theme_linedraw()"
   }
 ]

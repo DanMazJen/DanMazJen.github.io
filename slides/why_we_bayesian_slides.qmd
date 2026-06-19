@@ -19,21 +19,37 @@ format:
 - If yes, in which context?
 - What do you think it means (no guarantee it's the "right" answer, but give it a try!)
 
-## 🙋‍♀️🙋  How many have heard about Bayesian inference? {.center}
+## How many have heard about Bayesian inference? 🙋‍♀️🙋 {.center}
 
-## 🙋‍♀️🙋  How many already use a Bayesian workflow? {.center}
+## How many already use a Bayesian workflow? 🙋‍♀️🙋 {.center}
 
-## 🙋‍♀️🙋  How many have read a paper using Bayesian stats? {.center}
+## How many have read a paper using Bayesian stats? 🙋‍♀️🙋 {.center}
 
-## 🙋‍♀️🙋  How many (of you) understood that paper using Bayesian stats? {.center}
+## How many (of you) understood that paper using Bayesian stats? 🙋‍♀️🙋 {.center}
 
-## 🎉🥳  Are you ready to get a non-technical introduction? {.center}
+## Are you ready to get a non-technical introduction? 🎉🥳 {.center}
+
+## Bayes in the style of xkcd
+
+![](assets/XKCD-bayes-seashell.jpg)
+
+## But why is this different from other stats?
+
+![](assets/kxcd-bayes-freq.png)
+
+## Is there a fight? {.auto-animate .center}
+
+![](assets/Kong-Godzilla.png)
+
+## Is there a fight? {.auto-animate .center}
+
+![](assets/Kong-Godzilla-Doge.png)
 
 ## The Core Question {.smaller}
 
-Why do we need a Bayesian approach to regression 
+> Why do we need a Bayesian approach to regression? 
 
-> we can just use ordinary least squares?
+Can't we just use ordinary least squares?
 
 The answer is not (only):
 
@@ -53,14 +69,6 @@ Bayesian regression stabilizes inference by:
 2. Constraining parameters, offering regularization 
 3. Constraining model, offering stability in parametrization of the model
 
-## Is there a fight? {.auto-animate .center}
-
-![](assets/Kong-Godzilla.png)
-
-## Is there a fight? {.auto-animate .center}
-
-![](assets/Kong-Godzilla-Doge.png)
-
 ## When to use Frequentist and when to use Bayesian approaches? {.center}
 
 Frequentist are often sufficient and comparable to Bayesian stats!
@@ -71,9 +79,9 @@ Frequentist are often sufficient and comparable to Bayesian stats!
 set.seed(18062026)
 
 # Data
-n <- 100
-x <- rnorm(n)
-y <- 2 + 3*x + rnorm(n)
+n <- 100                 # samples
+x <- rnorm(n)            # x = N(0,1)      
+y <- 2 + 3*x + rnorm(n)  # α = 2, β = 3, ε = N(0,1) 
 ```
 
 ## The models
@@ -122,18 +130,70 @@ parameters::parameters(fit_bayes, ci = 0.95) |>
 
 ![](assets/chainsaw-cake.jpg)
 
-## An example
-
-Suppose you have
+## A More Realistic example {.smaller}
 
 :::: {.columns}
 ::: {.column}
-30
+Suppose we have:
+
+-  30 observations
+-  10 predictors
+-  strong predictor correlation
+-  weak signal
+-  uncertain mechanisms
 :::
 ::: {.column}
-30
+This is extremely common in:
+
+-  social science
+-  biology
+-  psychology
+-  economics
+-  policy research
 :::
 ::::
+
+## Simulating Correlated Predictors {.r-stretch}
+
+```{r modeling}
+#| echo: false
+#| output: false
+library(MASS)
+library(corrplot)
+
+set.seed(12)
+
+n <- 30
+p <- 10
+
+Sigma <- matrix(0.9, p, p)
+diag(Sigma) <- 1
+
+X <- mvrnorm(n, mu = rep(0, p), Sigma = Sigma)
+
+colnames(X) <- paste0("x", 1:p)
+```
+
+```{r}
+#| label: fig-correlation
+#| fig-cap: "Correlation structure among predictors."
+corrplot(cor(X), method = "color")
+```
+
+## The Data Generating Process {.smaller}
+
+The truth is simple.
+
+Only one predictor matters.
+
+$$
+y = 1.5x_1 + \epsilon
+$$
+
+All other predictors have zero effect.
+
+Yet predictors are highly correlated.
+
 
 ## Talk to your neighbor {.center}
 
@@ -195,38 +255,6 @@ OLS works well when:
 
 But real data often violate all of these simultaneously.
 
-## A More Realistic Situation {.smaller}
-
-Suppose we have:
-
--  30 observations
--  10 predictors
--  strong predictor correlation
--  weak signal
--  uncertain mechanisms
-
-This is extremely common in:
-
--  social science
--  biology
--  psychology
--  economics
--  policy research
-
-## The Data Generating Process {.smaller}
-
-The truth is simple.
-
-Only one predictor matters.
-
-$$
-y = 1.5x_1 + \epsilon
-$$
-
-All other predictors have zero effect.
-
-Yet predictors are highly correlated.
-
 ## The Mechanism of Failure {.smaller}
 
 With correlated predictors:
@@ -267,8 +295,6 @@ As a result:
 -  uncertainty becomes enormous
 -  interpretation collapses
 
-
-
 ## The Bayesian Solution
 
 Bayesian regression adds prior information:
@@ -289,8 +315,6 @@ The prior regularizes weakly identified directions.
 
 This changes the geometry of inference.
 
-
-
 ## Important Clarification
 
 Bayesian priors are not magic.
@@ -305,86 +329,18 @@ Large coefficients should require strong evidence.
 
 This is often scientifically reasonable.
 
+## Explaining the simulation Setup
 
-
-## Simulation Setup
-
-We now simulate the failure directly.
+We simulated the failure directly:
 
 -  small sample
 -  many predictors
 -  high collinearity
 -  weak signal
 
-The true model:
-
-$$
-y = 1.5x_1 + \epsilon
-$$
-
-Only x1 matters.
-
-
-
-## Simulating Correlated Predictors {.r-stretch}
-
-```{r modeling}
-#| echo: false
-#| output: false
-library(MASS)
-library(corrplot)
-
-set.seed(12)
-
-n <- 30
-p <- 10
-
-Sigma <- matrix(0.9, p, p)
-diag(Sigma) <- 1
-
-X <- mvrnorm(n, mu = rep(0, p), Sigma = Sigma)
-
-colnames(X) <- paste0("x", 1:p)
-
-# Generating the Outcome
-beta_true <- c(1.5, rep(0, 9))
-
-y <- X %*% beta_true + rnorm(n, 0, 2)
-
-dat <- data.frame(y, X)
-
-# Freq
-fit_lm <- lm(y ~ ., data = dat)
-
-# Bayes
-library(rstanarm)
-
-fit_bayes <- stan_glm(
-  y ~ .,
-  data = dat,
-  prior = normal(0, 1),
-  prior_intercept = normal(0, 5),
-  chains = 4,
-  iter = 2000,
-  refresh = 0
-)
-```
-
-```{r}
-#| label: fig-correlation
-#| fig-cap: "Correlation structure among predictors."
-corrplot(cor(X), method = "color")
-
-head(dat)
-```
-
-
 ## Frequentist OLS
 
-```{r}
-#| label: tbl-ols
-summary(fit_lm)
-```
+![](assets/p30n32.png)
 
 ## Why This Happens
 
@@ -414,99 +370,11 @@ Questions become unstable:
 
 ## Bayesian Regression
 
-```{r}
-#| label: bayes-fit
-#| 
-print(fit_bayes, digits = 2)
-```
+![*How did it do that?*](assets/30p30n.png)
 
 ## Let's have a look 
 
-```{r}
-#| label: model-plot
-#| fig-cap: "model estimates and ground truth."
-bayes_draws <- fit_bayes |>
-  #tidybayes::spread_draws(`(Intercept)`, `^x\\d+`, regex = TRUE) |>
-  tidybayes::spread_draws(`^x\\d+`, regex = TRUE) |>
-  tidyr::pivot_longer(
-    #cols = c(`(Intercept)`, tidyselect::starts_with("x")),
-    cols = tidyselect::starts_with("x"),
-    names_to = "term",
-    values_to = "estimate"
-  ) |>
-  dplyr::mutate(model = "Bayesian")
-
-
-freq_df <- broom::tidy(fit_lm, conf.int = TRUE) |>
-  dplyr::select(term, estimate, conf.low, conf.high) |>
-  dplyr::mutate(model = "Frequentist")
-
-truth_df <- tibble::tibble(
-  term = c("(Intercept)", paste0("x", 1:p)),
-  truth = c(0, beta_true),
-  model = "Truth"
-)
-
-bayes_summary <- bayes_draws |>
-  dplyr::group_by(term) |>
-  tidybayes::median_qi(estimate, .width = 0.95) |>
-  dplyr::transmute(
-    term,
-    estimate,
-    conf.low = .lower,
-    conf.high = .upper,
-    model = "Bayesian"
-  )
-
-
-freq_plot <- freq_df |>
-  dplyr::transmute(
-    term,
-    estimate,
-    conf.low,
-    conf.high,
-    model = "Frequentist"
-  )
-
-plot_df <- dplyr::bind_rows(
-  bayes_summary,
-  freq_plot
-)
-
-ggplot2::ggplot(
-  plot_df,
-  ggplot2::aes(
-    x = estimate,
-    y = term,
-    color = model
-  )
-) +
-
-  ggdist::geom_pointinterval(
-    ggplot2::aes(
-      xmin = conf.low,
-      xmax = conf.high
-    ),
-    position = ggplot2::position_dodge(width = 0.5)
-  ) +
-
-  ggplot2::geom_point(
-    data = truth_df,
-    ggplot2::aes(x = truth, y = term),
-    inherit.aes = FALSE,
-    color = "blue",
-    shape = 4,
-    size = 3,
-    stroke = 1.2
-  ) +
-
-  ggplot2::geom_vline(
-    xintercept = 0,
-    linetype = 2
-  ) +
-
-  ggplot2::theme_bw()
-```
+![Scientific sceptisism saves us from statistical model stupidity](assets/classic-bayes-plot-example.png)
 
 ## What the Prior Does
 

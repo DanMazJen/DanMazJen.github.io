@@ -50,6 +50,9 @@ Frequentist are often sufficient and comparable to Bayesian stats.
 
 
 ```{r make-data}
+#| output: false
+#| echo: false
+
 # install.packages(c("MASS", "rstanarm", "tidyverse"))
 
 library(MASS)
@@ -63,7 +66,7 @@ set.seed(18062026)
 # -----------------------------
 
 p <- 30 # different bio-sample tests (30 genes)
-n <- 30 # Participants/samples
+n <- 32 # Participants/samples
 
 Sigma <- matrix(0.8, p, p) # Make covar struct
 diag(Sigma) <- 1 # and var
@@ -99,6 +102,9 @@ form <- as.formula(
 
 
 ```{r freq-model}
+#| output: false
+#| echo: false
+
 # -----------------------------
 # Frequentist OLS
 # -----------------------------
@@ -111,6 +117,9 @@ summary(fit_lm)
 
 
 ```{r bayes-model}
+#| output: false
+#| echo: false
+
 # -----------------------------
 # Bayesian regression
 # -----------------------------
@@ -130,6 +139,10 @@ print(fit_bayes, digits = 2)
 
 
 ```{r prep-plot}
+#| output: false
+#| echo: false
+
+
 fit_bayes |>
   tidybayes::spread_draws(
     #`(Intercept)`,
@@ -209,6 +222,9 @@ ggplot2::ggplot() +
 
 
 ```{r plot-results2}
+#| output: false
+#| echo: false
+
 ## other approach
 bayes_summary <- bayes_draws |>
   dplyr::group_by(term) |>
@@ -272,6 +288,83 @@ ggplot2::ggplot(
 ```
 
 
+## Visualizing the model:
+
+```{r classic-bayes-plot}
+# -----------------------------
+# Prior-only model
+# -----------------------------
+
+fit_prior <- stan_glm(
+  form,
+  data = dat,
+  prior = normal(0, 1.5),
+  prior_intercept = normal(0, 0.25),
+  chains = 4,
+  iter = 2000,
+  refresh = 0,
+  prior_PD = TRUE
+)
+
+# -----------------------------
+# Extract prior/posterior draws
+# -----------------------------
+
+coef_name <- "x1"  # coefficient of interest
+
+post_draws <- posterior::as_draws_df(fit_bayes) |>
+  dplyr::transmute(b = .data[[coef_name]])
+
+prior_draws <- posterior::as_draws_df(fit_prior) |>
+  dplyr::transmute(b = .data[[coef_name]])
+
+draws <- dplyr::bind_rows(
+  prior = prior_draws,
+  posterior = post_draws,
+  .id = "dist"
+)
+
+# -----------------------------
+# Approximate likelihood
+# -----------------------------
+
+bhat <- coef(summary(fit_lm))[coef_name, "Estimate"]
+se   <- coef(summary(fit_lm))[coef_name, "Std. Error"]
+
+likelihood_data <- tibble::tibble(
+  b = seq(bhat - 4 * se, bhat + 4 * se, length.out = 500)
+) |>
+  dplyr::mutate(
+    density = dnorm(b, mean = bhat, sd = se),
+    dist = "likelihood"
+  )
+
+# -----------------------------
+# Plot
+# -----------------------------
+
+library(ggplot2)
+
+ggplot(draws, aes(x = b, fill = dist)) +
+  ggdist::stat_slab(alpha = 0.5) +
+  geom_area(
+    data = likelihood_data,
+    aes(x = b, y = density, fill = "likelihood"),
+    inherit.aes = FALSE,
+    alpha = 0.5
+  ) +
+  scale_fill_manual(
+    values = c(
+      setNames(
+        viridisLite::viridis(length(unique(draws$dist)),
+                             option = "D", end = .85),
+        unique(draws$dist)
+      ),
+      likelihood = "#CCBB44"
+    )
+  ) +
+  theme_linedraw()
+```
 
 
 # Exercises: Bayesian updating and posterior probabilities
