@@ -137,7 +137,7 @@ parameters::parameters(fit_bayes, ci = 0.95) |>
 Suppose we have:
 
 -  30 observations
--  10 predictors
+-  30 predictors
 -  strong predictor correlation
 -  weak signal
 -  uncertain mechanisms
@@ -407,7 +407,7 @@ This often improves:
 -   calibration
 -   scientific interpretation
 
-## The Deep Point
+## In a nutshell...
 
 OLS treats the model as fixed truth.
 

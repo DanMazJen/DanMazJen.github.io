@@ -32,22 +32,74 @@ keyboard.
 
 # Why be a Bayesian?
 
-There are many reasons to be a Bayesian.
+> Why do we need a Bayesian approach to regression? 
 
-# What is the alternative?
+Can't we just use ordinary least squares?
 
-Frequentist statistics
+The answer is not (only):
 
-# Is there a fight?
+-  philosophy
+-  elegance
+-  a matter of preference
 
-No! That fight ended in the 90's
+Bayesian regression stabilizes inference by:
 
-# When to use Frequentist and when to use Bayesian approaches?
+1. Explicitly stating expectations
+2. Constraining parameters, offering regularization 
+3. Constraining model, offering stability in parametrization of the model
 
-Frequentist are often sufficient and comparable to Bayesian stats.
+::: {.callout-important appearance="simple" icon=false}
+Real regression problems are often weakly identified, noisy, unstable, and geometrically pathological.
+:::
 
-# But sometimes, they are very different!
+## What is the alternative?
 
+Frequentist statistics is by definition neither worse nor better. But the common statistical practice in todays academic publications is often lacking the robustness and explicit interpretation needed to drive home a correct sound and trustworthy interpretation of the estimand.
+
+## Is there a fight?
+
+No! Bayesian and frequentist approaches co-exists. While there has been philosophical [debate](https://doi.org/10.1007/978-3-662-48638-2), the main obsticale for bayesian statsistics was [computation power](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo).
+
+Bayesian approaches had gain popularity in AI for techniques such as uncertainty quantification, bayesian optimization, active learning & robotics, time series forecasting, and bayesian deep learning.
+
+## When to use Frequentist and when to use Bayesian approaches?
+
+The Frequentist approach is often sufficient --- and indeed comparable to Bayesian statsistics --- when the model is simple and easy to parametrize. 
+
+## But sometimes, they are very different!
+
+However, for more complex and demanding models, Bayesian approaches allows rigorous and flexible handling of uncertainty, model diagnostics, and parametrization. While a Frequentist approach is nearly always available, it often comes with stricter assumptions and more quirks (which makes solutions less intuitive and unable to transfer to other problems).
+
+## Time for an example:
+
+:::: {.columns}
+::: {.column}
+Suppose we have:
+
+-  30 observations
+-  30 predictors
+-  strong predictor correlation
+-  weak signal
+-  uncertain mechanisms
+:::
+::: {.column}
+This is extremely common in:
+
+-  social science
+-  biology
+-  psychology
+-  economics
+-  policy research
+:::
+::::
+
+The truth is simple: only one predictor matters:
+
+$$
+y = 1.5x_1 + \epsilon
+$$
+
+All other predictors have zero effect and all predictors are highly correlated (*ρ* ~ 0.9).
 
 ```{r make-data}
 #| output: false
@@ -55,9 +107,9 @@ Frequentist are often sufficient and comparable to Bayesian stats.
 
 # install.packages(c("MASS", "rstanarm", "tidyverse"))
 
-library(MASS)
+#library(MASS)
 library(rstanarm)
-library(tidyverse)
+#library(tidyverse)
 
 set.seed(18062026)
 
@@ -109,6 +161,7 @@ form <- as.formula(
 # Frequentist OLS
 # -----------------------------
 
+set.seed(18062026)
 #fit_lm <- lm(y ~ x1, data = dat) # lm() expects wide format!
 fit_lm <- lm(form, data = dat)
 
@@ -123,6 +176,8 @@ summary(fit_lm)
 # -----------------------------
 # Bayesian regression
 # -----------------------------
+
+set.seed(18062026)
 
 fit_bayes <- rstanarm::stan_glm(
   form,
@@ -142,7 +197,6 @@ print(fit_bayes, digits = 2)
 #| output: false
 #| echo: false
 
-
 fit_bayes |>
   tidybayes::spread_draws(
     #`(Intercept)`,
@@ -152,7 +206,7 @@ fit_bayes |>
   #tidybayes::median_qi(condition_mean = `(Intercept)` + b, .width = c(.95, .66)) |>
   tidybayes::median_qi(x1, .width = c(.95, .66)) |>
   #ggplot2::ggplot(aes(y = group, x = condition_mean, xmin = .lower, xmax = .upper)) +
-  ggplot2::ggplot(aes(y = x1, x = x1, xmin = .lower, xmax = .upper)) +
+  ggplot2::ggplot(ggplot2::aes(y = x1, x = x1, xmin = .lower, xmax = .upper)) +
   ggdist::geom_pointinterval()
 
 
@@ -184,19 +238,22 @@ truth_df <- tibble::tibble(
 
 
 ```{r plot-results1}
+#| output: true
+#| echo: false
+
 ggplot2::ggplot() +
 
   # Bayesian posterior intervals
   ggdist::stat_pointinterval(
     data = bayes_draws,
-    aes(x = estimate, y = term),
+    ggplot2::aes(x = estimate, y = term),
     .width = c(.5, .8, .95)
   ) +
 
   # Frequentist estimates + CI
   ggdist::geom_pointinterval(
     data = freq_df,
-    aes(
+    ggplot2::aes(
       x = estimate,
       xmin = conf.low,
       xmax = conf.high,
@@ -215,7 +272,12 @@ ggplot2::ggplot() +
     stroke = 1.5
   ) +
 
-  ggplot2::facet_wrap(~model) +
+  #ggplot2::facet_wrap(~model) +
+  # Add scales = "free_x" here
+  ggplot2::facet_wrap(
+    ~model,
+    scales = "free_x"
+  ) +
 
   ggplot2::theme_bw()
 ```
@@ -291,9 +353,14 @@ ggplot2::ggplot(
 ## Visualizing the model:
 
 ```{r classic-bayes-plot}
+#| warning: false
+#| echo: false
+
 # -----------------------------
 # Prior-only model
 # -----------------------------
+
+set.seed(18062026)
 
 fit_prior <- stan_glm(
   form,
@@ -349,7 +416,7 @@ ggplot(draws, aes(x = b, fill = dist)) +
   ggdist::stat_slab(alpha = 0.5) +
   geom_area(
     data = likelihood_data,
-    aes(x = b, y = density, fill = "likelihood"),
+    ggplot2::aes(x = b, y = density, fill = "likelihood"),
     inherit.aes = FALSE,
     alpha = 0.5
   ) +
@@ -369,19 +436,394 @@ ggplot(draws, aes(x = b, fill = dist)) +
 
 # Exercises: Bayesian updating and posterior probabilities
 
+<!---
 Use the [shiny app](https://shiny.rit.albany.edu/stat/binomial/) to plot your binomial distribution.
+--->
+
+## Goal
+
+The goal of these exercises is to experience the core idea of Bayesian inference:
+
+> We start with prior knowledge, collect data, update our beliefs, and use the posterior distribution to answer scientific questions.
+
+You do **not** need to perform a full Bayesian analysis. The purpose is to understand the logic behind Bayesian inference and how posterior samples can be used.
+
+## Exercises — Updating beliefs about an assay
+
+You have developed a new diagnostic assay.
+
+The assay is designed to detect a pathogen.
+
+Each test gives either:
+
+- success = pathogen detected
+- failure = pathogen not detected
+
+The unknown parameter is:
+
+$\theta = P(\text{successful detection})$
+
+Your goal is to estimate the probability that the assay works.
+
+---
+
+### Exercises 1 — Define a prior belief
+
+Before collecting data, you assume that any value between 0 and 1 is equally possible.
+
+Which of the following prior distributions would best fit your hypothesis?
+
+```{r}
+#| label: exercise1
+#| echo: false
 
 
+library(ggplot2)
+
+priors <- data.frame(
+  theta = rep(seq(-2, 2, length.out = 500), 4),
+  density = c(
+    dbeta(seq(-2, 2, length.out = 500), 1, 1),   # A
+    dbeta(seq(-2, 2, length.out = 500), 2, 2),   # B
+    dnorm(seq(-2, 2, length.out = 500), 0, 1),   # C
+    dbeta(seq(-2, 2, length.out = 500), 2, 5)    # D
+  ),
+  Prior = factor(
+    rep(c("A", "B", "C", "D"), each = 500),
+    levels = c("A", "B", "C", "D")
+  )
+)
+
+ggplot(priors, aes(theta, density)) +
+  geom_line(linewidth = 1) +
+  facet_wrap(
+    ~Prior, 
+    ncol = 2,
+    scales = "free_x"
+    ) +
+  labs(
+    x = expression(theta),
+    y = "Density"
+  ) +
+  theme_bw()
+```  
+
+<details>
+<summary>**Click for the solution**</summary>
+The correct answer is *A*.
+This corresponds to:
+
+$\theta \sim Beta(1,1)$
+
+or a uniform distribution truncated at 0 and 1.
+</details>
+
+---
+
+### Exercises 2 - From prior and data to posterior
+
+Suppose we observe 8 successes out of 10 trials.
+
+The likelihood for the unknown probability θ is shown below together with the prior from Exercise 1.
+
+Recall that
+
+$Posterior ∝ Likelihood × Prior$
+
+For a Beta prior and Binomial data, the posterior is
+	​
+$θ∼Beta(α,β),$
+
+$∼Binomial(n,θ),$
+
+which gives
+
+$θ∣y∼Beta(α+y, β+n−y)$
+
+You are not expected to calculate the posterior. Instead, use the plots to reason about where it should be.
+
+```{r}
+#| label: exercise2
+#| echo: false
 
 
+library(ggplot2)
+
+theta <- seq(0, 1, length.out = 500)
+
+prior <- dbeta(theta, 1, 1)
+
+likelihood <- dbinom(
+  x = 8,
+  size = 10,
+  prob = theta
+)
+
+likelihood <- likelihood / max(likelihood)
+
+plot_df <- rbind(
+  data.frame(theta, density = prior, Distribution = "Prior"),
+  data.frame(theta, density = likelihood, Distribution = "Likelihood")
+)
+
+ggplot(plot_df, aes(theta, density)) +
+  geom_line(linewidth = 1.2) +
+  facet_wrap(~Distribution, ncol = 1) +
+  labs(
+    x = expression(theta),
+    y = "Relative density"
+  ) +
+  theme_bw()
+```
+
+**Questions**
+
+- Sketch what you think the posterior distribution should look like.
+
+(Draw it directly on the figure or sketch it on separate axes.)
+
+Compared with the prior, should the posterior
+
+- shift to the left,
+- stay roughly in the middle,
+- shift to the right?
+
+Compared with the likelihood, do you expect the posterior to be
+
+- more spread out,
+- about equally spread out,
+- more concentrated?
+Explain your reasoning in one sentence.
+
+<details> <summary><strong>Click for the solution</strong></summary>
+
+Because the prior is uniform, it gives equal weight to all values of θ. The posterior is therefore largely determined by the likelihood.
+
+The posterior should
+
+- peak near $θ≈0.8$,
+- have a shape similar to the likelihood,
+- be slightly smoother because the prior still contributes information.
+
+In fact,
+
+$θ∣y∼Beta(9,3)$
+</details>
+
+---
+
+### Exercises 3 — Different priors, same data
+
+Suppose we again observe 8 successes out of 10 trials.
+
+Below are four different prior distributions together with the same likelihood. Each panel represents a different prior belief before the data were collected.
+
+Recall that
+
+$Posterior ∝ Prior × Likelihood$
+
+```{r}
+#| label: exercise3
+#| echo: false
 
 
+library(ggplot2)
+
+theta <- seq(0, 1, length.out = 500)
+
+priors <- list(
+  A = dbeta(theta, 1, 1),
+  B = dbeta(theta, 2, 2),
+  C = dbeta(theta, 8, 2),
+  D = dbeta(theta, 2, 8)
+)
+
+likelihood <- dbinom(8, size = 10, prob = theta)
+likelihood <- likelihood / max(likelihood)
+
+plot_df <- do.call(
+  rbind,
+  lapply(names(priors), function(p) {
+    rbind(
+      data.frame(
+        theta = theta,
+        density = priors[[p]],
+        Distribution = "Prior",
+        Prior = p
+      ),
+      data.frame(
+        theta = theta,
+        density = likelihood,
+        Distribution = "Likelihood",
+        Prior = p
+      )
+    )
+  })
+)
+
+ggplot(plot_df, aes(theta, density)) +
+  geom_line(linewidth = 1) +
+  facet_grid(Prior ~ Distribution) +
+  labs(
+    x = expression(theta),
+    y = "Relative density"
+  ) +
+  theme_bw()
+```
+
+**Questions**
+
+For each prior (A–D), sketch the posterior distribution.
+
+- Which prior do you expect to produce a posterior that is closest to the likelihood?
+- Which prior do you expect to produce a posterior that is furthest from the likelihood?
+- Rank the four posteriors from most to least concentrated (least uncertainty).
+- Explain your reasoning in one or two sentences.
+
+<details> <summary><strong>Click for the solution</strong></summary>
+
+For a Beta prior,
+
+$θ∼Beta(α,β),$
+
+and Binomial data,
+
+$y∼Binomial(n,θ),$
+
+the posterior is
+
+$θ∣y∼Beta(α+y, β+n−y)$
+
+With y=8 and n=10, the posteriors become
+
+|Prior	      | Posterior   |
+|A: Beta(1,1)	| Beta(9,3)   |
+|B: Beta(2,2)	| Beta(10,4)  |
+|C: Beta(8,2)	| Beta(16,4)  |
+|D: Beta(2,8)	| Beta(10,10) |
+
+The likelihood favors values around $θ≈0.8$.
+
+- Prior A is uninformative, so the posterior closely follows the likelihood.
+- Prior B has only a mild preference for values near 0.5, so it slightly pulls the posterior toward the center.
+- Prior C already favors large values of θ, so the posterior remains close to 0.8 and is the most concentrated.
+- Prior D favors small values of θ, which conflicts with the data. The posterior is therefore pulled away from the likelihood toward the center.
+
+The key lesson is that the posterior balances the information from the prior and the observed data. When the prior agrees with the data, the posterior becomes more concentrated. When the prior disagrees with the data, the posterior lies somewhere between the two.
 
 
+```{r}
+#| label: exercise3_solution_overlay
+#| echo: false
 
 
+library(ggplot2)
 
+theta <- seq(0, 1, length.out = 500)
 
+likelihood <- dbinom(8, size = 10, prob = theta)
+likelihood <- likelihood / max(likelihood)
+
+plot_df <- rbind(
+
+  data.frame(
+    theta,
+    density = dbeta(theta, 1, 1),
+    Curve = "Prior",
+    Prior = "A"
+  ),
+  data.frame(
+    theta,
+    density = dbeta(theta, 9, 3),
+    Curve = "Posterior",
+    Prior = "A"
+  ),
+  data.frame(
+    theta,
+    density = likelihood,
+    Curve = "Likelihood",
+    Prior = "A"
+  ),
+
+  data.frame(
+    theta,
+    density = dbeta(theta, 2, 2),
+    Curve = "Prior",
+    Prior = "B"
+  ),
+  data.frame(
+    theta,
+    density = dbeta(theta, 10, 4),
+    Curve = "Posterior",
+    Prior = "B"
+  ),
+  data.frame(
+    theta,
+    density = likelihood,
+    Curve = "Likelihood",
+    Prior = "B"
+  ),
+
+  data.frame(
+    theta,
+    density = dbeta(theta, 8, 2),
+    Curve = "Prior",
+    Prior = "C"
+  ),
+  data.frame(
+    theta,
+    density = dbeta(theta, 16, 4),
+    Curve = "Posterior",
+    Prior = "C"
+  ),
+  data.frame(
+    theta,
+    density = likelihood,
+    Curve = "Likelihood",
+    Prior = "C"
+  ),
+
+  data.frame(
+    theta,
+    density = dbeta(theta, 2, 8),
+    Curve = "Prior",
+    Prior = "D"
+  ),
+  data.frame(
+    theta,
+    density = dbeta(theta, 10, 10),
+    Curve = "Posterior",
+    Prior = "D"
+  ),
+  data.frame(
+    theta,
+    density = likelihood,
+    Curve = "Likelihood",
+    Prior = "D"
+  )
+)
+
+ggplot(plot_df,
+       aes(theta, density,
+           colour = Curve,
+           linetype = Curve)) +
+  geom_line(linewidth = 1) +
+  facet_wrap(~Prior, ncol = 2) +
+  scale_colour_manual(values = c(
+    Prior = "grey40",
+    Likelihood = "#D55E00",
+    Posterior = "#0072B2"
+  )) +
+  labs(
+    x = expression(theta),
+    y = "Relative density",
+    colour = NULL,
+    linetype = NULL
+  ) +
+  theme_bw()
+```
+
+</details>
 
 
 

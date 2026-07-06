@@ -669,7 +669,7 @@
     "href": "slides/why_we_bayesian_slides.html#lets-have-a-look",
     "title": "Why be a Bayesian",
     "section": "Let’s have a look",
-    "text": "Let’s have a look\n\nscientific sceptisism saves us from statistical model stupidity"
+    "text": "Let’s have a look\n\nScientific sceptisism saves us from statistical model stupidity"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#what-the-prior-does",
@@ -753,21 +753,21 @@
     "href": "blog/why_we_bayesian.html#goal",
     "title": "Why be a Bayesian",
     "section": "Goal",
-    "text": "Goal\nThe goal of these exercises are to experience the core idea of Bayesian inference:\n\nWe start with prior knowledge, collect data, update our beliefs, and use the posterior distribution to answer scientific questions.\n\nYou do not need to perform a full Bayesian analysis. The purpose is to understand the logic behind Bayesian inference and how posterior samples can be used."
+    "text": "Goal\nThe goal of these exercises is to experience the core idea of Bayesian inference:\n\nWe start with prior knowledge, collect data, update our beliefs, and use the posterior distribution to answer scientific questions.\n\nYou do not need to perform a full Bayesian analysis. The purpose is to understand the logic behind Bayesian inference and how posterior samples can be used."
   },
   {
     "objectID": "blog/why_we_bayesian.html#biological-scenario",
     "href": "blog/why_we_bayesian.html#biological-scenario",
     "title": "Why be a Bayesian",
     "section": "Biological scenario",
-    "text": "Biological scenario\nYou have developed a new diagnostic assay.\nThe assay is designed to detect a pathogen.\nEach test gives either:\n\nsuccess = pathogen detected\nfailure = pathogen not detected\n\nThe unknown parameter is:\n[ = P() ]\nYour goal is to estimate the probability that the assay works."
+    "text": "Biological scenario\nYou have developed a new diagnostic assay.\nThe assay is designed to detect a pathogen.\nEach test gives either:\n\nsuccess = pathogen detected\nfailure = pathogen not detected\n\nThe unknown parameter is:\n\\(\\theta = P(\\text{successful detection})\\)\nYour goal is to estimate the probability that the assay works."
   },
   {
     "objectID": "blog/why_we_bayesian.html#step-1-define-a-prior-belief",
     "href": "blog/why_we_bayesian.html#step-1-define-a-prior-belief",
     "title": "Why be a Bayesian",
     "section": "Step 1 — Define a prior belief",
-    "text": "Step 1 — Define a prior belief\nBefore collecting data, you assume that any value between 0 and 1 is possible.\nThis corresponds to:\n[ Beta(1,1) ]\nThis is a uniform distribution.\nIn R, visualize this prior:\ncurve(dbeta(x, 1, 1),\n      from = 0,\n      to = 1,\n      ylab = \"Density\",\n      xlab = expression(theta))"
+    "text": "Step 1 — Define a prior belief\nBefore collecting data, you assume that any value between 0 and 1 is equally possible.\nWhich of the following prior distributions would best fit your hypothesis?\n\n\nCode\nlibrary(ggplot2)\n\npriors &lt;- data.frame(\n  theta = rep(seq(-2, 2, length.out = 500), 4),\n  density = c(\n    dbeta(seq(-2, 2, length.out = 500), 1, 1),   # A\n    dbeta(seq(-2, 2, length.out = 500), 2, 2),   # B\n    dnorm(seq(-2, 2, length.out = 500), 0, 1),   # C\n    dbeta(seq(-2, 2, length.out = 500), 2, 5)    # D\n  ),\n  Prior = factor(\n    rep(c(\"A\", \"B\", \"C\", \"D\"), each = 500),\n    levels = c(\"A\", \"B\", \"C\", \"D\")\n  )\n)\n\nggplot(priors, aes(theta, density)) +\n  geom_line(linewidth = 1) +\n  facet_wrap(\n    ~Prior, \n    ncol = 2,\n    scales = \"free_x\"\n    ) +\n  labs(\n    x = expression(theta),\n    y = \"Density\"\n  ) +\n  theme_bw()\n\n\n\n\n\n\n\n\n\n\n\nClick for the solution\n\nThe correct answer is A. This corresponds to:\n\\(\\theta \\sim Beta(1,1)\\)\nor a uniform distribution truncated at 0 and 1.\n\nThis is a uniform distribution.\nIn R, visualize this prior:\n\n\nCode\ncurve(dbeta(x, 1, 1),\n      from = 0,\n      to = 1,\n      ylab = \"Density\",\n      xlab = expression(theta))\n\n\n\n\n\n\n\n\n\n\nQuestion 1\nWhat values of θ are considered likely under this prior?"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#exercise",
@@ -809,6 +809,62 @@
     "href": "blog/why_we_bayesian.html#visualizing-the-model",
     "title": "Why be a Bayesian",
     "section": "Visualizing the model:",
-    "text": "Visualizing the model:\n\n\nCode\n# -----------------------------\n# Prior-only model\n# -----------------------------\n\nfit_prior &lt;- stan_glm(\n  form,\n  data = dat,\n  prior = normal(0, 1.5),\n  prior_intercept = normal(0, 0.25),\n  chains = 4,\n  iter = 2000,\n  refresh = 0,\n  prior_PD = TRUE\n)\n\n# -----------------------------\n# Extract prior/posterior draws\n# -----------------------------\n\ncoef_name &lt;- \"x1\"  # coefficient of interest\n\npost_draws &lt;- posterior::as_draws_df(fit_bayes) |&gt;\n  dplyr::transmute(b = .data[[coef_name]])\n\n\nWarning: Dropping 'draws_df' class as required metadata was removed.\n\n\nCode\nprior_draws &lt;- posterior::as_draws_df(fit_prior) |&gt;\n  dplyr::transmute(b = .data[[coef_name]])\n\n\nWarning: Dropping 'draws_df' class as required metadata was removed.\n\n\nCode\ndraws &lt;- dplyr::bind_rows(\n  prior = prior_draws,\n  posterior = post_draws,\n  .id = \"dist\"\n)\n\n# -----------------------------\n# Approximate likelihood\n# -----------------------------\n\nbhat &lt;- coef(summary(fit_lm))[coef_name, \"Estimate\"]\nse   &lt;- coef(summary(fit_lm))[coef_name, \"Std. Error\"]\n\nlikelihood_data &lt;- tibble::tibble(\n  b = seq(bhat - 4 * se, bhat + 4 * se, length.out = 500)\n) |&gt;\n  dplyr::mutate(\n    density = dnorm(b, mean = bhat, sd = se),\n    dist = \"likelihood\"\n  )\n\n# -----------------------------\n# Plot\n# -----------------------------\n\nlibrary(ggplot2)\n\nggplot(draws, aes(x = b, fill = dist)) +\n  ggdist::stat_slab(alpha = 0.5) +\n  geom_area(\n    data = likelihood_data,\n    aes(x = b, y = density, fill = \"likelihood\"),\n    inherit.aes = FALSE,\n    alpha = 0.5\n  ) +\n  scale_fill_manual(\n    values = c(\n      setNames(\n        viridisLite::viridis(length(unique(draws$dist)),\n                             option = \"D\", end = .85),\n        unique(draws$dist)\n      ),\n      likelihood = \"#CCBB44\"\n    )\n  ) +\n  theme_linedraw()"
+    "text": "Visualizing the model:"
+  },
+  {
+    "objectID": "blog/why_we_bayesian.html#why-be-a-bayesian",
+    "href": "blog/why_we_bayesian.html#why-be-a-bayesian",
+    "title": "Why be a Bayesian",
+    "section": "Why be a Bayesian?",
+    "text": "Why be a Bayesian?\n\nWhy do we need a Bayesian approach to regression?\n\nCan’t we just use ordinary least squares?\nThe answer is not (only):\n\nphilosophy\nelegance\na matter of preference\n\nBayesian regression stabilizes inference by:\n\nExplicitly stating expectations\nConstraining parameters, offering regularization\nConstraining model, offering stability in parametrization of the model\n\n\n\n\n\n\n\nReal regression problems are often weakly identified, noisy, unstable, and geometrically pathological."
+  },
+  {
+    "objectID": "blog/why_we_bayesian.html#what-is-the-alternative",
+    "href": "blog/why_we_bayesian.html#what-is-the-alternative",
+    "title": "Why be a Bayesian",
+    "section": "What is the alternative?",
+    "text": "What is the alternative?\nFrequentist statistics is by definition neither worse nor better. But the common statistical practice in todays academic publications is often lacking the robustness and explicit interpretation needed to drive home a correct sound and trustworthy interpretation of the estimand."
+  },
+  {
+    "objectID": "blog/why_we_bayesian.html#is-there-a-fight",
+    "href": "blog/why_we_bayesian.html#is-there-a-fight",
+    "title": "Why be a Bayesian",
+    "section": "Is there a fight?",
+    "text": "Is there a fight?\nNo! Bayesian and frequentist approaches co-exists. While there has been philosophical debate, the main obsticale for bayesian statsistics was computation power.\nBayesian approaches had gain popularity in AI for techniques such as uncertainty quantification, bayesian optimization, active learning & robotics, time series forecasting, and bayesian deep learning."
+  },
+  {
+    "objectID": "blog/why_we_bayesian.html#when-to-use-frequentist-and-when-to-use-bayesian-approaches",
+    "href": "blog/why_we_bayesian.html#when-to-use-frequentist-and-when-to-use-bayesian-approaches",
+    "title": "Why be a Bayesian",
+    "section": "When to use Frequentist and when to use Bayesian approaches?",
+    "text": "When to use Frequentist and when to use Bayesian approaches?\nThe Frequentist approach is often sufficient — and indeed comparable to Bayesian statsistics — when the model is simple and easy to parametrize."
+  },
+  {
+    "objectID": "blog/why_we_bayesian.html#but-sometimes-they-are-very-different",
+    "href": "blog/why_we_bayesian.html#but-sometimes-they-are-very-different",
+    "title": "Why be a Bayesian",
+    "section": "But sometimes, they are very different!",
+    "text": "But sometimes, they are very different!\nHowever, for more complex and demanding models, Bayesian approaches allows rigorous and flexible handling of uncertainty, model diagnostics, and parametrization. While a Frequentist approach is nearly always available, it often comes with stricter assumptions and more quirks (which makes solutions less intuitive and unable to transfer to other problems)."
+  },
+  {
+    "objectID": "blog/why_we_bayesian.html#time-for-an-example",
+    "href": "blog/why_we_bayesian.html#time-for-an-example",
+    "title": "Why be a Bayesian",
+    "section": "Time for an example:",
+    "text": "Time for an example:\n\n\nSuppose we have:\n\n30 observations\n30 predictors\nstrong predictor correlation\nweak signal\nuncertain mechanisms\n\n\nThis is extremely common in:\n\nsocial science\nbiology\npsychology\neconomics\npolicy research\n\n\n\nThe truth is simple: only one predictor matters:\n\\[\ny = 1.5x_1 + \\epsilon\n\\]\nAll other predictors have zero effect and all predictors are highly correlated (ρ ~ 0.9)."
+  },
+  {
+    "objectID": "blog/why_we_bayesian.html#exercise-1-updating-beliefs-about-an-assay",
+    "href": "blog/why_we_bayesian.html#exercise-1-updating-beliefs-about-an-assay",
+    "title": "Why be a Bayesian",
+    "section": "Exercise 1 — Updating beliefs about an assay",
+    "text": "Exercise 1 — Updating beliefs about an assay\nYou have developed a new diagnostic assay.\nThe assay is designed to detect a pathogen.\nEach test gives either:\n\nsuccess = pathogen detected\nfailure = pathogen not detected\n\nThe unknown parameter is:\n\\(\\theta = P(\\text{successful detection})\\)\nYour goal is to estimate the probability that the assay works.\n\n\nExercises 1 — Define a prior belief\nBefore collecting data, you assume that any value between 0 and 1 is equally possible.\nWhich of the following prior distributions would best fit your hypothesis?\n\n\n\n\n\n\n\n\n\n\n\nClick for the solution\n\nThe correct answer is A. This corresponds to:\n\\(\\theta \\sim Beta(1,1)\\)\nor a uniform distribution truncated at 0 and 1.\n\n\n\n\nExercises 2 - From prior and data to posterior\nSuppose we observe 8 successes out of 10 trials.\nThe likelihood for the unknown probability θ is shown below together with the prior from Exercise 1.\nRecall that\n\\(Posterior ∝ Likelihood × Prior\\)\nFor a Beta prior and Binomial data, the posterior is ​ \\(θ∼Beta(α,β),\\)\n\\(∼Binomial(n,θ),\\)\nwhich gives\n\\(θ∣y∼Beta(α+y, β+n−y)\\)\nYou are not expected to calculate the posterior. Instead, use the plots to reason about where it should be.\n\n\n\n\n\n\n\n\n\nQuestions\n\nSketch what you think the posterior distribution should look like.\n\n(Draw it directly on the figure or sketch it on separate axes.)\nCompared with the prior, should the posterior\n\nshift to the left,\nstay roughly in the middle,\nshift to the right?\n\nCompared with the likelihood, do you expect the posterior to be\n\nmore spread out,\nabout equally spread out,\nmore concentrated? Explain your reasoning in one sentence.\n\n\n\nClick for the solution\n\nBecause the prior is uniform, it gives equal weight to all values of θ. The posterior is therefore largely determined by the likelihood.\nThe posterior should\n\npeak near \\(θ≈0.8\\),\nhave a shape similar to the likelihood,\nbe slightly smoother because the prior still contributes information.\n\nIn fact,\n\\(θ∣y∼Beta(9,3)\\)\n\n\n\n\nExercises 3 — Different priors, same data\nSuppose we again observe 8 successes out of 10 trials.\nBelow are four different prior distributions together with the same likelihood. Each panel represents a different prior belief before the data were collected.\nRecall that\n\\(Posterior ∝ Prior × Likelihood\\)\n\n\n\n\n\n\n\n\n\nQuestions\nFor each prior (A–D), sketch the posterior distribution.\n\nWhich prior do you expect to produce a posterior that is closest to the likelihood?\nWhich prior do you expect to produce a posterior that is furthest from the likelihood?\nRank the four posteriors from most to least concentrated (least uncertainty).\nExplain your reasoning in one or two sentences.\n\n\n\nClick for the solution\n\nFor a Beta prior,\n\\(θ∼Beta(α,β),\\)\nand Binomial data,\n\\(y∼Binomial(n,θ),\\)\nthe posterior is\n\\(θ∣y∼Beta(α+y, β+n−y)\\)\nWith y=8 and n=10, the posteriors become\n|Prior | Posterior | |A: Beta(1,1) | Beta(9,3) | |B: Beta(2,2) | Beta(10,4) | |C: Beta(8,2) | Beta(16,4) | |D: Beta(2,8) | Beta(10,10) |\nThe likelihood favors values around \\(θ≈0.8\\).\n\nPrior A is uninformative, so the posterior closely follows the likelihood.\nPrior B has only a mild preference for values near 0.5, so it slightly pulls the posterior toward the center.\nPrior C already favors large values of θ, so the posterior remains close to 0.8 and is the most concentrated.\nPrior D favors small values of θ, which conflicts with the data. The posterior is therefore pulled away from the likelihood toward the center.\n\nThe key lesson is that the posterior balances the information from the prior and the observed data. When the prior agrees with the data, the posterior becomes more concentrated. When the prior disagrees with the data, the posterior lies somewhere between the two."
+  },
+  {
+    "objectID": "blog/why_we_bayesian.html#exercises-updating-beliefs-about-an-assay",
+    "href": "blog/why_we_bayesian.html#exercises-updating-beliefs-about-an-assay",
+    "title": "Why be a Bayesian",
+    "section": "Exercises — Updating beliefs about an assay",
+    "text": "Exercises — Updating beliefs about an assay\nYou have developed a new diagnostic assay.\nThe assay is designed to detect a pathogen.\nEach test gives either:\n\nsuccess = pathogen detected\nfailure = pathogen not detected\n\nThe unknown parameter is:\n\\(\\theta = P(\\text{successful detection})\\)\nYour goal is to estimate the probability that the assay works.\n\n\nExercises 1 — Define a prior belief\nBefore collecting data, you assume that any value between 0 and 1 is equally possible.\nWhich of the following prior distributions would best fit your hypothesis?\n\n\n\n\n\n\n\n\n\n\n\nClick for the solution\n\nThe correct answer is A. This corresponds to:\n\\(\\theta \\sim Beta(1,1)\\)\nor a uniform distribution truncated at 0 and 1.\n\n\n\n\nExercises 2 - From prior and data to posterior\nSuppose we observe 8 successes out of 10 trials.\nThe likelihood for the unknown probability θ is shown below together with the prior from Exercise 1.\nRecall that\n\\(Posterior ∝ Likelihood × Prior\\)\nFor a Beta prior and Binomial data, the posterior is ​ \\(θ∼Beta(α,β),\\)\n\\(∼Binomial(n,θ),\\)\nwhich gives\n\\(θ∣y∼Beta(α+y, β+n−y)\\)\nYou are not expected to calculate the posterior. Instead, use the plots to reason about where it should be.\n\n\n\n\n\n\n\n\n\nQuestions\n\nSketch what you think the posterior distribution should look like.\n\n(Draw it directly on the figure or sketch it on separate axes.)\nCompared with the prior, should the posterior\n\nshift to the left,\nstay roughly in the middle,\nshift to the right?\n\nCompared with the likelihood, do you expect the posterior to be\n\nmore spread out,\nabout equally spread out,\nmore concentrated? Explain your reasoning in one sentence.\n\n\n\nClick for the solution\n\nBecause the prior is uniform, it gives equal weight to all values of θ. The posterior is therefore largely determined by the likelihood.\nThe posterior should\n\npeak near \\(θ≈0.8\\),\nhave a shape similar to the likelihood,\nbe slightly smoother because the prior still contributes information.\n\nIn fact,\n\\(θ∣y∼Beta(9,3)\\)\n\n\n\n\nExercises 3 — Different priors, same data\nSuppose we again observe 8 successes out of 10 trials.\nBelow are four different prior distributions together with the same likelihood. Each panel represents a different prior belief before the data were collected.\nRecall that\n\\(Posterior ∝ Prior × Likelihood\\)\n\n\n\n\n\n\n\n\n\nQuestions\nFor each prior (A–D), sketch the posterior distribution.\n\nWhich prior do you expect to produce a posterior that is closest to the likelihood?\nWhich prior do you expect to produce a posterior that is furthest from the likelihood?\nRank the four posteriors from most to least concentrated (least uncertainty).\nExplain your reasoning in one or two sentences.\n\n\n\nClick for the solution\n\nFor a Beta prior,\n\\(θ∼Beta(α,β),\\)\nand Binomial data,\n\\(y∼Binomial(n,θ),\\)\nthe posterior is\n\\(θ∣y∼Beta(α+y, β+n−y)\\)\nWith y=8 and n=10, the posteriors become\n|Prior | Posterior | |A: Beta(1,1) | Beta(9,3) | |B: Beta(2,2) | Beta(10,4) | |C: Beta(8,2) | Beta(16,4) | |D: Beta(2,8) | Beta(10,10) |\nThe likelihood favors values around \\(θ≈0.8\\).\n\nPrior A is uninformative, so the posterior closely follows the likelihood.\nPrior B has only a mild preference for values near 0.5, so it slightly pulls the posterior toward the center.\nPrior C already favors large values of θ, so the posterior remains close to 0.8 and is the most concentrated.\nPrior D favors small values of θ, which conflicts with the data. The posterior is therefore pulled away from the likelihood toward the center.\n\nThe key lesson is that the posterior balances the information from the prior and the observed data. When the prior agrees with the data, the posterior becomes more concentrated. When the prior disagrees with the data, the posterior lies somewhere between the two."
   }
 ]
