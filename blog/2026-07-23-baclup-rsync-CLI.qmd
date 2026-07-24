@@ -1,0 +1,565 @@
+--- 
+title: "CLI for rsync backups on external SSD"
+subtitle: "using justfile and bash"
+author: "Daniel S. Mazhari-Jensen"
+description: I walk the reader through how I use rsync for backups on my
+  external T5 SSD formatted as exFAT
+date: 2026-07-23
+reading-time: 5 min
+file-modified: 2026-06-12
+categories: [rsync, just, bash]
+format:
+  html:
+    toc: true
+    code-fold: true
+---
+
+## Backups - the problem:
+
+Backups are important but too often shrouded in anxiety and manual error prone
+workflows.
+
+The most common way to backup data is manually dragging and dropping files from
+a *source* (e.g., your computer or phone) to a *destination* (e.g., an external
+hard drive or other computer).
+
+While common, manual drag-n-drop has several cons:
+
+1. Manual errors from "slips" or "typos"
+2. Needs deleting and complete re-copy for updates
+3. No helper for iterative backup (which files have changed?)
+4. Minimal feedback (what happened: files, memory, deletions etc.)
+
+### Commercial solutions exists
+
+There are of course solutions out there - but they are not for free...
+
+**Carbon Copy Cloner (CCC)** seems like a great solution, however, it's not for
+free. As I haven't tried it, I cannot recommend it. But it seems as the solution
+I would pick from the market at the moment of writing.
+
+**Time Machine on Macs** is of course the native and simple solution. However,
+the TM algorithm currently backs up *the entire OS* which requires significantly
+more memory and time than just backing up a couple of folders that you might
+need. Besides, many people find themselves with the unhappy surprise that TMs
+often copy the OS bug as well and you'll have to try-and-error when the bug
+first occurred.
+
+## rsync - the CLI solution
+
+Luckily for us, Linux made a command line interface (CLI) that solved the issue,
+called `rsync`. [rsync](https://rsync.samba.org/) was first released in 1996 and
+is still actively maintained. It's written in **C** and
+
+`rsync` is a...
+
+`rsync` 2.6.9 released under the GPL 2.0 license, with the somewhat more
+restrictive GPL 3.0 license restricting Apple from using any newer version.
+Therefore, Apple switched to
+[openrsync](https://github.com/apple-oss-distributions/rsync/tree/rsync-184).
+`openrsync` is compatible with `rsync` 2.6.9, but lack some of the newer
+features. It is actively maintained and is capable of everything we'll be
+covering in this blog.
+
+Due to [serious AI-slop
+criticism](https://www.theregister.com/ai-and-ml/2026/06/04/please-do-not-vibe-f-up-this-software-broken-backups-spark-ai-coding-row-in-rsync-project/5251189)
+on the `rsync` project, I've deliberately decided on using `openrsync` instead
+of the original `rsync`. See also
+[here](https://www.osnews.com/story/145198/rsync-opens-the-slopgates-regressions-and-bugs-ensue/).
+
+I'm running Mac 26.5.2 with openrsync: protocol version 29:
+
+```bash
+rsync --version 
+openrsync: protocol version 29 
+rsync version 2.6.9 compatible
+```
+
+As a vertue of it's +30 year long life, it has a robust and versetile set of
+options that can be called using flags. Below is a list of the flags I'll be
+covering in this blog.
+
+<!-- 
+https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories
+
+https://veronicaexplains.net/everyday-rsync/
+
+https://kx.cloudingenium.com/en/rsync-remote-backup-file-sync-linux-guide/
+-->
+
+<!-- panache-ignore-format-start -->
+| Flag | Meaning |
+|------|---------|
+| `-r` | Recursive mode. Copies directories and their contents recursively. |
+| `-l` | Copies symbolic links as symbolic links instead of copying the files they point to. |
+| `-p` | Preserves file permissions. |
+| `-t` | Preserves file modification times (timestamps). |
+| `-g` | Preserves group ownership. |
+| `-o` | Preserves file owner (requires appropriate privileges, typically root). |
+| `-D` | Preserves device files and special files (`--devices --specials`). |
+| `-a` | Archive mode (`-rlptgoD`). Recursively copies files while preserving symbolic links, permissions, ownership, group, device files, and timestamps. |
+| `-v` | Verbose output. Shows the progress of the sync process. |
+| `-h` | Human-readable output. Formats file sizes in KB, MB, GB instead of raw bytes. |
+| `--dry-run` | The most important flag. Simulates a sync without making any changes. Great for testing. |
+| `--delete` | Deletes files in the destination that no longer exist in the source. Use to make the destination mirror the source. |
+| `--progress` | Displays progress information for each file being transferred. |
+| `--info=progress2` | Displays overall transfer progress instead of per-file progress. |
+| `--stats` | Prints a detailed summary of the transfer, including bytes sent, speed, and number of files transferred. |
+| `--modify-window=1` | Allows timestamps to differ by up to 1 second when comparing files. Useful when syncing with filesystems that have lower timestamp precision (e.g., FAT or some network filesystems). |
+| `--exclude` | Skips files or directories that match the specified pattern. |
+| `--exclude-from=rsyncignore.txt` | Reads exclude patterns from the file `rsyncignore.txt` instead of specifying them on the command line. |
+<!-- panache-ignore-format-end -->
+
+So in practice, it's as easy as:
+
+```.bash
+rsync -a my_source my_destination/
+```
+
+As seen from the table, the `-a` (archive) flag is a shorthand for the seven
+flags `-rlptgoD`. This is the standard format for UNIX/linux/mac native
+formatting, which brings us to the next section.
+
+## Cross-platform compatibility and the exFAT format
+
+Although I prefer linux-like systems (Ubunto or MacOS), I also value
+cross-platform compatibility for storing my data. Therefore, I used exFAT for my
+Samsung T5 external SSD (2T memory).
+
+exFAT is great for many reasons:
+
+1. cross-platform compatibility
+2. unlike the older FAT format, it has no size limits on individual files.
+3. ??
+
+But as always, there is no free lunch:
+
+1. permissions, commonly used by UNIX systems, are not supported
+2. the format is not native to either Windows, Linux, or Mac
+
+Therefore, we need to adjust our rsync flags in order to safely copy our data.
+
+https://stackoverflow.com/questions/32682694/rsync-backup-to-external-hard-disk-exfat-fails
+
+https://nelsonslog.wordpress.com/2017/02/06/rsync-to-exfat-usb/
+
+https://www.disfinder.com/docs/notes/rsync-to-exfat/
+
+Instead of `-a`, it's therefore recommended using `-vrltD` and omitting `-gop`.
+As seen from the flag table, `-gop` is fro permissions (chmod bits),group
+ownership, and user ownership (requires root). As these are not supported by FAT
+or exFAT, we will have to skip them.
+
+Note that this is a limitation of cross-platform compatibility and not
+recommended for pure Mac or Linux systems compatibility.
+
+### recap:
+
+- The rsync -a (archive) flag is a shorthand for -rlptgoD:
+- Recommended to exFAT is `rsync -vrltD --progress --stats` (so without pgo and
+  adding v(erbose))
+- pgo is
+  - Permissions (chmod bits)
+  - Group ownership
+  - User ownership (requires root)
+
+We now have:
+
+```.bash
+rsync -vrltD my_source my_destination/
+```
+
+## Fixing timing issues with windows
+
+https://superuser.com/questions/763366/why-does-rsync-seem-to-overwrite-an-already-existing-file-on-exfat
+
+recap: --inplace: Modifies the file in place. This is useful for large files
+(like disk images) on SSDs but can be less efficient for small changes on remote
+networks. --modify-window=1: Essential for exFAT. exFAT rounds timestamps
+differently than Linux file systems. This flag allows a 1-second tolerance,
+preventing rsync from repeatedly re-copying files that are actually unchanged.
+
+You need --modify-window=1.
+
+Quoted below from man rsync:
+
+> Specifying 1 is useful for copies to/from MS Windows FAT filesystems, because
+> FAT represents times with a 2-second resolution (allowing times to differ from
+> the original by up to 1 second).
+
+Therefore, we add:
+
+```.bash
+rsync -vrltD --modify-window=1 my_source my_destination/
+```
+
+## Making a justfile CLI
+
+Just is an amazing way to make a CLI fast and without any unnecessary wrapper
+code. It's not really a program, but rather a mapping of code snippits executed
+from the commandline. The power lies in it's ability to host a full workflow
+with its own tests, helper functions, and user-facing functions.
+
+### Adding style to it
+
+First, we make variables for color coding our echo text. This is pure
+aesthetics.
+
+```.just
+# Color codes
+GREEN := '\033[0;32m'
+RED := '\033[0;31m'
+YELLOW := '\033[1;33m'
+BLUE := '\033[0;34m'
+NC := '\033[0m' # No Color
+```
+
+### Config of the setup
+
+Next, we make some configurations specific to our setup.
+
+```.just
+# Configuration
+SOURCES := '$HOME/code/ $HOME/uni-non-code/'
+DEST := '/Volumes/Samsung_T5/backup-ssd'
+RSYNC := '/usr/bin/rsync'
+RSYNC_BASE_FLAGS := '-vrltDh --delete --info=progress2 --stats --modify-window=1 --exclude-from=rsyncignore.txt'
+RSYNC_DRY_FLAGS := '{{RSYNC_BASE_FLAGS}} --dry-run' # all base flags + dry-run!
+```
+
+We hardcode variables:
+
+- `SOURCES` --- the folder(s) we want backup
+- `DEST` --- the place to backup and store it all
+- `RSYNC` --- where `rsync` is (usr/bin, brew, or other)
+- `RSYNC_BASE_FLAGS` --- all the flags we want to use
+- `RSYNC_DRY_FLAGS` --- adding `--dry-run` to our base flags
+
+Note that the base flags are:
+
+- `-v` --- Verbose
+- `-r` --- Recursive
+- `-l` --- the
+- `-t` --- Timestamp
+- `-D` --- the
+- `-h` --- Human-readable\
+- `--delete` --- Mirror function
+- `--info=progress2` --- Progress info on entire backup
+- `--stats` --- Memory and time feedback\
+- `--modify-window=1` --- more loose timing for FAT format to work
+- `--exclude-from=rsyncignore.txt` --- exclude pattern for files
+
+The `rsyncignore.txt` file is a simple list of all patterns to ignore.
+
+These include `.DS_Store`, `.quarto`, `*.tmp` and `.httr-oauth` etc.
+
+### A help command
+
+It's good practice to provide overview by writing a help command. In this case,
+we just list the four just commands in the terminal.
+
+```.just
+help:
+  @echo "Backup to Samsung T5 SSD - Available commands:\n"
+  @echo "  just help      - Show this help message"
+  @echo "  just preview   - Dry run: show what would be synced (no changes)"
+  @echo "  just backup    - Run the mirror backup (with deletion confirmation)"
+  @echo "  just status    - Quick health check"
+```
+
+As we just use echo, theres no need for me to explain further.
+
+### The status command
+
+The status command is the simplest of the three. Here, we just check whether the
+external SSD is mounted or not.
+
+```bash
+status:
+  @echo "{{BLUE}}=== Backup Status ==={{NC}}"
+  @if [ -d "{{DEST}}" ]; then \
+    echo "{{GREEN}}Destination exists: {{DEST}}{{NC}}"; \
+  else \
+    echo "{{RED}}Destination NOT found: {{DEST}}{{NC}}"; \
+    echo "{{YELLOW}}Please ensure Samsung T5 SSD is connected and mounted.{{NC}}"; \
+    exit 0; \
+  fi
+  @if [ -d "/Volumes/Samsung_T5" ]; then \
+    echo "{{GREEN}}Samsung T5 is mounted at /Volumes/Samsung_T5{{NC}}"; \
+    DF_OUTPUT=$(df -h /Volumes/Samsung_T5 2>/dev/null | tail -1); \
+    echo "{{BLUE}}$DF_OUTPUT{{NC}}"; \
+  else \
+    echo "{{RED}}Samsung T5 is NOT mounted{{NC}}"; \
+  fi
+```
+
+The function has two if-else statements:
+
+- Feedback on whether the destination directory within the SSD exists
+  (`-d "{{DEST}}"`) using `echo`.
+- Feedback on the memory state and space left on the SSD, if it's mounted
+  (`-d "/Volumes/Samsung_T5"`). We get this feedback using
+  `df -h /Volumes/Samsung_T5 2>/dev/null | tail -1`.
+
+Here's the breakdown of the last code call:
+
+- `df` displays filesystem disk space usage.
+- `-h` formats the sizes in a human-readable way (e.g. 500G, 1.2T).
+- `2>/dev/null` Redirects stderr (file descriptor 2) to /dev/null, effectively
+  hiding any error messages. For example, if the drive isn't mounted, `df` would
+  normally print an error, but this suppresses it.
+- `| tail -1` Pipes the output to tail. tail -1 prints only the last line, which
+  is the filesystem information rather than the header.
+
+### The preview command
+
+We've already covered most of this command. It looks like this:
+
+```bash
+preview:
+  @echo "{{YELLOW}}=== DRY RUN: No changes will be made ==={{NC}}\n"
+  @{{RSYNC}} {{RSYNC_DRY_FLAGS}} {{SOURCES}} {{DEST}}/
+  @echo "{{BLUE}}\nPreview complete. Use 'just backup' to execute.{{NC}}"
+```
+
+So we basically call 4 variables that define our `rsync`, flags, sources, and
+destination: `{{RSYNC}} {{RSYNC_DRY_FLAGS}} {{SOURCES}} {{DEST}}`. Easy piecy!
+
+### The backup command
+
+```bash
+backup:
+  @echo "{{YELLOW}}Checking for changes...{{NC}}"
+  @DRY_OUTPUT=$({{RSYNC}} {{RSYNC_DRY_FLAGS}} -i {{SOURCES}} {{DEST}}/ 2>&1); \
+  HAS_DELETIONS=$(echo "$DRY_OUTPUT" | grep -q '^\*deleting' && echo "yes" || echo "no"); \
+  if [ "$HAS_DELETIONS" = "yes" ]; then \
+    echo "{{RED}}WARNING: Deletions detected in dry run!{{NC}}"; \
+    echo "$DRY_OUTPUT"; \
+    echo "\n{{RED}}Files will be DELETED from the backup destination.{{NC}}"; \
+    read -p "Continue with backup? [y/N] " -n 1 -r; \
+    echo; \
+    if [ "$REPLY" != "y" ] && [ "$REPLY" != "Y" ]; then \
+      echo "{{YELLOW}}Backup cancelled.{{NC}}"; \
+      exit 0; \
+    fi; \
+  else \
+    echo "{{GREEN}}No deletions detected.{{NC}}"; \
+    echo "$DRY_OUTPUT"; \
+    read -p "Continue with backup? [Y/n] " -n 1 -r; \
+    echo; \
+    if [ "$REPLY" = "n" ] || [ "$REPLY" = "N" ]; then \
+      echo "{{YELLOW}}Backup cancelled.{{NC}}"; \
+      exit 0; \
+    fi; \
+  fi; \
+  {{RSYNC}} {{RSYNC_BASE_FLAGS}} {{SOURCES}} {{DEST}}/ && \
+  echo "{{GREEN}}Backup completed successfully!{{NC}}" || \
+  echo "{{RED}}Backup failed!{{NC}}"
+```
+
+#### 1. Dry-run test
+
+```bash
+DRY_OUTPUT=$({{RSYNC}} {{RSYNC_DRY_FLAGS}} -i {{SOURCES}} {{DEST}}/ 2>&1)
+
+HAS_DELETIONS=$(
+  echo "$DRY_OUTPUT" |
+  grep -q '^\*deleting' &&
+  echo "yes" ||
+  echo "no"
+)
+```
+
+Here's what each part does:
+
+1. `DRY_OUTPUT=$(...)`
+
+Executes the rsync command (with placeholders like {{RSYNC}},
+{{RSYNC_DRY_FLAGS}}, etc.). 2>&1 redirects standard error to standard output so
+all output is captured. The entire output is stored in the DRY_OUTPUT variable.
+
+2. `grep -q '^\*deleting'`
+
+Searches the captured output for lines beginning with `*deleting`. `-q` makes
+grep quiet so it only returns an exit status.
+
+3. `^\*deleting` matches rsync's itemized deletion lines, for example:
+
+```txt
+*deleting   old-file.txt
+```
+
+4. `&& echo "yes" || echo "no"`
+
+If `grep` finds a match (exit status 0), `HAS_DELETIONS` is set to "yes".
+Otherwise it is set to "no".
+
+#### 2. Feedback on deleted files
+
+```bash
+read -p "Continue with backup? [y/N] " -n 1 -r
+```
+
+Here's what each option does:
+
+1. `-p "Continue with backup? [y/N] "`
+
+Displays the prompt before reading input. The `[y/N]` convention indicates that
+No is the default if the user simply presses Enter.
+
+2. `-n 1`
+
+Reads exactly one character without requiring the user to press Enter (on most
+terminals).
+
+3. `-r`
+
+Prevents backslashes (\) from being treated as escape characters, so the input
+is read literally.
+
+The character entered is stored in the default variable `REPLY` unless another
+variable name is provided.
+
+#### 3. exit or backup
+
+Depending on the user response, the script either
+
+- `exit 0;`: terminates the program early or
+- `{{RSYNC}} {{RSYNC_BASE_FLAGS}} {{SOURCES}} {{DEST}}/ &&`: performing the
+  backup.
+
+The `&&` at the end means the next command will run only if this `rsync` command
+succeeds (returns an exit status of 0).If the backup completes successfully,
+execution continues with the next command in the script. If `rsync` encounters
+an error (such as a missing source directory or permission issue), the chain
+stops at this point because of the `&&` operator.
+
+## Good to go
+
+There you have it.
+
+We have:
+
+1. Discussed the issue of backups and why you should use code for this tedious
+   task
+2. Discussed the pros and cons of `rsync` and `openrsync`
+3. Cross-platform compatibility using exFAT
+4. Timing issues in FAT formats
+5. Walkthrough of justfile for personal backup CLI using `rsync`
+
+All code can be found in [the Github
+repo](https://github.com/DanMazJen/backup-ssd).
+
+<!-- 
+# notes
+
+### Best rsync settings for copying and mirroring to or from FAT and exFAT filesystems
+
+Quick summary: I've just put a couple of painful days into this, and here's what
+I've come up with:
+
+For exFAT and FAT filesystems, use:
+
+```
+rsync -hvrltD --modify-window=1 
+```
+
+The -h makes numbers "human-readable" as base-1000 numbers. The
+`--modify-window=1` part is really important for FAT and exFAT filesystems to
+sync properly and not recopy all of the data every time! See more on this below,
+and in man rsync.
+
+A full rsync command might therefore look like this:
+
+SOURCE_PATH="path/to/source/dir" DESTINATION_PATH="path/to/destination/dir"
+
+# Option 1. **Copy** from source to destination.
+
+#
+
+# dry run
+
+time sudo rsync -hvrltD --modify-window=1 --stats --info=progress2\
+--dry-run "$SOURCE_PATH/" "$DESTINATION_PATH/" # actual copy time sudo rsync
+-hvrltD --modify-window=1 --stats --info=progress2\
+"$SOURCE_PATH/" "$DESTINATION_PATH/"
+
+# Option 2. **Mirror** from source to destination.
+
+# - CAUTION: this deletes files and folders that are on the destination but not
+
+# the source, thereby making destination dir *exactly match* the source dir.
+
+#
+
+# dry run
+
+time sudo rsync -hvrltD --modify-window=1 --stats --info=progress2\
+--delete --delete-excluded --dry-run "$SOURCE_PATH/" "$DESTINATION_PATH/" #
+actual copy time sudo rsync -hvrltD --modify-window=1 --stats --info=progress2\
+--delete --delete-excluded "$SOURCE_PATH/" "$DESTINATION_PATH/" For non FAT and
+exFAT filesystems, such as NTFS, ext4, etc., I replace -hvrltD --modify-window=1
+in all of the commands above with -hvra instead. -a adds several things that are
+not compatible with FAT and exFAT filesystems, such as permissions and ownership
+(-pgo), and --modify-window=1 is only required for FAT and exFAT filesystems, to
+prevent recopying data to the destination when it is already on the destination.
+
+Additional details Normally, for filesystems which are not FAT or exFAT, I use
+-a with rsync, as I explain in my answer here: how to use FreeFileSync and rsync
+to copy data.
+
+-a, or "archive" mode, includes -rlptgoD, as I explain in another answer here:
+rsync and symbolic links (the -r isn't always enforced by -a though, beware).
+
+The meanings of -rlptgoD, from man rsync, are:
+
+--recursive, -r recurse into directories --links, -l copy symlinks as symlinks
+--perms, -p preserve permissions --times, -t preserve modification times
+--group, -g preserve group --owner, -o preserve owner (super-user only) -D same
+as --devices --specials --devices preserve device files (super-user only)
+--specials preserve special files ["such as named sockets and fifos"] If using
+rsync on exFAT or FAT filesystems, however, these filesystems do not support
+POSIX owners, groups, and permissions, so remove -pgo, and use -rltD instead of
+-a! I like to also add -v for "verbose", and -h for "human readable numbers",
+resulting in -hvrltD.
+
+At one point I read that FAT and exFAT filesystems do not support symlinks (soft
+links), which is what -l does, but when testing on a real exFAT filesystem,
+removing -l resulted in a ton of "skipping non-regular file" errors! So, putting
+-l back in solved these errors and made rsync run smoother.
+
+As for the --modify-window=1 part, this is really important for FAT and exFAT
+filesystems! See man rsync here (emphasis added):
+
+--modify-window=NUM, -@
+
+When comparing two timestamps, rsync treats the timestamps as being equal if
+they differ by no more than the modify-window value. The default is 0, which
+matches just integer seconds. If you specify a negative value (and the receiver
+is at least version 3.1.3) then nanoseconds will also be taken into account.
+Specifying 1 is useful for copies to/from MS Windows FAT filesystems, because
+FAT represents times with a 2-second resolution (allowing times to differ from
+the original by up to 1 second).
+
+So, if you leave --modify-window=1 off, rsync will never be able to tell when a
+timestamp matches, and it will just keep copying, and recopying, and recopying
+again, all of the data every time you run rsync, rather than seeing that the
+file size and timestamps match on the destination when the data has already been
+copied over once! In other words, without --modify-window=1, rsync will copy all
+of the data again each time instead of ignoring data which is already on the
+destination. That's not good. Be sure to add this parameter in to fix it. I saw
+this repeatedly in my testing on exFAT filesystems over the last two days, and
+lost so much time over it.
+
+See more here:
+
+Why does Rsync seem to overwrite an already existing file on ExFat?
+https://superuser.com/a/384849/425838
+https://learn.microsoft.com/en-us/windows/win32/fileio/filesystem-functionality-comparison
+See also [my answer] Super User: Is it best to reformat the hard drive to exFAT
+using 512kb chunk, or smaller or bigger chunks? My answer on how to determine
+the cluster size of any filesystem you have: Server Fault: How to find the
+cluster size of any filesystem, whether NTFS, Apple APFS, ext4, ext3, FAT,
+exFAT, etc. My shorter answer: Server Fault: How can I use rsync with a FAT file
+system?
+-->

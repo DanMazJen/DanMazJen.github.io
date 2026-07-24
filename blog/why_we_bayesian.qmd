@@ -2,7 +2,8 @@
 title: "Why be a Bayesian"
 subtitle: "A non-technical introduction to the Bayesian approach"
 author: "Daniel S. Mazhari-Jensen"
-description: "Bayesian inference is not only elegant and intuitive, but also helpful for overcoming common challenges with data from the life sciences"
+description: Bayesian inference is not only elegant and intuitive, but also helpful for
+  overcoming common challenges with data from the life sciences
 date: 2026-05-26
 reading-time: 10 min
 file-modified: 2026-05-26
@@ -32,76 +33,109 @@ keyboard.
 
 # Why be a Bayesian?
 
-> Why do we need a Bayesian approach to regression? 
+> Why do we need a Bayesian approach to regression?
 
 Can't we just use ordinary least squares?
 
 The answer is not (only):
 
--  philosophy
--  elegance
--  a matter of preference
+- philosophy
+- elegance
+- a matter of preference
 
 Bayesian regression stabilizes inference by:
 
 1. Explicitly stating expectations
-2. Constraining parameters, offering regularization 
+2. Constraining parameters, offering regularization
 3. Constraining model, offering stability in parametrization of the model
 
 ::: {.callout-important appearance="simple" icon=false}
-Real regression problems are often weakly identified, noisy, unstable, and geometrically pathological.
+Real regression problems are often weakly identified, noisy, unstable, and
+geometrically pathological.
 :::
 
 ## What is the alternative?
 
-Frequentist statistics is by definition neither worse nor better. But the common statistical practice in todays academic publications is often lacking the robustness and explicit interpretation needed to drive home a correct sound and trustworthy interpretation of the estimand.
+Frequentist statistics is by definition neither worse nor better. But the common
+statistical practice in todays academic publications is often lacking the
+robustness and explicit interpretation needed to drive home a correct sound and
+trustworthy interpretation of the estimand.
 
 ## Is there a fight?
 
-No! Bayesian and frequentist approaches co-exists. While there has been philosophical [debate](https://doi.org/10.1007/978-3-662-48638-2), the main obsticale for bayesian statsistics was [computation power](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo).
+No! Bayesian and frequentist approaches co-exists. While there has been
+philosophical [debate](https://doi.org/10.1007/978-3-662-48638-2), the main
+obsticale for bayesian statsistics was [computation
+power](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo).
 
-Bayesian approaches had gain popularity in AI for techniques such as uncertainty quantification, bayesian optimization, active learning & robotics, time series forecasting, and bayesian deep learning.
+Bayesian approaches had gain popularity in AI for techniques such as uncertainty
+quantification, bayesian optimization, active learning & robotics, time series
+forecasting, and bayesian deep learning.
 
 ## When to use Frequentist and when to use Bayesian approaches?
 
-The Frequentist approach is often sufficient --- and indeed comparable to Bayesian statsistics --- when the model is simple and easy to parametrize. 
+The Frequentist approach is often sufficient --- and indeed comparable to
+Bayesian statsistics --- when the model is simple and easy to parametrize.
+
+*TODO*
+
+Show example:
+
+```{r}
+#| label: simple-example
+
+#here
+```
 
 ## But sometimes, they are very different!
 
-However, for more complex and demanding models, Bayesian approaches allows rigorous and flexible handling of uncertainty, model diagnostics, and parametrization. While a Frequentist approach is nearly always available, it often comes with stricter assumptions and more quirks (which makes solutions less intuitive and unable to transfer to other problems).
+However, for more complex and demanding models, Bayesian approaches allows
+rigorous and flexible handling of uncertainty, model diagnostics, and
+parametrization. While a Frequentist approach is nearly always available, it
+often comes with stricter assumptions and more quirks (which makes solutions
+less intuitive and unable to transfer to other problems).
 
-## Time for an example:
+### Binomial regression example
 
-:::: {.columns}
-::: {.column}
+GLMs never guarantee a multivariate Gaussian posterior distribution. Thus,
+quadratic approximation will fail. While this is no issue for MCMC, frequentist
+always assume this! Therefore, it's good to know when to expect issues for
+interpreting other colleagues models!
+
+## Other times, Bayesian models are the only choice:
+
+::: {.columns}
+::::: {.column}
 Suppose we have:
 
--  30 observations
--  30 predictors
--  strong predictor correlation
--  weak signal
--  uncertain mechanisms
-:::
-::: {.column}
+- 32 observations
+- 30 predictors
+- strong predictor correlation
+- weak signal (a.u. 2)
+- noise at $\mathcal{N}(0,2)$
+:::::
+::::: {.column}
 This is extremely common in:
 
--  social science
--  biology
--  psychology
--  economics
--  policy research
+- social science
+- biology
+- psychology
+- economics
+- policy research
+:::::
 :::
-::::
 
 The truth is simple: only one predictor matters:
 
 $$
-y = 1.5x_1 + \epsilon
+  y = 2x_1 + \epsilon
 $$
 
-All other predictors have zero effect and all predictors are highly correlated (*ρ* ~ 0.9).
+All other predictors have zero effect and all predictors are highly correlated
+(*ρ* \~ 0.8). Noise is
 
-```{r make-data}
+```{r}
+#| label: make-data
 #| output: false
 #| echo: false
 
@@ -152,8 +186,8 @@ form <- as.formula(
 )
 ```
 
-
-```{r freq-model}
+```{r}
+#| label: freq-model
 #| output: false
 #| echo: false
 
@@ -168,8 +202,8 @@ fit_lm <- lm(form, data = dat)
 summary(fit_lm)
 ```
 
-
-```{r bayes-model}
+```{r}
+#| label: bayes-model
 #| output: false
 #| echo: false
 
@@ -192,8 +226,8 @@ fit_bayes <- rstanarm::stan_glm(
 print(fit_bayes, digits = 2)
 ```
 
-
-```{r prep-plot}
+```{r}
+#| label: prep-plot
 #| output: false
 #| echo: false
 
@@ -236,8 +270,8 @@ truth_df <- tibble::tibble(
 )
 ```
 
-
-```{r plot-results1}
+```{r}
+#| label: plot-results1
 #| output: true
 #| echo: false
 
@@ -282,8 +316,8 @@ ggplot2::ggplot() +
   ggplot2::theme_bw()
 ```
 
-
-```{r plot-results2}
+```{r}
+#| label: plot-results2
 #| output: false
 #| echo: false
 
@@ -349,10 +383,10 @@ ggplot2::ggplot(
   ggplot2::theme_bw()
 ```
 
-
 ## Visualizing the model:
 
-```{r classic-bayes-plot}
+```{r}
+#| label: classic-bayes-plot
 #| warning: false
 #| echo: false
 
@@ -433,6 +467,17 @@ ggplot(draws, aes(x = b, fill = dist)) +
   theme_linedraw()
 ```
 
+### Is this magic? No, regularization...
+
+This is achieved using regularizing priors.
+
+all prior $x_n$ is $\mathcal{N}(0, 1.5),$ The prior intercept is
+$mathcal{N}(0, 0.25)$
+
+So we are vocal about our assumption and expectation that the effect of each `x`
+is +-3 95% of the time.
+
+To learn more about how to use the prior, tag along for the following exercises.
 
 # Exercises: Bayesian updating and posterior probabilities
 
@@ -442,13 +487,17 @@ Use the [shiny app](https://shiny.rit.albany.edu/stat/binomial/) to plot your bi
 
 ## Goal
 
-The goal of these exercises is to experience the core idea of Bayesian inference:
+The goal of these exercises is to experience the core idea of Bayesian
+inference:
 
-> We start with prior knowledge, collect data, update our beliefs, and use the posterior distribution to answer scientific questions.
+> We start with prior knowledge, collect data, update our beliefs, and use the
+> posterior distribution to answer scientific questions.
 
-You do **not** need to perform a full Bayesian analysis. The purpose is to understand the logic behind Bayesian inference and how posterior samples can be used.
+You do **not** need to perform a full Bayesian analysis. The purpose is to
+understand the logic behind Bayesian inference and how posterior samples can be
+used.
 
-## Exercises — Updating beliefs about an assay
+## Exercises --- Updating beliefs about an assay
 
 You have developed a new diagnostic assay.
 
@@ -465,18 +514,18 @@ $\theta = P(\text{successful detection})$
 
 Your goal is to estimate the probability that the assay works.
 
----
+--------------------------------------------------------------------------------
 
-### Exercises 1 — Define a prior belief
+### Exercises 1 --- Define a prior belief
 
-Before collecting data, you assume that any value between 0 and 1 is equally possible.
+Before collecting data, you assume that any value between 0 and 1 is equally
+possible.
 
 Which of the following prior distributions would best fit your hypothesis?
 
 ```{r}
 #| label: exercise1
 #| echo: false
-
 
 library(ggplot2)
 
@@ -506,7 +555,7 @@ ggplot(priors, aes(theta, density)) +
     y = "Density"
   ) +
   theme_bw()
-```  
+```
 
 <details>
 <summary>**Click for the solution**</summary>
@@ -518,21 +567,20 @@ $\theta \sim Beta(1,1)$
 or a uniform distribution truncated at 0 and 1.
 </details>
 
----
+--------------------------------------------------------------------------------
 
 ### Exercises 2 - From prior and data to posterior
 
 Suppose we observe 8 successes out of 10 trials.
 
-The likelihood for the unknown probability θ is shown below together with the prior from Exercise 1.
+The likelihood for the unknown probability θ is shown below together with the
+prior from Exercise 1.
 
 Recall that
 
 $Posterior ∝ Likelihood × Prior$
 
-For a Beta prior and Binomial data, the posterior is
-	​
-$θ∼Beta(α,β),$
+For a Beta prior and Binomial data, the posterior is ​ $θ∼Beta(α,β),$
 
 $∼Binomial(n,θ),$
 
@@ -540,12 +588,12 @@ which gives
 
 $θ∣y∼Beta(α+y, β+n−y)$
 
-You are not expected to calculate the posterior. Instead, use the plots to reason about where it should be.
+You are not expected to calculate the posterior. Instead, use the plots to
+reason about where it should be.
 
 ```{r}
 #| label: exercise2
 #| echo: false
-
 
 library(ggplot2)
 
@@ -592,8 +640,7 @@ Compared with the likelihood, do you expect the posterior to be
 
 - more spread out,
 - about equally spread out,
-- more concentrated?
-Explain your reasoning in one sentence.
+- more concentrated? Explain your reasoning in one sentence.
 
 <details> <summary><strong>Click for the solution</strong></summary>
 
@@ -610,13 +657,14 @@ In fact,
 $θ∣y∼Beta(9,3)$
 </details>
 
----
+--------------------------------------------------------------------------------
 
-### Exercises 3 — Different priors, same data
+### Exercises 3 --- Different priors, same data
 
 Suppose we again observe 8 successes out of 10 trials.
 
-Below are four different prior distributions together with the same likelihood. Each panel represents a different prior belief before the data were collected.
+Below are four different prior distributions together with the same likelihood.
+Each panel represents a different prior belief before the data were collected.
 
 Recall that
 
@@ -625,7 +673,6 @@ $Posterior ∝ Prior × Likelihood$
 ```{r}
 #| label: exercise3
 #| echo: false
-
 
 library(ggplot2)
 
@@ -673,10 +720,12 @@ ggplot(plot_df, aes(theta, density)) +
 
 **Questions**
 
-For each prior (A–D), sketch the posterior distribution.
+For each prior (A--D), sketch the posterior distribution.
 
-- Which prior do you expect to produce a posterior that is closest to the likelihood?
-- Which prior do you expect to produce a posterior that is furthest from the likelihood?
+- Which prior do you expect to produce a posterior that is closest to the
+  likelihood?
+- Which prior do you expect to produce a posterior that is furthest from the
+  likelihood?
 - Rank the four posteriors from most to least concentrated (least uncertainty).
 - Explain your reasoning in one or two sentences.
 
@@ -824,15 +873,3 @@ ggplot(plot_df,
 ```
 
 </details>
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,22 +1,58 @@
 {
-    "workbench.colorCustomizations": {
-        "activityBar.activeBackground": "#bfab07",
-        "activityBar.background": "#bfab07",
-        "activityBar.foreground": "#15202b",
-        "activityBar.inactiveForeground": "#15202b99",
-        "activityBarBadge.background": "#c2fdf6",
-        "activityBarBadge.foreground": "#15202b",
-        "commandCenter.border": "#e7e7e799",
-        "sash.hoverBorder": "#bfab07",
-        "statusBar.background": "#8e7f05",
-        "statusBar.foreground": "#e7e7e7",
-        "statusBarItem.hoverBackground": "#bfab07",
-        "statusBarItem.remoteBackground": "#8e7f05",
-        "statusBarItem.remoteForeground": "#e7e7e7",
-        "titleBar.activeBackground": "#8e7f05",
-        "titleBar.activeForeground": "#e7e7e7",
-        "titleBar.inactiveBackground": "#8e7f0599",
-        "titleBar.inactiveForeground": "#e7e7e799"
-    },
+  "editor.formatOnSave": true,
+  "editor.snippetSuggestions": "inline",
+  "conventional-branch.type": [
+    "build",
+    "ci",
+    "docs",
+    "feat",
+    "fix",
+    "refactor",
+    "style",
+    "test",
+    "chore",
+    "revert",
+    "perf"
+  ],
+  "conventional-branch.format": "{Type}/{Branch}",
+  "[quarto][qmd][md]": {
+    "editor.defaultFormatter": "jolars.panache"
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "files.insertFinalNewline": true,
+  "typos.config": ".config/typos.toml",
+  "conventionalCommits.emojiFormat": "emoji",
+  "conventionalCommits.promptScopes": false,
+  
+
+
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#bfab07",
+    "activityBar.background": "#bfab07",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#c2fdf6",
+    "activityBarBadge.foreground": "#15202b",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#bfab07",
+    "statusBar.background": "#8e7f05",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#bfab07",
+    "statusBarItem.remoteBackground": "#08d8c1",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#8e7f05",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#8e7f0599",
+    "titleBar.inactiveForeground": "#e7e7e799",
+    "activityBarTop.activeBackground": "#bfab07",
+    "activityBarTop.background": "#bfab07",
+    "activityBarTop.foreground": "#15202b",
+    "activityBarTop.inactiveForeground": "#15202b99",
+    "commandCenter.foreground": "#e7e7e7",
+    "statusBar.debuggingBackground": "#8e7f05",
+    "statusBar.debuggingForeground": "#e7e7e7"
+  },
     "peacock.color": "#8e7f05"
 }
