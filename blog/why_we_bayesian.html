@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -45,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-bba5ebae505b5c03f3f0d8040a416a6b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-a547dd1b4798262c927e2e52fa668cb1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -157,9 +192,15 @@ window.Quarto = {
   <li><a href="#what-is-the-alternative" id="toc-what-is-the-alternative" class="nav-link" data-scroll-target="#what-is-the-alternative">What is the alternative?</a></li>
   <li><a href="#is-there-a-fight" id="toc-is-there-a-fight" class="nav-link" data-scroll-target="#is-there-a-fight">Is there a fight?</a></li>
   <li><a href="#when-to-use-frequentist-and-when-to-use-bayesian-approaches" id="toc-when-to-use-frequentist-and-when-to-use-bayesian-approaches" class="nav-link" data-scroll-target="#when-to-use-frequentist-and-when-to-use-bayesian-approaches">When to use Frequentist and when to use Bayesian approaches?</a></li>
-  <li><a href="#but-sometimes-they-are-very-different" id="toc-but-sometimes-they-are-very-different" class="nav-link" data-scroll-target="#but-sometimes-they-are-very-different">But sometimes, they are very different!</a></li>
-  <li><a href="#time-for-an-example" id="toc-time-for-an-example" class="nav-link" data-scroll-target="#time-for-an-example">Time for an example:</a></li>
-  <li><a href="#visualizing-the-model" id="toc-visualizing-the-model" class="nav-link" data-scroll-target="#visualizing-the-model">Visualizing the model:</a></li>
+  <li><a href="#but-sometimes-they-are-very-different" id="toc-but-sometimes-they-are-very-different" class="nav-link" data-scroll-target="#but-sometimes-they-are-very-different">But sometimes, they are very different!</a>
+  <ul class="collapse">
+  <li><a href="#binomial-regression-example" id="toc-binomial-regression-example" class="nav-link" data-scroll-target="#binomial-regression-example">Binomial regression example</a></li>
+  </ul></li>
+  <li><a href="#other-times-bayesian-models-are-the-only-choice" id="toc-other-times-bayesian-models-are-the-only-choice" class="nav-link" data-scroll-target="#other-times-bayesian-models-are-the-only-choice">Other times, Bayesian models are the only choice:</a></li>
+  <li><a href="#visualizing-the-model" id="toc-visualizing-the-model" class="nav-link" data-scroll-target="#visualizing-the-model">Visualizing the model:</a>
+  <ul class="collapse">
+  <li><a href="#is-this-magic-no-regularization" id="toc-is-this-magic-no-regularization" class="nav-link" data-scroll-target="#is-this-magic-no-regularization">Is this magic? No, regularization…</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#exercises-bayesian-updating-and-posterior-probabilities" id="toc-exercises-bayesian-updating-and-posterior-probabilities" class="nav-link" data-scroll-target="#exercises-bayesian-updating-and-posterior-probabilities">Exercises: Bayesian updating and posterior probabilities</a>
   <ul class="collapse">
@@ -281,22 +322,34 @@ window.Quarto = {
 <section id="when-to-use-frequentist-and-when-to-use-bayesian-approaches" class="level2">
 <h2 class="anchored" data-anchor-id="when-to-use-frequentist-and-when-to-use-bayesian-approaches">When to use Frequentist and when to use Bayesian approaches?</h2>
 <p>The Frequentist approach is often sufficient — and indeed comparable to Bayesian statsistics — when the model is simple and easy to parametrize.</p>
+<p><em>TODO</em></p>
+<p>Show example:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 </section>
 <section id="but-sometimes-they-are-very-different" class="level2">
 <h2 class="anchored" data-anchor-id="but-sometimes-they-are-very-different">But sometimes, they are very different!</h2>
 <p>However, for more complex and demanding models, Bayesian approaches allows rigorous and flexible handling of uncertainty, model diagnostics, and parametrization. While a Frequentist approach is nearly always available, it often comes with stricter assumptions and more quirks (which makes solutions less intuitive and unable to transfer to other problems).</p>
+<section id="binomial-regression-example" class="level3">
+<h3 class="anchored" data-anchor-id="binomial-regression-example">Binomial regression example</h3>
+<p>GLMs never guarantee a multivariate Gaussian posterior distribution. Thus, quadratic approximation will fail. While this is no issue for MCMC, frequentist always assume this! Therefore, it’s good to know when to expect issues for interpreting other colleagues models!</p>
 </section>
-<section id="time-for-an-example" class="level2">
-<h2 class="anchored" data-anchor-id="time-for-an-example">Time for an example:</h2>
+</section>
+<section id="other-times-bayesian-models-are-the-only-choice" class="level2">
+<h2 class="anchored" data-anchor-id="other-times-bayesian-models-are-the-only-choice">Other times, Bayesian models are the only choice:</h2>
 <div class="columns">
 <div class="column">
 <p>Suppose we have:</p>
 <ul>
-<li>30 observations</li>
+<li>32 observations</li>
 <li>30 predictors</li>
 <li>strong predictor correlation</li>
-<li>weak signal</li>
-<li>uncertain mechanisms</li>
+<li>weak signal (a.u. 2)</li>
+<li>noise at <span class="math inline">\(\mathcal{N}(0,2)\)</span></li>
 </ul>
 </div><div class="column">
 <p>This is extremely common in:</p>
@@ -311,9 +364,9 @@ window.Quarto = {
 </div>
 <p>The truth is simple: only one predictor matters:</p>
 <p><span class="math display">\[
-y = 1.5x_1 + \epsilon
+  y = 2x_1 + \epsilon
 \]</span></p>
-<p>All other predictors have zero effect and all predictors are highly correlated (<em>ρ</em> ~ 0.9).</p>
+<p>All other predictors have zero effect and all predictors are highly correlated (<em>ρ</em> ~ 0.8). Noise is</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -335,6 +388,13 @@ y = 1.5x_1 + \epsilon
 </div>
 </div>
 </div>
+<section id="is-this-magic-no-regularization" class="level3">
+<h3 class="anchored" data-anchor-id="is-this-magic-no-regularization">Is this magic? No, regularization…</h3>
+<p>This is achieved using regularizing priors.</p>
+<p>all prior <span class="math inline">\(x_n\)</span> is <span class="math inline">\(\mathcal{N}(0, 1.5),\)</span> The prior intercept is <span class="math inline">\(mathcal{N}(0, 0.25)\)</span></p>
+<p>So we are vocal about our assumption and expectation that the effect of each <code>x</code> is +-3 95% of the time.</p>
+<p>To learn more about how to use the prior, tag along for the following exercises.</p>
+</section>
 </section>
 </section>
 <section id="exercises-bayesian-updating-and-posterior-probabilities" class="level1">
