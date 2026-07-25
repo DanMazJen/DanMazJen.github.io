@@ -1,7 +1,27 @@
 ---
-title: "DanMazJen.github.io"
+title: "Welcome to the website!"
+about:
+  template: broadside
+  image: profile.jpg
+  links:
+    - icon: person-workspace
+      text: University site
+      href: https://vbn.aau.dk/en/persons/daskmaje
+    - icon: github
+      text: Github
+      href: https://github.com/DanMazJen
 ---
 
-Welcome to the website.
+Hi! I'm Daniel - feel free to browse the content and contact me for any question
+or comments.
 
-This website primarily hosts small blog-styled pieces of statistical material I want to share - with other and future me. Please go the [blog posts](/blog/index.qmd) or reach out to [me](/about.qmd) if you have any comments.
+This website primarily hosts small blog-styled pieces of statistical material I
+want to share - with friends, colleagues, and future me. Please go the [blog
+posts](/blog/index.qmd) or reach out to [me](/about.qmd) if you have any
+comments or questions.
+
+All content is MIT License so feel free to reuse or build upon it --- but I
+encourage you to keep it open source.
+
+Content is written by me (not AI) and there will be typos and potential for
+errors. Also, content will be opinionated.
