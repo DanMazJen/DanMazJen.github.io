@@ -1,13 +1,13 @@
 --- 
-title: "CLI for rsync backups on external SSD"
-subtitle: "using justfile and bash"
+title: "Justfile CLI for rsync backups on external SSD"
+subtitle: "Easy backups of the folders you need"
 author: "Daniel S. Mazhari-Jensen"
-description: I walk the reader through how I use rsync for backups on my
-  external T5 SSD formatted as exFAT
+description: This is a walkthrough of my choices underlying the justfile I wrote
+  using rsync for backups on my external T5 SSD formatted as exFAT.
 date: 2026-07-23
-reading-time: 5 min
+reading-time: 15 min
 file-modified: 2026-06-12
-categories: [rsync, just, bash]
+categories: [rsync, just, bash, CLI]
 format:
   html:
     toc: true
@@ -17,7 +17,8 @@ format:
 ## Backups - the problem:
 
 Backups are important but too often shrouded in anxiety and manual error prone
-workflows.
+workflows. I have spent hours checking manual backup procedures, which became a
+outright dread and a task I'd postpone.
 
 The most common way to backup data is manually dragging and dropping files from
 a *source* (e.g., your computer or phone) to a *destination* (e.g., an external
@@ -30,53 +31,40 @@ While common, manual drag-n-drop has several cons:
 3. No helper for iterative backup (which files have changed?)
 4. Minimal feedback (what happened: files, memory, deletions etc.)
 
+In this blog post, I'll thoroughly document my thoughts and decisions on moving
+to a command-line interface (CLI) for my ad-hoc backup of data.
+
 ### Commercial solutions exists
 
 There are of course solutions out there - but they are not for free...
 
 **Carbon Copy Cloner (CCC)** seems like a great solution, however, it's not for
 free. As I haven't tried it, I cannot recommend it. But it seems as the solution
-I would pick from the market at the moment of writing.
+I would pick from the market at the moment of writing. Note that it *only* works
+for MacOS. Check out [CCC](https://bombich.com/).
 
 **Time Machine on Macs** is of course the native and simple solution. However,
 the TM algorithm currently backs up *the entire OS* which requires significantly
 more memory and time than just backing up a couple of folders that you might
 need. Besides, many people find themselves with the unhappy surprise that TMs
 often copy the OS bug as well and you'll have to try-and-error when the bug
-first occurred.
+first occurred. check out [TM](https://support.apple.com/en-us/104984).
 
 ## rsync - the CLI solution
 
-Luckily for us, Linux made a command line interface (CLI) that solved the issue,
-called `rsync`. [rsync](https://rsync.samba.org/) was first released in 1996 and
-is still actively maintained. It's written in **C** and
+Luckily for us, Linux introduced a command-line utility that solved this
+problem: [rsync](https://rsync.samba.org/). First released in 1996, `rsync`
+(*remote synchronization*) is still actively maintained today. Written in **C**,
+it was designed to efficiently synchronise files and directories between two
+locations while transferring only the data that has actually changed. This
+**delta transfer algorithm** dramatically reduces bandwidth usage and makes
+rsync an excellent choice for backups, mirroring, and remote file
+synchronisation. Over the years, it has become one of the most trusted and
+widely used tools in the Unix and Linux ecosystem, and it remains the foundation
+for many backup and deployment workflows.
 
-`rsync` is a...
-
-`rsync` 2.6.9 released under the GPL 2.0 license, with the somewhat more
-restrictive GPL 3.0 license restricting Apple from using any newer version.
-Therefore, Apple switched to
-[openrsync](https://github.com/apple-oss-distributions/rsync/tree/rsync-184).
-`openrsync` is compatible with `rsync` 2.6.9, but lack some of the newer
-features. It is actively maintained and is capable of everything we'll be
-covering in this blog.
-
-Due to [serious AI-slop
-criticism](https://www.theregister.com/ai-and-ml/2026/06/04/please-do-not-vibe-f-up-this-software-broken-backups-spark-ai-coding-row-in-rsync-project/5251189)
-on the `rsync` project, I've deliberately decided on using `openrsync` instead
-of the original `rsync`. See also
-[here](https://www.osnews.com/story/145198/rsync-opens-the-slopgates-regressions-and-bugs-ensue/).
-
-I'm running Mac 26.5.2 with openrsync: protocol version 29:
-
-```bash
-rsync --version 
-openrsync: protocol version 29 
-rsync version 2.6.9 compatible
-```
-
-As a vertue of it's +30 year long life, it has a robust and versetile set of
-options that can be called using flags. Below is a list of the flags I'll be
+As a vertue of it's +30 year long life, `rsync` has a robust and versetile set
+of options that can be called using flags. Below is a list of the flags I'll be
 covering in this blog.
 
 <!-- 
@@ -120,74 +108,103 @@ As seen from the table, the `-a` (archive) flag is a shorthand for the seven
 flags `-rlptgoD`. This is the standard format for UNIX/linux/mac native
 formatting, which brings us to the next section.
 
+### openrsyn - rsync, licenses and recent AI-slop controversies
+
+In 2006, `rsync` 2.6.9 released under the GPL 2.0 license for the last time,
+with newer versions using the somewhat more restrictive GPL 3.0 license. This
+restricting Apple from using any newer version. Therefore, `rsync` 2.6.9 was
+shipped on Macs for several years without updates. Eventually, in 2024, Apple
+switched to
+[openrsync](https://github.com/apple-oss-distributions/rsync/tree/rsync-184) ---
+a a free, BSD-licensed alternative implementation of the classic file
+synchronization tool rsync. `openrsync` is compatible with `rsync` 2.6.9, but
+lack some of the newer features. It is actively maintained and is capable of
+everything we'll be covering in this blog.
+
+Due to [serious AI-slop
+criticism](https://www.theregister.com/ai-and-ml/2026/06/04/please-do-not-vibe-f-up-this-software-broken-backups-spark-ai-coding-row-in-rsync-project/5251189)
+on the `rsync` project, I've deliberately decided on using `openrsync` instead
+of the original `rsync`.
+
+I'm running Mac 26.5.2 with openrsync: protocol version 29:
+
+```bash
+rsync --version 
+openrsync: protocol version 29 
+rsync version 2.6.9 compatible
+```
+
 ## Cross-platform compatibility and the exFAT format
 
-Although I prefer linux-like systems (Ubunto or MacOS), I also value
-cross-platform compatibility for storing my data. Therefore, I used exFAT for my
-Samsung T5 external SSD (2T memory).
+Although I prefer UNIX-like systems, I also value cross-platform compatibility
+for storing my data. Therefore, I used exFAT for my Samsung T5 external SSD (2T
+memory). See a more complete discussion on [NTFS vs. exFAT vs.
+APFS](https://www.fortuneportech.com/2025/05/06/best-file-systems-for-ssds/).
+
+https://www.fortuneportech.com/2025/05/06/best-file-systems-for-ssds/
 
 exFAT is great for many reasons:
 
 1. cross-platform compatibility
-2. unlike the older FAT format, it has no size limits on individual files.
-3. ??
+2. unlike the older FAT format, it doesn't have the 4GB size limits on
+   individual files
+3. Optimized for SSDs, minimizing wear and tear
 
 But as always, there is no free lunch:
 
 1. permissions, commonly used by UNIX systems, are not supported
 2. the format is not native to either Windows, Linux, or Mac
 
-Therefore, we need to adjust our rsync flags in order to safely copy our data.
-
-https://stackoverflow.com/questions/32682694/rsync-backup-to-external-hard-disk-exfat-fails
-
-https://nelsonslog.wordpress.com/2017/02/06/rsync-to-exfat-usb/
-
-https://www.disfinder.com/docs/notes/rsync-to-exfat/
+Therefore, we need to adjust our `rsync` flags in order to safely copy our data.
 
 Instead of `-a`, it's therefore recommended using `-vrltD` and omitting `-gop`.
-As seen from the flag table, `-gop` is fro permissions (chmod bits),group
+As seen from the flag table, `-gop` is for permissions (chmod bits), group
 ownership, and user ownership (requires root). As these are not supported by FAT
 or exFAT, we will have to skip them.
 
 Note that this is a limitation of cross-platform compatibility and not
-recommended for pure Mac or Linux systems compatibility.
+recommended for pure Mac (APFS) or Linux system compatibility.
 
-### recap:
+### Fixing timing issues with windows
 
-- The rsync -a (archive) flag is a shorthand for -rlptgoD:
-- Recommended to exFAT is `rsync -vrltD --progress --stats` (so without pgo and
-  adding v(erbose))
-- pgo is
-  - Permissions (chmod bits)
-  - Group ownership
-  - User ownership (requires root)
+It will come as no surprise to most Window's users that Windows has some serious
+[timing
+issues](https://superuser.com/questions/763366/why-does-rsync-seem-to-overwrite-an-already-existing-file-on-exfat).
 
-We now have:
+<!--
+recap: 
 
-```.bash
-rsync -vrltD my_source my_destination/
-```
-
-## Fixing timing issues with windows
-
-https://superuser.com/questions/763366/why-does-rsync-seem-to-overwrite-an-already-existing-file-on-exfat
-
-recap: --inplace: Modifies the file in place. This is useful for large files
+- --inplace: Modifies the file in place. This is useful for large files
 (like disk images) on SSDs but can be less efficient for small changes on remote
-networks. --modify-window=1: Essential for exFAT. exFAT rounds timestamps
+networks. 
+- --modify-window=1: Essential for exFAT. exFAT rounds timestamps
+differently than Linux file systems. This flag allows a 1-second tolerance,
+preventing rsync from repeatedly re-copying files that are actually unchanged.
+-->
+
+The `--modify-window=1` flag is essential for exFAT. exFAT rounds timestamps
 differently than Linux file systems. This flag allows a 1-second tolerance,
 preventing rsync from repeatedly re-copying files that are actually unchanged.
 
-You need --modify-window=1.
-
-Quoted below from man rsync:
+Quoted below from man `rsync`:
 
 > Specifying 1 is useful for copies to/from MS Windows FAT filesystems, because
 > FAT represents times with a 2-second resolution (allowing times to differ from
 > the original by up to 1 second).
 
-Therefore, we add:
+### What we have now:
+
+- The rsync `-a` (archive) flag is a shorthand for -rlptgoD:
+- exFAT does not support permission meta-data, so we remove `-pgo` and retain
+  the `-rltD` flags. `-pgo` is
+  - Permissions (chmod bits)
+  - Group ownership
+  - User ownership (requires root)
+- Windows and it's FAT formats have lower timing resolution, so we add the
+  `--modify-window=1` flag
+- we also want more verbose output, so we add `-v`
+
+We now have:
 
 ```.bash
 rsync -vrltD --modify-window=1 my_source my_destination/
@@ -450,8 +467,34 @@ We have:
 All code can be found in [the Github
 repo](https://github.com/DanMazJen/backup-ssd).
 
-<!-- 
-# notes
+## What I read in order to write this blog:
+
+- [Digital Ocan's tutorial on
+  rsync](https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories)
+- [Veronica's blog on everyday
+  rsync](https://veronicaexplains.net/everyday-rsync/)
+- [Knowledge ExChange's blog on
+  rsync](https://kx.cloudingenium.com/en/rsync-remote-backup-file-sync-linux-guide/#how-rsync-works)
+- [disfinder's note on exfat and
+  rsync](https://www.disfinder.com/docs/notes/rsync-to-exfat/)
+- [Nelson's log on exfat and
+  rsync](https://nelsonslog.wordpress.com/2017/02/06/rsync-to-exfat-usb/)
+- [this stackoverflow dicsussion on exfat and
+  rsync](https://stackoverflow.com/questions/32682694/rsync-backup-to-external-hard-disk-exfat-fails)
+- [this superuser discussion on exfat timing issues and
+  rsync](https://superuser.com/questions/763366/why-does-rsync-seem-to-overwrite-an-already-existing-file-on-exfat)
+- [this serverfault diuscussion on fat and
+  rsync](https://serverfault.com/questions/54949/how-can-i-use-rsync-with-a-fat-file-system)
+- [this stackoverflow on the exclude-from list in
+  rsync](https://stackoverflow.com/questions/41356889/rsync-exclude-from-list-file-not-working)
+- [The Register's article on rsync
+  controversies](https://www.theregister.com/ai-and-ml/2026/06/04/please-do-not-vibe-f-up-this-software-broken-backups-spark-ai-coding-row-in-rsync-project/5251189)
+- [Apple's move from rsync to
+  openrsync](https://appleinsider.com/inside/macos-sequoia/tips/what-you-should-know-about-apples-switch-from-rsync-to-openrsync)
+- [Fortech's overview of file system
+  format](https://www.fortuneportech.com/2025/05/06/best-file-systems-for-ssds/)
+
+<!-- # notes
 
 ### Best rsync settings for copying and mirroring to or from FAT and exFAT filesystems
 
@@ -561,5 +604,4 @@ using 512kb chunk, or smaller or bigger chunks? My answer on how to determine
 the cluster size of any filesystem you have: Server Fault: How to find the
 cluster size of any filesystem, whether NTFS, Apple APFS, ext4, ext3, FAT,
 exFAT, etc. My shorter answer: Server Fault: How can I use rsync with a FAT file
-system?
--->
+system? -->
