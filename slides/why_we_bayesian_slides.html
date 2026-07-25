@@ -6,11 +6,11 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.38">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Daniel Skak Mazhari-Jensen">
-  <meta name="dcterms.date" content="2026-07-24">
+  <meta name="dcterms.date" content="2026-07-25">
   <title>DanMazJen.github.io – Why be a Bayesian</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -21,10 +21,13 @@
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
     */
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -203,12 +206,12 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Daniel Skak Mazhari-Jensen 
+Daniel Skak Mazhari-Jensen
 </div>
 </div>
 </div>
 
-  <p class="date">2026-07-24</p>
+  <p class="date">2026-07-25</p>
 </section>
 <section id="what-is-this-bayesian-thing-anyway" class="slide level2 center">
 <h2>What is this Bayesian thing anyway?</h2>
@@ -288,12 +291,12 @@ Daniel Skak Mazhari-Jensen
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">set.seed</span>(<span class="dv">18062026</span>)</span>
-<span id="cb1-2"><a></a></span>
-<span id="cb1-3"><a></a><span class="co"># Data</span></span>
-<span id="cb1-4"><a></a>n <span class="ot">&lt;-</span> <span class="dv">100</span>                 <span class="co"># samples</span></span>
-<span id="cb1-5"><a></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)            <span class="co"># x = N(0,1)      </span></span>
-<span id="cb1-6"><a></a>y <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(n)  <span class="co"># α = 2, β = 3, ε = N(0,1) </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">18062026</span>)</span>
+<span id="cb1-2"><a aria-label="2"></a></span>
+<span id="cb1-3"><a aria-label="3"></a><span class="co"># Data</span></span>
+<span id="cb1-4"><a aria-label="4"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span>                 <span class="co"># samples</span></span>
+<span id="cb1-5"><a aria-label="5"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)            <span class="co"># x = N(0,1)      </span></span>
+<span id="cb1-6"><a aria-label="6"></a>y <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(n)  <span class="co"># α = 2, β = 3, ε = N(0,1) </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -303,22 +306,22 @@ Daniel Skak Mazhari-Jensen
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="co"># Frequentist OLS</span></span>
-<span id="cb2-2"><a></a>fit_freq <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a><span class="co"># Frequentist OLS</span></span>
+<span id="cb2-2"><a aria-label="2"></a>fit_freq <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p><strong>Bayesian:</strong></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="co"># Bayesian regression with flat priors</span></span>
-<span id="cb3-2"><a></a><span class="fu">library</span>(rstanarm)</span>
-<span id="cb3-3"><a></a>fit_bayes <span class="ot">&lt;-</span> <span class="fu">stan_glm</span>(</span>
-<span id="cb3-4"><a></a>  y <span class="sc">~</span> x,</span>
-<span id="cb3-5"><a></a>  <span class="at">prior =</span> <span class="cn">NULL</span>,            <span class="co"># flat prior on coefficients</span></span>
-<span id="cb3-6"><a></a>  <span class="at">prior_intercept =</span> <span class="cn">NULL</span>,</span>
-<span id="cb3-7"><a></a>  <span class="at">chains =</span> <span class="dv">2</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">refresh =</span> <span class="dv">0</span></span>
-<span id="cb3-8"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a><span class="co"># Bayesian regression with flat priors</span></span>
+<span id="cb3-2"><a aria-label="2"></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb3-3"><a aria-label="3"></a>fit_bayes <span class="ot">&lt;-</span> <span class="fu">stan_glm</span>(</span>
+<span id="cb3-4"><a aria-label="4"></a>  y <span class="sc">~</span> x,</span>
+<span id="cb3-5"><a aria-label="5"></a>  <span class="at">prior =</span> <span class="cn">NULL</span>,            <span class="co"># flat prior on coefficients</span></span>
+<span id="cb3-6"><a aria-label="6"></a>  <span class="at">prior_intercept =</span> <span class="cn">NULL</span>,</span>
+<span id="cb3-7"><a aria-label="7"></a>  <span class="at">chains =</span> <span class="dv">2</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb3-8"><a aria-label="8"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -328,8 +331,8 @@ Daniel Skak Mazhari-Jensen
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a>parameters<span class="sc">::</span><span class="fu">parameters</span>(fit_freq, <span class="at">ci =</span> <span class="fl">0.95</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Parameter, Coefficient, CI, CI_low, CI_high)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a aria-label="1"></a>parameters<span class="sc">::</span><span class="fu">parameters</span>(fit_freq, <span class="at">ci =</span> <span class="fl">0.95</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a aria-label="2"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Parameter, Coefficient, CI, CI_low, CI_high)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># Fixed Effects
@@ -344,8 +347,8 @@ x           |        3.01 | [2.82, 3.20]</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>parameters<span class="sc">::</span><span class="fu">parameters</span>(fit_bayes, <span class="at">ci =</span> <span class="fl">0.95</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb6-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Parameter, Median, CI, CI_low, CI_high)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a>parameters<span class="sc">::</span><span class="fu">parameters</span>(fit_bayes, <span class="at">ci =</span> <span class="fl">0.95</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a aria-label="2"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Parameter, Median, CI, CI_low, CI_high)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># Fixed Effects
