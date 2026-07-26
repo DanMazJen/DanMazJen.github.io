@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2026-07-23">
 <meta name="description" content="This is a walkthrough of my choices underlying the justfile I wrote using rsync for backups on my external T5 SSD formatted as exFAT.">
 
-<title>Justfile CLI for rsync backups on external SSD – DanMazJen.github.io</title>
+<title>Justfile CLI for rsync backups on external SSD – DanMazJen</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -80,10 +80,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6ac2aec46ad7f46b16024ee4409aa65c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-189549ecd294ed9837df383a4b42e31c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-8a591ff59271d21f6a5d1e80b3747fb5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-189549ecd294ed9837df383a4b42e31c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -112,11 +116,211 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -124,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">DanMazJen.github.io</span>
+    <span class="navbar-title">DanMazJen</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -148,6 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -174,6 +379,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#fixing-timing-issues-with-windows" id="toc-fixing-timing-issues-with-windows" class="nav-link" data-scroll-target="#fixing-timing-issues-with-windows">Fixing timing issues with windows</a></li>
   <li><a href="#what-we-have-now" id="toc-what-we-have-now" class="nav-link" data-scroll-target="#what-we-have-now">What we have now:</a></li>
   </ul></li>
+  <li><a href="#final-shinanigans-from-mac" id="toc-final-shinanigans-from-mac" class="nav-link" data-scroll-target="#final-shinanigans-from-mac">Final shinanigans from Mac</a></li>
   <li><a href="#making-a-justfile-cli" id="toc-making-a-justfile-cli" class="nav-link" data-scroll-target="#making-a-justfile-cli">Making a justfile CLI</a>
   <ul class="collapse">
   <li><a href="#adding-style-to-it" id="toc-adding-style-to-it" class="nav-link" data-scroll-target="#adding-style-to-it">Adding style to it</a></li>
@@ -190,6 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -353,16 +560,26 @@ https://kx.cloudingenium.com/en/rsync-remote-backup-file-sync-linux-guide/
 </table>
 <!-- panache-ignore-format-end -->
 <p>So in practice, it’s as easy as:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode .bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-a</span> my_source my_destination/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>zsh</strong></pre>
+</div>
+<pre class="bash," data-filename="zsh"><code>rsync -a my_source my_destination/</code></pre>
+</div>
 <p>As seen from the table, the <code>-a</code> (archive) flag is a shorthand for the seven flags <code>-rlptgoD</code>. This is the standard format for UNIX/linux/mac native formatting, which brings us to the next section.</p>
 <section id="openrsyn---rsync-licenses-and-recent-ai-slop-controversies" class="level3">
 <h3 class="anchored" data-anchor-id="openrsyn---rsync-licenses-and-recent-ai-slop-controversies">openrsyn - rsync, licenses and recent AI-slop controversies</h3>
 <p>In 2006, <code>rsync</code> 2.6.9 released under the GPL 2.0 license for the last time, with newer versions using the somewhat more restrictive GPL 3.0 license. This restricting Apple from using any newer version. Therefore, <code>rsync</code> 2.6.9 was shipped on Macs for several years without updates. Eventually, in 2024, Apple switched to <a href="https://github.com/apple-oss-distributions/rsync/tree/rsync-184">openrsync</a> — a a free, BSD-licensed alternative implementation of the classic file synchronization tool rsync. <code>openrsync</code> is compatible with <code>rsync</code> 2.6.9, but lack some of the newer features. It is actively maintained and is capable of everything we’ll be covering in this blog.</p>
 <p>Due to <a href="https://www.theregister.com/ai-and-ml/2026/06/04/please-do-not-vibe-f-up-this-software-broken-backups-spark-ai-coding-row-in-rsync-project/5251189">serious AI-slop criticism</a> on the <code>rsync</code> project, I’ve deliberately decided on using <code>openrsync</code> instead of the original <code>rsync</code>.</p>
 <p>I’m running Mac 26.5.2 with openrsync: protocol version 29:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">--version</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">openrsync:</span> protocol version 29 </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> version 2.6.9 compatible</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>zsh</strong></pre>
+</div>
+<pre class="bash," data-filename="zsh"><code>rsync --version 
+openrsync: protocol version 29 
+rsync version 2.6.9 compatible</code></pre>
+</div>
 </section>
 </section>
 <section id="cross-platform-compatibility-and-the-exfat-format" class="level2">
@@ -385,7 +602,7 @@ https://kx.cloudingenium.com/en/rsync-remote-backup-file-sync-linux-guide/
 <p>Note that this is a limitation of cross-platform compatibility and not recommended for pure Mac (APFS) or Linux system compatibility.</p>
 <section id="fixing-timing-issues-with-windows" class="level3">
 <h3 class="anchored" data-anchor-id="fixing-timing-issues-with-windows">Fixing timing issues with windows</h3>
-<p>It will come as no surprise to most Window’s users that Windows has some serious <a href="https://superuser.com/questions/763366/why-does-rsync-seem-to-overwrite-an-already-existing-file-on-exfat">timing issues</a>.</p>
+<p>It will come as no surprise to most Windows users that Windows has some serious <a href="https://superuser.com/questions/763366/why-does-rsync-seem-to-overwrite-an-already-existing-file-on-exfat">timing issues</a>.</p>
 <!--
 recap: 
 
@@ -416,31 +633,51 @@ preventing rsync from repeatedly re-copying files that are actually unchanged.
 <li>we also want more verbose output, so we add <code>-v</code></li>
 </ul>
 <p>We now have:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode .bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rsync</span> <span class="at">-vrltD</span> <span class="at">--modify-window</span><span class="op">=</span>1 my_source my_destination/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>zsh</strong></pre>
+</div>
+<pre class="bash," data-filename="zsh"><code>rsync -vrltD --modify-window=1 my_source my_destination/</code></pre>
+</div>
 </section>
+</section>
+<section id="final-shinanigans-from-mac" class="level2">
+<h2 class="anchored" data-anchor-id="final-shinanigans-from-mac">Final shinanigans from Mac</h2>
+<p>Apple use a file format called <a href="https://en.wikipedia.org/wiki/AppleSingle_and_AppleDouble_formats">AppleDouble</a>. AppleDouble stores finder meta-file information or extended attributes in a file named <code>._myfilename</code>. While useful and harmless on a Mac, it’s simply clutter on other OS and formats (as you get 2x files you’d expect with no added value). These .AppleDouble will be created every time you use rsync to backup to your exFAT system. However, since we mirror backup, and the source doesn’t contain these .AppleDouble files, we continuously prune them from the SSD. It’s a small quirk that is relatively simple to manage. If you really want to get rid of these files, and you want to do it manually, you can use the terminal utility <code>dot_clean</code>. It merges hidden <code>._*</code> files with their native files and clean up unwanted dot-underscore clutter from directories or external drives. This might be appropriate to do on the SSD before dumping all content to a non-Mac.</p>
 </section>
 <section id="making-a-justfile-cli" class="level2">
 <h2 class="anchored" data-anchor-id="making-a-justfile-cli">Making a justfile CLI</h2>
-<p>Just is an amazing way to make a CLI fast and without any unnecessary wrapper code. It’s not really a program, but rather a mapping of code snippits executed from the commandline. The power lies in it’s ability to host a full workflow with its own tests, helper functions, and user-facing functions.</p>
+<p>We’re gonna use <a href="https://just.systems/man/en/">just</a>, a command runner that easily saves and runs project-specific commands.</p>
+<p><code>just</code> is an amazing way to make a CLI fast and without any unnecessary wrapper code. It’s not really a program, but rather a mapping of code snippits executed from the commandline. The power lies in it’s ability to host a full workflow with its own tests, helper functions, and user-facing functions. I’m not gonna cover <code>just</code> in this blog.</p>
 <section id="adding-style-to-it" class="level3">
 <h3 class="anchored" data-anchor-id="adding-style-to-it">Adding style to it</h3>
 <p>First, we make variables for color coding our echo text. This is pure aesthetics.</p>
-<pre class=".just"><code># Color codes
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>justfile</strong></pre>
+</div>
+<pre class="bash," data-filename="justfile"><code># Color codes
 GREEN := '\033[0;32m'
 RED := '\033[0;31m'
 YELLOW := '\033[1;33m'
 BLUE := '\033[0;34m'
 NC := '\033[0m' # No Color</code></pre>
+</div>
 </section>
 <section id="config-of-the-setup" class="level3">
 <h3 class="anchored" data-anchor-id="config-of-the-setup">Config of the setup</h3>
 <p>Next, we make some configurations specific to our setup.</p>
-<pre class=".just"><code># Configuration
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>justfile</strong></pre>
+</div>
+<pre class="bash," data-filename="justfile"><code># Configuration
 SOURCES := '$HOME/code/ $HOME/uni-non-code/'
 DEST := '/Volumes/Samsung_T5/backup-ssd'
 RSYNC := '/usr/bin/rsync'
-RSYNC_BASE_FLAGS := '-vrltDh --delete --info=progress2 --stats --modify-window=1 --exclude-from=rsyncignore.txt'
+RSYNC_BASE_FLAGS := '-vrltDh --delete-after --info=progress2 --stats --modify-window=1 --exclude-from=rsyncignore.txt'
 RSYNC_DRY_FLAGS := '{{RSYNC_BASE_FLAGS}} --dry-run' # all base flags + dry-run!</code></pre>
+</div>
 <p>We hardcode variables:</p>
 <ul>
 <li><code>SOURCES</code> — the folder(s) we want backup</li>
@@ -458,8 +695,8 @@ RSYNC_DRY_FLAGS := '{{RSYNC_BASE_FLAGS}} --dry-run' # all base flags + dry-run!<
 <li><code>-D</code> — the</li>
 <li><code>-h</code> — Human-readable<br>
 </li>
-<li><code>--delete</code> — Mirror function</li>
-<li><code>--info=progress2</code> — Progress info on entire backup</li>
+<li><code>--delete-after</code> — Mirror function with deletion after copying (requires more space).</li>
+<li><code>--info=progress2</code> — Progress info on entire backup. Note this doesn’t work in openrsync as it was added after v3.</li>
 <li><code>--stats</code> — Memory and time feedback<br>
 </li>
 <li><code>--modify-window=1</code> — more loose timing for FAT format to work</li>
@@ -471,94 +708,108 @@ RSYNC_DRY_FLAGS := '{{RSYNC_BASE_FLAGS}} --dry-run' # all base flags + dry-run!<
 <section id="a-help-command" class="level3">
 <h3 class="anchored" data-anchor-id="a-help-command">A help command</h3>
 <p>It’s good practice to provide overview by writing a help command. In this case, we just list the four just commands in the terminal.</p>
-<pre class=".just"><code>help:
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>justfile</strong></pre>
+</div>
+<pre class="bash," data-filename="justfile"><code>help:
   @echo "Backup to Samsung T5 SSD - Available commands:\n"
   @echo "  just help      - Show this help message"
   @echo "  just preview   - Dry run: show what would be synced (no changes)"
   @echo "  just backup    - Run the mirror backup (with deletion confirmation)"
   @echo "  just status    - Quick health check"</code></pre>
+</div>
 <p>As we just use echo, theres no need for me to explain further.</p>
 </section>
 <section id="the-status-command" class="level3">
 <h3 class="anchored" data-anchor-id="the-status-command">The status command</h3>
 <p>The status command is the simplest of the three. Here, we just check whether the external SSD is mounted or not.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">status:</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">@echo</span> <span class="st">"{{BLUE}}=== Backup Status ==={{NC}}"</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">@if</span> [ <span class="at">-d</span> <span class="st">"{{DEST}}"</span> ]<span class="kw">;</span> <span class="cf">then</span> <span class="dt">\</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"{{GREEN}}Destination exists: {{DEST}}{{NC}}"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="dt">\</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"{{RED}}Destination NOT found: {{DEST}}{{NC}}"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"{{YELLOW}}Please ensure Samsung T5 SSD is connected and mounted.{{NC}}"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 0<span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">@if</span> [ <span class="at">-d</span> <span class="st">"/Volumes/Samsung_T5"</span> ]<span class="kw">;</span> <span class="cf">then</span> <span class="dt">\</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"{{GREEN}}Samsung T5 is mounted at /Volumes/Samsung_T5{{NC}}"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">DF_OUTPUT</span><span class="op">=</span><span class="va">$(</span><span class="fu">df</span> <span class="at">-h</span> /Volumes/Samsung_T5 <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-1</span><span class="va">)</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"{{BLUE}}</span><span class="va">$DF_OUTPUT</span><span class="st">{{NC}}"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="dt">\</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"{{RED}}Samsung T5 is NOT mounted{{NC}}"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>justfile</strong></pre>
+</div>
+<pre class="bash," data-filename="justfile"><code>status:
+  @echo "{{BLUE}}=== Backup Status ==={{NC}}"
+  @if [ -d "{{DEST}}" ]; then \
+    echo "{{GREEN}}Destination exists: {{DEST}}{{NC}}"; \
+  else \
+    echo "{{RED}}Destination NOT found: {{DEST}}{{NC}}"; \
+    echo "{{YELLOW}}Please ensure Samsung T5 SSD is connected and mounted.{{NC}}"; \
+    exit 0; \
+  fi
+  @if [ -d "/Volumes/Samsung_T5" ]; then \
+    echo "{{GREEN}}Samsung T5 is mounted at /Volumes/Samsung_T5{{NC}}"; \
+    DF_OUTPUT=$(df -h /Volumes/Samsung_T5 2&gt;/dev/null | tail -1); \
+    echo "{{BLUE}}$DF_OUTPUT{{NC}}"; \
+  else \
+    echo "{{RED}}Samsung T5 is NOT mounted{{NC}}"; \
+  fi</code></pre>
+</div>
 <p>The function has two if-else statements:</p>
 <ul>
 <li>Feedback on whether the destination directory within the SSD exists (<code>-d "{{DEST}}"</code>) using <code>echo</code>.</li>
-<li>Feedback on the memory state and space left on the SSD, if it’s mounted (<code>-d "/Volumes/Samsung_T5"</code>). We get this feedback using <code>df -h /Volumes/Samsung_T5 2&gt;/dev/null | tail -1</code>.</li>
+<li>Feedback on the memory state and space left on the SSD, if it’s mounted (<code>-d "/Volumes/Samsung_T5"</code>). We get this feedback using <code>df -h /Volumes/Samsung_T5 2&gt;/dev/null</code>.</li>
 </ul>
 <p>Here’s the breakdown of the last code call:</p>
 <ul>
 <li><code>df</code> displays filesystem disk space usage.</li>
 <li><code>-h</code> formats the sizes in a human-readable way (e.g.&nbsp;500G, 1.2T).</li>
 <li><code>2&gt;/dev/null</code> Redirects stderr (file descriptor 2) to /dev/null, effectively hiding any error messages. For example, if the drive isn’t mounted, <code>df</code> would normally print an error, but this suppresses it.</li>
-<li><code>| tail -1</code> Pipes the output to tail. tail -1 prints only the last line, which is the filesystem information rather than the header.</li>
 </ul>
 </section>
 <section id="the-preview-command" class="level3">
 <h3 class="anchored" data-anchor-id="the-preview-command">The preview command</h3>
 <p>We’ve already covered most of this command. It looks like this:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">preview:</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">@echo</span> <span class="st">"{{YELLOW}}=== DRY RUN: No changes will be made ==={{NC}}\n"</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">@{{RSYNC}}</span> {{RSYNC_DRY_FLAGS}} {{SOURCES}} {{DEST}}/</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">@echo</span> <span class="st">"{{BLUE}}\nPreview complete. Use 'just backup' to execute.{{NC}}"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>justfile</strong></pre>
+</div>
+<pre class="bash," data-filename="justfile"><code>preview:
+  @echo "{{YELLOW}}=== DRY RUN: No changes will be made ==={{NC}}\n"
+  @{{RSYNC}} {{RSYNC_DRY_FLAGS}} {{SOURCES}} {{DEST}}/
+  @echo "{{BLUE}}\nPreview complete. Use 'just backup' to execute.{{NC}}"</code></pre>
+</div>
 <p>So we basically call 4 variables that define our <code>rsync</code>, flags, sources, and destination: <code>{RSYNC} {{RSYNC_DRY_FLAGS}} {{SOURCES}} {{DEST}}</code>. Easy piecy!</p>
 </section>
 <section id="the-backup-command" class="level3">
 <h3 class="anchored" data-anchor-id="the-backup-command">The backup command</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">backup:</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">@echo</span> <span class="st">"{{YELLOW}}Checking for changes...{{NC}}"</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">@DRY_OUTPUT=</span><span class="va">$(</span><span class="ex">{{RSYNC}}</span> {{RSYNC_DRY_FLAGS}} <span class="at">-i</span> {{SOURCES}} {{DEST}}/ <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span><span class="va">)</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="va">HAS_DELETIONS</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$DRY_OUTPUT</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-q</span> <span class="st">'^\*deleting'</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"yes"</span> <span class="kw">||</span> <span class="bu">echo</span> <span class="st">"no"</span><span class="va">)</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$HAS_DELETIONS</span><span class="st">"</span> <span class="ot">=</span> <span class="st">"yes"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="dt">\</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"{{RED}}WARNING: Deletions detected in dry run!{{NC}}"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$DRY_OUTPUT</span><span class="st">"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"\n{{RED}}Files will be DELETED from the backup destination.{{NC}}"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">read</span> <span class="at">-p</span> <span class="st">"Continue with backup? [y/N] "</span> <span class="at">-n</span> 1 <span class="at">-r</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$REPLY</span><span class="st">"</span> <span class="ot">!=</span> <span class="st">"y"</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$REPLY</span><span class="st">"</span> <span class="ot">!=</span> <span class="st">"Y"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="dt">\</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>      <span class="bu">echo</span> <span class="st">"{{YELLOW}}Backup cancelled.{{NC}}"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="bu">exit</span> 0<span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="dt">\</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"{{GREEN}}No deletions detected.{{NC}}"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"</span><span class="va">$DRY_OUTPUT</span><span class="st">"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">read</span> <span class="at">-p</span> <span class="st">"Continue with backup? [Y/n] "</span> <span class="at">-n</span> 1 <span class="at">-r</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$REPLY</span><span class="st">"</span> <span class="ot">=</span> <span class="st">"n"</span> <span class="bu">]</span> <span class="kw">||</span> <span class="bu">[</span> <span class="st">"</span><span class="va">$REPLY</span><span class="st">"</span> <span class="ot">=</span> <span class="st">"N"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="dt">\</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>      <span class="bu">echo</span> <span class="st">"{{YELLOW}}Backup cancelled.{{NC}}"</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>      <span class="bu">exit</span> 0<span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span><span class="kw">;</span> <span class="dt">\</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="ex">{{RSYNC}}</span> {{RSYNC_BASE_FLAGS}} {{SOURCES}} {{DEST}}/ <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"{{GREEN}}Backup completed successfully!{{NC}}"</span> <span class="kw">||</span> <span class="dt">\</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"{{RED}}Backup failed!{{NC}}"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>justfile</strong></pre>
+</div>
+<pre class="bash," data-filename="justfile"><code>backup:
+  @echo "{{YELLOW}}Checking for changes...{{NC}}"
+  @DRY_OUTPUT=$({{RSYNC}} {{RSYNC_DRY_FLAGS}} -i {{SOURCES}} {{DEST}}/ 2&gt;&amp;1); \
+  HAS_DELETIONS=$(echo "$DRY_OUTPUT" | grep -q '^\*deleting' &amp;&amp; echo "yes" || echo "no"); \
+  if [ "$HAS_DELETIONS" = "yes" ]; then \
+    echo "{{RED}}WARNING: Deletions detected in dry run!{{NC}}"; \
+    echo "$DRY_OUTPUT"; \
+    echo "\n{{RED}}Files will be DELETED from the backup destination.{{NC}}"; \
+    read -p "Continue with backup? [y/N] " -n 1 -r; \
+    echo; \
+    if [ "$REPLY" != "y" ] &amp;&amp; [ "$REPLY" != "Y" ]; then \
+      echo "{{YELLOW}}Backup cancelled.{{NC}}"; \
+      exit 0; \
+    fi; \
+  else \
+    echo "{{GREEN}}No deletions detected.{{NC}}"; \
+    echo "$DRY_OUTPUT"; \
+    read -p "Continue with backup? [Y/n] " -n 1 -r; \
+    echo; \
+    if [ "$REPLY" = "n" ] || [ "$REPLY" = "N" ]; then \
+      echo "{{YELLOW}}Backup cancelled.{{NC}}"; \
+      exit 0; \
+    fi; \
+  fi; \
+  {{RSYNC}} {{RSYNC_BASE_FLAGS}} {{SOURCES}} {{DEST}}/ &amp;&amp; \
+  echo "{{GREEN}}Backup completed successfully!{{NC}}" || \
+  echo "{{RED}}Backup failed!{{NC}}"</code></pre>
+</div>
 <section id="dry-run-test" class="level4">
 <h4 class="anchored" data-anchor-id="dry-run-test">1. Dry-run test</h4>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">DRY_OUTPUT</span><span class="op">=</span><span class="va">$(</span><span class="ex">{{RSYNC}}</span> {{RSYNC_DRY_FLAGS}} <span class="at">-i</span> {{SOURCES}} {{DEST}}/ <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span><span class="va">)</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="va">HAS_DELETIONS</span><span class="op">=</span><span class="va">$(</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"</span><span class="va">$DRY_OUTPUT</span><span class="st">"</span> <span class="kw">|</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span> <span class="at">-q</span> <span class="st">'^\*deleting'</span> <span class="kw">&amp;&amp;</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"yes"</span> <span class="kw">||</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"no"</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="va">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>```bash filename=“just” DRY_OUTPUT=$({{RSYNC}} {{RSYNC_DRY_FLAGS}} -i {{SOURCES}} {{DEST}}/ 2&gt;&amp;1)</p>
+<p>HAS_DELETIONS=<span class="math inline">\((
+  echo "\)</span>DRY_OUTPUT” | grep -q ‘^*deleting’ &amp;&amp; echo “yes” || echo “no” ) ```</p>
 <p>Here’s what each part does:</p>
 <ol type="1">
 <li><code>DRY_OUTPUT=$(...)</code></li>
@@ -571,7 +822,7 @@ RSYNC_DRY_FLAGS := '{{RSYNC_BASE_FLAGS}} --dry-run' # all base flags + dry-run!<
 <ol start="3" type="1">
 <li><code>^\*deleting</code> matches rsync’s itemized deletion lines, for example:</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>*deleting   old-file.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>*deleting   old-file.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ol start="4" type="1">
 <li><code>&amp;&amp; echo "yes" || echo "no"</code></li>
 </ol>
@@ -579,7 +830,12 @@ RSYNC_DRY_FLAGS := '{{RSYNC_BASE_FLAGS}} --dry-run' # all base flags + dry-run!<
 </section>
 <section id="feedback-on-deleted-files" class="level4">
 <h4 class="anchored" data-anchor-id="feedback-on-deleted-files">2. Feedback on deleted files</h4>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-p</span> <span class="st">"Continue with backup? [y/N] "</span> <span class="at">-n</span> 1 <span class="at">-r</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>justfile</strong></pre>
+</div>
+<pre class="bash," data-filename="justfile"><code>read -p "Continue with backup? [y/N] " -n 1 -r</code></pre>
+</div>
 <p>Here’s what each option does:</p>
 <ol type="1">
 <li><code>-p "Continue with backup? [y/N] "</code></li>
@@ -634,6 +890,9 @@ RSYNC_DRY_FLAGS := '{{RSYNC_BASE_FLAGS}} --dry-run' # all base flags + dry-run!<
 <li><a href="https://www.theregister.com/ai-and-ml/2026/06/04/please-do-not-vibe-f-up-this-software-broken-backups-spark-ai-coding-row-in-rsync-project/5251189">The Register’s article on rsync controversies</a></li>
 <li><a href="https://appleinsider.com/inside/macos-sequoia/tips/what-you-should-know-about-apples-switch-from-rsync-to-openrsync">Apple’s move from rsync to openrsync</a></li>
 <li><a href="https://www.fortuneportech.com/2025/05/06/best-file-systems-for-ssds/">Fortech’s overview of file system format</a></li>
+<li><a href="https://gist.github.com/ChristopherA/c07a1dfc9213cb3ab279b8e5e4298a92">tip on the AppleDouble from rsync</a></li>
+<li><a href="https://superuser.com/questions/306108/disable-creation-of-appledouble-files-on-mac-os-x">superuser discussion on the AppleDouble in backups</a></li>
+<li><a href="https://serverfault.com/questions/1144302/why-is-there-a-discrepancy-between-finder-and-rsync-when-handling-dot-files">serverfault discussion on the AppleDouble in backups</a></li>
 </ul>
 <!-- # notes
 
@@ -753,6 +1012,19 @@ system? -->
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
