@@ -100,7 +100,7 @@ https://kx.cloudingenium.com/en/rsync-remote-backup-file-sync-linux-guide/
 
 So in practice, it's as easy as:
 
-```.bash
+```bash, {filename="zsh"}
 rsync -a my_source my_destination/
 ```
 
@@ -128,7 +128,7 @@ of the original `rsync`.
 
 I'm running Mac 26.5.2 with openrsync: protocol version 29:
 
-```bash
+```bash, {filename="zsh"}
 rsync --version 
 openrsync: protocol version 29 
 rsync version 2.6.9 compatible
@@ -167,7 +167,7 @@ recommended for pure Mac (APFS) or Linux system compatibility.
 
 ### Fixing timing issues with windows
 
-It will come as no surprise to most Window's users that Windows has some serious
+It will come as no surprise to most Windows users that Windows has some serious
 [timing
 issues](https://superuser.com/questions/763366/why-does-rsync-seem-to-overwrite-an-already-existing-file-on-exfat).
 
@@ -206,23 +206,43 @@ Quoted below from man `rsync`:
 
 We now have:
 
-```.bash
+```bash, {filename="zsh"}
 rsync -vrltD --modify-window=1 my_source my_destination/
 ```
 
+## Final shinanigans from Mac
+
+Apple use a file format called
+[AppleDouble](https://en.wikipedia.org/wiki/AppleSingle_and_AppleDouble_formats).
+AppleDouble stores finder meta-file information or extended attributes in a file
+named `._myfilename`. While useful and harmless on a Mac, it's simply clutter on
+other OS and formats (as you get 2x files you'd expect with no added value).
+These .AppleDouble will be created every time you use rsync to backup to your
+exFAT system. However, since we mirror backup, and the source doesn't contain
+these .AppleDouble files, we continuously prune them from the SSD. It's a small
+quirk that is relatively simple to manage. If you really want to get rid of
+these files, and you want to do it manually, you can use the terminal utility
+`dot_clean`. It merges hidden `._*` files with their native files and clean up
+unwanted dot-underscore clutter from directories or external drives. This might
+be appropriate to do on the SSD before dumping all content to a non-Mac.
+
 ## Making a justfile CLI
 
-Just is an amazing way to make a CLI fast and without any unnecessary wrapper
+We're gonna use [just](https://just.systems/man/en/), a command runner that
+easily saves and runs project-specific commands.
+
+`just` is an amazing way to make a CLI fast and without any unnecessary wrapper
 code. It's not really a program, but rather a mapping of code snippits executed
 from the commandline. The power lies in it's ability to host a full workflow
-with its own tests, helper functions, and user-facing functions.
+with its own tests, helper functions, and user-facing functions. I'm not gonna
+cover `just` in this blog.
 
 ### Adding style to it
 
 First, we make variables for color coding our echo text. This is pure
 aesthetics.
 
-```.just
+```bash, {filename="justfile"}
 # Color codes
 GREEN := '\033[0;32m'
 RED := '\033[0;31m'
@@ -235,12 +255,12 @@ NC := '\033[0m' # No Color
 
 Next, we make some configurations specific to our setup.
 
-```.just
+```bash, {filename="justfile"}
 # Configuration
 SOURCES := '$HOME/code/ $HOME/uni-non-code/'
 DEST := '/Volumes/Samsung_T5/backup-ssd'
 RSYNC := '/usr/bin/rsync'
-RSYNC_BASE_FLAGS := '-vrltDh --delete --info=progress2 --stats --modify-window=1 --exclude-from=rsyncignore.txt'
+RSYNC_BASE_FLAGS := '-vrltDh --delete-after --info=progress2 --stats --modify-window=1 --exclude-from=rsyncignore.txt'
 RSYNC_DRY_FLAGS := '{{RSYNC_BASE_FLAGS}} --dry-run' # all base flags + dry-run!
 ```
 
@@ -260,8 +280,10 @@ Note that the base flags are:
 - `-t` --- Timestamp
 - `-D` --- the
 - `-h` --- Human-readable\
-- `--delete` --- Mirror function
-- `--info=progress2` --- Progress info on entire backup
+- `--delete-after` --- Mirror function with deletion after copying (requires
+  more space).
+- `--info=progress2` --- Progress info on entire backup. Note this doesn't work
+  in openrsync as it was added after v3.
 - `--stats` --- Memory and time feedback\
 - `--modify-window=1` --- more loose timing for FAT format to work
 - `--exclude-from=rsyncignore.txt` --- exclude pattern for files
@@ -275,7 +297,7 @@ These include `.DS_Store`, `.quarto`, `*.tmp` and `.httr-oauth` etc.
 It's good practice to provide overview by writing a help command. In this case,
 we just list the four just commands in the terminal.
 
-```.just
+```bash, {filename="justfile"}
 help:
   @echo "Backup to Samsung T5 SSD - Available commands:\n"
   @echo "  just help      - Show this help message"
@@ -291,7 +313,7 @@ As we just use echo, theres no need for me to explain further.
 The status command is the simplest of the three. Here, we just check whether the
 external SSD is mounted or not.
 
-```bash
+```bash, {filename="justfile"}
 status:
   @echo "{{BLUE}}=== Backup Status ==={{NC}}"
   @if [ -d "{{DEST}}" ]; then \
@@ -316,7 +338,7 @@ The function has two if-else statements:
   (`-d "{{DEST}}"`) using `echo`.
 - Feedback on the memory state and space left on the SSD, if it's mounted
   (`-d "/Volumes/Samsung_T5"`). We get this feedback using
-  `df -h /Volumes/Samsung_T5 2>/dev/null | tail -1`.
+  `df -h /Volumes/Samsung_T5 2>/dev/null`.
 
 Here's the breakdown of the last code call:
 
@@ -325,14 +347,12 @@ Here's the breakdown of the last code call:
 - `2>/dev/null` Redirects stderr (file descriptor 2) to /dev/null, effectively
   hiding any error messages. For example, if the drive isn't mounted, `df` would
   normally print an error, but this suppresses it.
-- `| tail -1` Pipes the output to tail. tail -1 prints only the last line, which
-  is the filesystem information rather than the header.
 
 ### The preview command
 
 We've already covered most of this command. It looks like this:
 
-```bash
+```bash, {filename="justfile"}
 preview:
   @echo "{{YELLOW}}=== DRY RUN: No changes will be made ==={{NC}}\n"
   @{{RSYNC}} {{RSYNC_DRY_FLAGS}} {{SOURCES}} {{DEST}}/
@@ -344,7 +364,7 @@ destination: `{{RSYNC}} {{RSYNC_DRY_FLAGS}} {{SOURCES}} {{DEST}}`. Easy piecy!
 
 ### The backup command
 
-```bash
+```bash, {filename="justfile"}
 backup:
   @echo "{{YELLOW}}Checking for changes...{{NC}}"
   @DRY_OUTPUT=$({{RSYNC}} {{RSYNC_DRY_FLAGS}} -i {{SOURCES}} {{DEST}}/ 2>&1); \
@@ -376,16 +396,12 @@ backup:
 
 #### 1. Dry-run test
 
-```bash
-DRY_OUTPUT=$({{RSYNC}} {{RSYNC_DRY_FLAGS}} -i {{SOURCES}} {{DEST}}/ 2>&1)
+\`\`\`bash filename="just" DRY_OUTPUT=$({{RSYNC}} {{RSYNC_DRY_FLAGS}} -i
+{{SOURCES}} {{DEST}}/ 2>&1)
 
 HAS_DELETIONS=$(
-  echo "$DRY_OUTPUT" |
-  grep -q '^\*deleting' &&
-  echo "yes" ||
-  echo "no"
-)
-```
+  echo "$DRY_OUTPUT" \| grep -q '^\*deleting' && echo "yes"
+\|\| echo "no" ) \`\`\`
 
 Here's what each part does:
 
@@ -413,7 +429,7 @@ Otherwise it is set to "no".
 
 #### 2. Feedback on deleted files
 
-```bash
+```bash, {filename="justfile"}
 read -p "Continue with backup? [y/N] " -n 1 -r
 ```
 
@@ -493,6 +509,12 @@ repo](https://github.com/DanMazJen/backup-ssd).
   openrsync](https://appleinsider.com/inside/macos-sequoia/tips/what-you-should-know-about-apples-switch-from-rsync-to-openrsync)
 - [Fortech's overview of file system
   format](https://www.fortuneportech.com/2025/05/06/best-file-systems-for-ssds/)
+- [tip on the AppleDouble from
+  rsync](https://gist.github.com/ChristopherA/c07a1dfc9213cb3ab279b8e5e4298a92)
+- [superuser discussion on the AppleDouble in
+  backups](https://superuser.com/questions/306108/disable-creation-of-appledouble-files-on-mac-os-x)
+- [serverfault discussion on the AppleDouble in
+  backups](https://serverfault.com/questions/1144302/why-is-there-a-discrepancy-between-finder-and-rsync-when-handling-dot-files)
 
 <!-- # notes
 
