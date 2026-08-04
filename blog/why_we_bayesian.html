@@ -371,10 +371,7 @@ window.Quarto = {
   <li><a href="#what-is-the-alternative" id="toc-what-is-the-alternative" class="nav-link" data-scroll-target="#what-is-the-alternative">What is the alternative?</a></li>
   <li><a href="#is-there-a-fight" id="toc-is-there-a-fight" class="nav-link" data-scroll-target="#is-there-a-fight">Is there a fight?</a></li>
   <li><a href="#when-to-use-frequentist-and-when-to-use-bayesian-approaches" id="toc-when-to-use-frequentist-and-when-to-use-bayesian-approaches" class="nav-link" data-scroll-target="#when-to-use-frequentist-and-when-to-use-bayesian-approaches">When to use Frequentist and when to use Bayesian approaches?</a></li>
-  <li><a href="#but-sometimes-they-are-very-different" id="toc-but-sometimes-they-are-very-different" class="nav-link" data-scroll-target="#but-sometimes-they-are-very-different">But sometimes, they are very different!</a>
-  <ul class="collapse">
-  <li><a href="#binomial-regression-example" id="toc-binomial-regression-example" class="nav-link" data-scroll-target="#binomial-regression-example">Binomial regression example</a></li>
-  </ul></li>
+  <li><a href="#but-sometimes-they-are-very-different" id="toc-but-sometimes-they-are-very-different" class="nav-link" data-scroll-target="#but-sometimes-they-are-very-different">But sometimes, they are very different!</a></li>
   <li><a href="#other-times-bayesian-models-are-the-only-choice" id="toc-other-times-bayesian-models-are-the-only-choice" class="nav-link" data-scroll-target="#other-times-bayesian-models-are-the-only-choice">Other times, Bayesian models are the only choice:</a></li>
   <li><a href="#visualizing-the-model" id="toc-visualizing-the-model" class="nav-link" data-scroll-target="#visualizing-the-model">Visualizing the model:</a>
   <ul class="collapse">
@@ -501,23 +498,49 @@ window.Quarto = {
 </section>
 <section id="when-to-use-frequentist-and-when-to-use-bayesian-approaches" class="level2">
 <h2 class="anchored" data-anchor-id="when-to-use-frequentist-and-when-to-use-bayesian-approaches">When to use Frequentist and when to use Bayesian approaches?</h2>
-<p>The Frequentist approach is often sufficient — and indeed comparable to Bayesian statsistics — when the model is simple and easy to parametrize.</p>
-<p><em>TODO</em></p>
-<p>Show example:</p>
+<p>The Frequentist approach is often sufficient — and indeed comparable to Bayesian statsistics — when the model is:</p>
+<ul>
+<li>simple</li>
+<li>easy to parametrize</li>
+<li>(multivariate) gaussian residuals</li>
+<li>flat prior</li>
+<li>large sample size</li>
+</ul>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">18062026</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Data</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span>                 <span class="co"># samples</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)            <span class="co"># x = N(0,1)      </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(n)  <span class="co"># α = 2, β = 3, ε = N(0,1) </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># Fixed Effects
+
+Parameter   | Coefficient |       95% CI
+----------------------------------------
+(Intercept) |        2.09 | [1.91, 2.28]
+x           |        3.01 | [2.82, 3.20]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Fixed Effects
+
+Parameter   | Median |       95% CI
+-----------------------------------
+(Intercept) |   2.09 | [1.91, 2.27]
+x           |   3.00 | [2.82, 3.20]</code></pre>
+</div>
+</div>
+<p>where the first output is frequentist maximum likelihood coefficients and confidence intervals. The second output being the median of 2000 markov chain monte carlo (MCMC) draws and the credible interval.</p>
 </section>
 <section id="but-sometimes-they-are-very-different" class="level2">
 <h2 class="anchored" data-anchor-id="but-sometimes-they-are-very-different">But sometimes, they are very different!</h2>
 <p>However, for more complex and demanding models, Bayesian approaches allows rigorous and flexible handling of uncertainty, model diagnostics, and parametrization. While a Frequentist approach is nearly always available, it often comes with stricter assumptions and more quirks (which makes solutions less intuitive and unable to transfer to other problems).</p>
-<section id="binomial-regression-example" class="level3">
-<h3 class="anchored" data-anchor-id="binomial-regression-example">Binomial regression example</h3>
-<p>GLMs never guarantee a multivariate Gaussian posterior distribution. Thus, quadratic approximation will fail. While this is no issue for MCMC, frequentist always assume this! Therefore, it’s good to know when to expect issues for interpreting other colleagues models!</p>
-</section>
+<p>One example is generalized linear models (logistic regression, Poisson, multinomial, etc.): GLMs never guarantee a multivariate Gaussian posterior distribution. Thus, quadratic approximation will fail. While this is no issue for MCMC, frequentist always assume this!</p>
 </section>
 <section id="other-times-bayesian-models-are-the-only-choice" class="level2">
 <h2 class="anchored" data-anchor-id="other-times-bayesian-models-are-the-only-choice">Other times, Bayesian models are the only choice:</h2>
@@ -525,9 +548,9 @@ window.Quarto = {
 <div class="column">
 <p>Suppose we have:</p>
 <ul>
-<li>32 observations</li>
-<li>30 predictors</li>
-<li>strong predictor correlation</li>
+<li>32 observations (humans?)</li>
+<li>30 predictors (genes?)</li>
+<li>strong predictor correlation (ρ ~ .8)</li>
 <li>weak signal (a.u. 2)</li>
 <li>noise at <span class="math inline">\(\mathcal{N}(0,2)\)</span></li>
 </ul>
@@ -546,7 +569,7 @@ window.Quarto = {
 <p><span class="math display">\[
   y = 2x_1 + \epsilon
 \]</span></p>
-<p>All other predictors have zero effect and all predictors are highly correlated (<em>ρ</em> ~ 0.8). Noise is</p>
+<p>All other predictors have zero effect and all predictors are highly correlated (<em>ρ</em> ~ 0.8) with noise around same magnitude as signal (<em>Normal(0,2)</em>).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -571,7 +594,7 @@ window.Quarto = {
 <section id="is-this-magic-no-regularization" class="level3">
 <h3 class="anchored" data-anchor-id="is-this-magic-no-regularization">Is this magic? No, regularization…</h3>
 <p>This is achieved using regularizing priors.</p>
-<p>all prior <span class="math inline">\(x_n\)</span> is <span class="math inline">\(\mathcal{N}(0, 1.5),\)</span> The prior intercept is <span class="math inline">\(mathcal{N}(0, 0.25)\)</span></p>
+<p>all prior <span class="math inline">\(x_n\)</span> is <span class="math inline">\(\mathcal{N}(0, 1.5),\)</span> The prior intercept is <span class="math inline">\(\mathcal{N}(0, 0.25)\)</span></p>
 <p>So we are vocal about our assumption and expectation that the effect of each <code>x</code> is +-3 95% of the time.</p>
 <p>To learn more about how to use the prior, tag along for the following exercises.</p>
 </section>

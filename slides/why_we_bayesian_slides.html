@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Daniel Skak Mazhari-Jensen">
-  <meta name="dcterms.date" content="2026-07-26">
+  <meta name="dcterms.date" content="2026-08-04">
   <title>DanMazJen – Why be a Bayesian</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -211,7 +211,7 @@ Daniel Skak Mazhari-Jensen
 </div>
 </div>
 
-  <p class="date">2026-07-26</p>
+  <p class="date">2026-08-04</p>
 </section>
 <section id="what-is-this-bayesian-thing-anyway" class="slide level2 center">
 <h2>What is this Bayesian thing anyway?</h2>
@@ -401,7 +401,8 @@ Figure&nbsp;1: Correlation structure among predictors.
 <p>The truth is simple.</p>
 <p>Only one predictor matters.</p>
 <p><span class="math display">\[
-y = 1.5x_1 + \epsilon
+  y = 2x_1 + \epsilon \\
+  \epsilon = Normal(0,2)
 \]</span></p>
 <p>All other predictors have zero effect.</p>
 <p>Yet predictors are highly correlated.</p>
@@ -413,6 +414,20 @@ y = 1.5x_1 + \epsilon
 <li>think about the model specification</li>
 <li>does the same happen in the Frequentist and Bayesian models?</li>
 </ul>
+<div style="font-size: 75%;">
+<ul>
+<li>30 observations (humans?)</li>
+<li>30 predictors (genes?)</li>
+<li>strong predictor correlation (ρ ~ .8)</li>
+<li>weak signal (a.u. 2)</li>
+<li>noise at <span class="math inline">\(\mathcal{N}(0,2)\)</span></li>
+<li>data generating process:</li>
+</ul>
+<p><span class="math display">\[
+  y = 2x_1 + \epsilon \\
+  \epsilon = Normal(0,2)
+\]</span></p>
+</div>
 </section>
 <section id="the-model-results-when-p30-and-n30" class="slide level2 r-strecht">
 <h2>The model results when p=30 and n=30</h2>
@@ -421,11 +436,29 @@ y = 1.5x_1 + \epsilon
 <p><span style="color: red;">x30 doesn’t even have an estimate due to unindentifiability!</span></p>
 </div>
 </section>
+<section id="lets-try-again---with-more-data" class="slide level2 center">
+<h2>Let’s try again - with more data!</h2>
+<p><em>what do you think will happen</em>?</p>
+<div style="font-size: 75%;">
+<ul>
+<li>30 observations (humans?)</li>
+<li>30 predictors (genes?)</li>
+<li>strong predictor correlation (ρ ~ .8)</li>
+<li>weak signal (a.u. 2)</li>
+<li>noise at <span class="math inline">\(\mathcal{N}(0,2)\)</span></li>
+<li>data generating process:</li>
+</ul>
+<p><span class="math display">\[
+  y = 2x_1 + \epsilon \\
+  \epsilon = Normal(0,2)
+\]</span></p>
+</div>
+</section>
 <section id="the-model-results-when-p30-and-n32" class="slide level2 r-strecht">
 <h2>The model results when p=30 and n=32</h2>
 
 <img data-src="assets/p30n32.png" class="r-stretch"><div class="fragment">
-<p><span style="color: red;">coliniarity inflates CIs!</span></p>
+<p><span style="color: red;">collinearity and inflates CIs and unstable coefficients!</span></p>
 </div>
 </section>
 <section id="the-frequentist-ideal" class="slide level2 smaller scrollable">
@@ -439,15 +472,15 @@ y = 1.5x_1 + \epsilon
 </ul>
 <p>The classical linear model:</p>
 <p><span class="math display">\[
-y = X\beta + \epsilon
+  y = X\beta + \epsilon
 \]</span></p>
 <p>with</p>
 <p><span class="math display">\[
-\epsilon \sim \mathcal{N}(0, \sigma^2)
+  \epsilon \sim \mathcal{N}(0, \sigma^2)
 \]</span></p>
 <p>OLS estimator:</p>
 <p><span class="math display">\[
-\hat{\beta}_{OLS} = (X^TX)^{-1}X^Ty
+  \hat{\beta}_{OLS} = (X^TX)^{-1}X^Ty
 \]</span></p>
 </section>
 <section id="the-hidden-assumption" class="slide level2">
@@ -491,7 +524,7 @@ y = X\beta + \epsilon
 <p>Collinearity creates unstable directions in parameter space.</p>
 <p>The matrix:</p>
 <p><span class="math display">\[
-(X^TX)^{-1}
+  (X^TX)^{-1}
 \]</span></p>
 <p>becomes nearly singular.</p>
 <p>As a result:</p>
@@ -506,13 +539,13 @@ y = X\beta + \epsilon
 <h2>The Bayesian Solution</h2>
 <p>Bayesian regression adds prior information:</p>
 <p><span class="math display">\[
-\beta_j \sim \mathcal{N}(0,1)
+  \beta_j \sim \mathcal{N}(0,1)
 \]</span></p>
 <p>Posterior:</p>
 <p><span class="math display">\[
-p(\beta \mid y)
-\propto
-p(y \mid \beta)p(\beta)
+  p(\beta \mid y)
+  \propto
+  p(y \mid \beta)p(\beta)
 \]</span></p>
 <p>The prior regularizes weakly identified directions.</p>
 <p>This changes the geometry of inference.</p>
@@ -673,19 +706,25 @@ p(y \mid \beta)p(\beta)
 <li>become sample-dependent noise</li>
 </ul>
 <p>Bayesian regularization still produces stable inference.</p>
-</section>
-<section id="the-core-mechanism" class="slide level2">
-<h2>The Core Mechanism</h2>
-<p>Frequentist OLS:</p>
-<p><span class="math inline">\(hat{β}\)</span> =arg min RSS</p>
-<p>Bayesian regression:</p>
-<p><span class="math display">\[
-p(\beta \mid y)
-\propto
-p(y \mid \beta)p(\beta)
-\]</span></p>
-<p>The prior changes the geometry of inference.</p>
-<p>This is the key idea.</p>
+<!--
+## The Core Mechanism
+
+Frequentist OLS:
+
+$hat{β}$ =arg min RSS
+
+Bayesian regression:
+
+$$
+  p(\beta \mid y)
+  \propto
+  p(y \mid \beta)p(\beta)
+$$
+
+The prior changes the geometry of inference.
+
+This is the key idea.
+-->
 </section>
 <section id="final-takeaway" class="slide level2">
 <h2>Final Takeaway</h2>
@@ -727,9 +766,9 @@ p(y \mid \beta)p(\beta)
 <li>Hastie, Tibshirani, Friedman. Elements of Statistical Learning</li>
 </ul>
 </section>
-<section id="exercise" class="slide level2">
-<h2>Exercise:</h2>
-<p>See exercises at website…</p>
+<section id="exercises" class="slide level2">
+<h2>Exercises:</h2>
+<p>See exercises at <a href="https://danmazjen.github.io/blog/why_we_bayesian.html">https://danmazjen.github.io/blog/why_we_bayesian.html</a></p>
 
 
 </section>

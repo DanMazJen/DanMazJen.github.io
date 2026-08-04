@@ -144,14 +144,14 @@
     "href": "slides/why_we_bayesian_slides.html#the-data-generating-process",
     "title": "Why be a Bayesian",
     "section": "The Data Generating Process",
-    "text": "The Data Generating Process\nThe truth is simple.\nOnly one predictor matters.\n\\[\ny = 1.5x_1 + \\epsilon\n\\]\nAll other predictors have zero effect.\nYet predictors are highly correlated."
+    "text": "The Data Generating Process\nThe truth is simple.\nOnly one predictor matters.\n\\[\n  y = 2x_1 + \\epsilon \\\\\n  \\epsilon = Normal(0,2)\n\\]\nAll other predictors have zero effect.\nYet predictors are highly correlated."
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#talk-to-your-neighbor",
     "href": "slides/why_we_bayesian_slides.html#talk-to-your-neighbor",
     "title": "Why be a Bayesian",
     "section": "Talk to your neighbor",
-    "text": "Talk to your neighbor\nwhat do you think will happen?\n\nthink about the model specification\ndoes the same happen in the Frequentist and Bayesian models?"
+    "text": "Talk to your neighbor\nwhat do you think will happen?\n\nthink about the model specification\ndoes the same happen in the Frequentist and Bayesian models?\n\n\n\n30 observations (humans?)\n30 predictors (genes?)\nstrong predictor correlation (ρ ~ .8)\nweak signal (a.u. 2)\nnoise at \\(\\mathcal{N}(0,2)\\)\ndata generating process:\n\n\\[\n  y = 2x_1 + \\epsilon \\\\\n  \\epsilon = Normal(0,2)\n\\]"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-model-results-when-p30-and-n30",
@@ -161,18 +161,25 @@
     "text": "The model results when p=30 and n=30\n\n\nx30 doesn’t even have an estimate due to unindentifiability!"
   },
   {
+    "objectID": "slides/why_we_bayesian_slides.html#lets-try-again---with-more-data",
+    "href": "slides/why_we_bayesian_slides.html#lets-try-again---with-more-data",
+    "title": "Why be a Bayesian",
+    "section": "Let’s try again - with more data!",
+    "text": "Let’s try again - with more data!\nwhat do you think will happen?\n\n\n30 observations (humans?)\n30 predictors (genes?)\nstrong predictor correlation (ρ ~ .8)\nweak signal (a.u. 2)\nnoise at \\(\\mathcal{N}(0,2)\\)\ndata generating process:\n\n\\[\n  y = 2x_1 + \\epsilon \\\\\n  \\epsilon = Normal(0,2)\n\\]"
+  },
+  {
     "objectID": "slides/why_we_bayesian_slides.html#the-model-results-when-p30-and-n32",
     "href": "slides/why_we_bayesian_slides.html#the-model-results-when-p30-and-n32",
     "title": "Why be a Bayesian",
     "section": "The model results when p=30 and n=32",
-    "text": "The model results when p=30 and n=32\n\n\ncoliniarity inflates CIs!"
+    "text": "The model results when p=30 and n=32\n\n\ncollinearity and inflates CIs and unstable coefficients!"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-frequentist-ideal",
     "href": "slides/why_we_bayesian_slides.html#the-frequentist-ideal",
     "title": "Why be a Bayesian",
     "section": "The Frequentist Ideal",
-    "text": "The Frequentist Ideal\nOrdinary Least Squares (OLS):\n\nminimizes squared residuals\nproduces unbiased estimators\nprovides confidence intervals and p-values\nworks beautifully asymptotically\n\nThe classical linear model:\n\\[\ny = X\\beta + \\epsilon\n\\]\nwith\n\\[\n\\epsilon \\sim \\mathcal{N}(0, \\sigma^2)\n\\]\nOLS estimator:\n\\[\n\\hat{\\beta}_{OLS} = (X^TX)^{-1}X^Ty\n\\]"
+    "text": "The Frequentist Ideal\nOrdinary Least Squares (OLS):\n\nminimizes squared residuals\nproduces unbiased estimators\nprovides confidence intervals and p-values\nworks beautifully asymptotically\n\nThe classical linear model:\n\\[\n  y = X\\beta + \\epsilon\n\\]\nwith\n\\[\n  \\epsilon \\sim \\mathcal{N}(0, \\sigma^2)\n\\]\nOLS estimator:\n\\[\n  \\hat{\\beta}_{OLS} = (X^TX)^{-1}X^Ty\n\\]"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-hidden-assumption",
@@ -193,14 +200,14 @@
     "href": "slides/why_we_bayesian_slides.html#the-geometry-problem",
     "title": "Why be a Bayesian",
     "section": "The Geometry Problem",
-    "text": "The Geometry Problem\nCollinearity creates unstable directions in parameter space.\nThe matrix:\n\\[\n(X^TX)^{-1}\n\\]\nbecomes nearly singular.\nAs a result:\n\ncoefficients explode\nsigns flip\nuncertainty becomes enormous\ninterpretation collapses"
+    "text": "The Geometry Problem\nCollinearity creates unstable directions in parameter space.\nThe matrix:\n\\[\n  (X^TX)^{-1}\n\\]\nbecomes nearly singular.\nAs a result:\n\ncoefficients explode\nsigns flip\nuncertainty becomes enormous\ninterpretation collapses"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-bayesian-solution",
     "href": "slides/why_we_bayesian_slides.html#the-bayesian-solution",
     "title": "Why be a Bayesian",
     "section": "The Bayesian Solution",
-    "text": "The Bayesian Solution\nBayesian regression adds prior information:\n\\[\n\\beta_j \\sim \\mathcal{N}(0,1)\n\\]\nPosterior:\n\\[\np(\\beta \\mid y)\n\\propto\np(y \\mid \\beta)p(\\beta)\n\\]\nThe prior regularizes weakly identified directions.\nThis changes the geometry of inference."
+    "text": "The Bayesian Solution\nBayesian regression adds prior information:\n\\[\n  \\beta_j \\sim \\mathcal{N}(0,1)\n\\]\nPosterior:\n\\[\n  p(\\beta \\mid y)\n  \\propto\n  p(y \\mid \\beta)p(\\beta)\n\\]\nThe prior regularizes weakly identified directions.\nThis changes the geometry of inference."
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#important-clarification",
@@ -301,13 +308,6 @@
     "text": "A More Extreme Failure\nIncrease:\n\npredictors from 10 to 20\ncorrelation from 0.9 to 0.95\n\nOLS becomes nearly meaningless.\nCoefficients:\n\nexplode\nreverse sign\nbecome sample-dependent noise\n\nBayesian regularization still produces stable inference."
   },
   {
-    "objectID": "slides/why_we_bayesian_slides.html#the-core-mechanism",
-    "href": "slides/why_we_bayesian_slides.html#the-core-mechanism",
-    "title": "Why be a Bayesian",
-    "section": "The Core Mechanism",
-    "text": "The Core Mechanism\nFrequentist OLS:\n\\(hat{β}\\) =arg min RSS\nBayesian regression:\n\\[\np(\\beta \\mid y)\n\\propto\np(y \\mid \\beta)p(\\beta)\n\\]\nThe prior changes the geometry of inference.\nThis is the key idea."
-  },
-  {
     "objectID": "slides/why_we_bayesian_slides.html#final-takeaway",
     "href": "slides/why_we_bayesian_slides.html#final-takeaway",
     "title": "Why be a Bayesian",
@@ -329,11 +329,11 @@
     "text": "References\n\nGelman, A., et al. Bayesian Data Analysis\nMcElreath, R. Statistical Rethinking\nVehtari, A., Gelman, A., Gabry, J. (2017) “Practical Bayesian model evaluation using leave-one-out cross-validation”\nHastie, Tibshirani, Friedman. Elements of Statistical Learning"
   },
   {
-    "objectID": "slides/why_we_bayesian_slides.html#exercise",
-    "href": "slides/why_we_bayesian_slides.html#exercise",
+    "objectID": "slides/why_we_bayesian_slides.html#exercises",
+    "href": "slides/why_we_bayesian_slides.html#exercises",
     "title": "Why be a Bayesian",
-    "section": "Exercise:",
-    "text": "Exercise:\nSee exercises at website…"
+    "section": "Exercises:",
+    "text": "Exercises:\nSee exercises at https://danmazjen.github.io/blog/why_we_bayesian.html"
   },
   {
     "objectID": "ideas_for_future_blog_posts/pooling_in_multilevel_models.html",
@@ -627,28 +627,28 @@
     "href": "blog/why_we_bayesian.html#when-to-use-frequentist-and-when-to-use-bayesian-approaches",
     "title": "Why be a Bayesian",
     "section": "When to use Frequentist and when to use Bayesian approaches?",
-    "text": "When to use Frequentist and when to use Bayesian approaches?\nThe Frequentist approach is often sufficient — and indeed comparable to Bayesian statsistics — when the model is simple and easy to parametrize.\nTODO\nShow example:\n\n\nCode\n#here"
+    "text": "When to use Frequentist and when to use Bayesian approaches?\nThe Frequentist approach is often sufficient — and indeed comparable to Bayesian statsistics — when the model is:\n\nsimple\neasy to parametrize\n(multivariate) gaussian residuals\nflat prior\nlarge sample size\n\n\n\nCode\nset.seed(18062026)\n\n# Data\nn &lt;- 100                 # samples\nx &lt;- rnorm(n)            # x = N(0,1)      \ny &lt;- 2 + 3*x + rnorm(n)  # α = 2, β = 3, ε = N(0,1) \n\n\n\n\n# Fixed Effects\n\nParameter   | Coefficient |       95% CI\n----------------------------------------\n(Intercept) |        2.09 | [1.91, 2.28]\nx           |        3.01 | [2.82, 3.20]\n\n\n# Fixed Effects\n\nParameter   | Median |       95% CI\n-----------------------------------\n(Intercept) |   2.09 | [1.91, 2.27]\nx           |   3.00 | [2.82, 3.20]\n\n\nwhere the first output is frequentist maximum likelihood coefficients and confidence intervals. The second output being the median of 2000 markov chain monte carlo (MCMC) draws and the credible interval."
   },
   {
     "objectID": "blog/why_we_bayesian.html#but-sometimes-they-are-very-different",
     "href": "blog/why_we_bayesian.html#but-sometimes-they-are-very-different",
     "title": "Why be a Bayesian",
     "section": "But sometimes, they are very different!",
-    "text": "But sometimes, they are very different!\nHowever, for more complex and demanding models, Bayesian approaches allows rigorous and flexible handling of uncertainty, model diagnostics, and parametrization. While a Frequentist approach is nearly always available, it often comes with stricter assumptions and more quirks (which makes solutions less intuitive and unable to transfer to other problems).\n\nBinomial regression example\nGLMs never guarantee a multivariate Gaussian posterior distribution. Thus, quadratic approximation will fail. While this is no issue for MCMC, frequentist always assume this! Therefore, it’s good to know when to expect issues for interpreting other colleagues models!"
+    "text": "But sometimes, they are very different!\nHowever, for more complex and demanding models, Bayesian approaches allows rigorous and flexible handling of uncertainty, model diagnostics, and parametrization. While a Frequentist approach is nearly always available, it often comes with stricter assumptions and more quirks (which makes solutions less intuitive and unable to transfer to other problems).\nOne example is generalized linear models (logistic regression, Poisson, multinomial, etc.): GLMs never guarantee a multivariate Gaussian posterior distribution. Thus, quadratic approximation will fail. While this is no issue for MCMC, frequentist always assume this!"
   },
   {
     "objectID": "blog/why_we_bayesian.html#other-times-bayesian-models-are-the-only-choice",
     "href": "blog/why_we_bayesian.html#other-times-bayesian-models-are-the-only-choice",
     "title": "Why be a Bayesian",
     "section": "Other times, Bayesian models are the only choice:",
-    "text": "Other times, Bayesian models are the only choice:\n\n\nSuppose we have:\n\n32 observations\n30 predictors\nstrong predictor correlation\nweak signal (a.u. 2)\nnoise at \\(\\mathcal{N}(0,2)\\)\n\n\nThis is extremely common in:\n\nsocial science\nbiology\npsychology\neconomics\npolicy research\n\n\n\nThe truth is simple: only one predictor matters:\n\\[\n  y = 2x_1 + \\epsilon\n\\]\nAll other predictors have zero effect and all predictors are highly correlated (ρ ~ 0.8). Noise is"
+    "text": "Other times, Bayesian models are the only choice:\n\n\nSuppose we have:\n\n32 observations (humans?)\n30 predictors (genes?)\nstrong predictor correlation (ρ ~ .8)\nweak signal (a.u. 2)\nnoise at \\(\\mathcal{N}(0,2)\\)\n\n\nThis is extremely common in:\n\nsocial science\nbiology\npsychology\neconomics\npolicy research\n\n\n\nThe truth is simple: only one predictor matters:\n\\[\n  y = 2x_1 + \\epsilon\n\\]\nAll other predictors have zero effect and all predictors are highly correlated (ρ ~ 0.8) with noise around same magnitude as signal (Normal(0,2))."
   },
   {
     "objectID": "blog/why_we_bayesian.html#visualizing-the-model",
     "href": "blog/why_we_bayesian.html#visualizing-the-model",
     "title": "Why be a Bayesian",
     "section": "Visualizing the model:",
-    "text": "Visualizing the model:\n\n\n\n\n\n\n\n\n\n\nIs this magic? No, regularization…\nThis is achieved using regularizing priors.\nall prior \\(x_n\\) is \\(\\mathcal{N}(0, 1.5),\\) The prior intercept is \\(mathcal{N}(0, 0.25)\\)\nSo we are vocal about our assumption and expectation that the effect of each x is +-3 95% of the time.\nTo learn more about how to use the prior, tag along for the following exercises."
+    "text": "Visualizing the model:\n\n\n\n\n\n\n\n\n\n\nIs this magic? No, regularization…\nThis is achieved using regularizing priors.\nall prior \\(x_n\\) is \\(\\mathcal{N}(0, 1.5),\\) The prior intercept is \\(\\mathcal{N}(0, 0.25)\\)\nSo we are vocal about our assumption and expectation that the effect of each x is +-3 95% of the time.\nTo learn more about how to use the prior, tag along for the following exercises."
   },
   {
     "objectID": "blog/why_we_bayesian.html#goal",
