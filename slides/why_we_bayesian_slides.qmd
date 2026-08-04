@@ -17,7 +17,8 @@ format:
 
 - Have you heard about Bayesian models/inference/approach?
 - If yes, in which context?
-- What do you think it means (no guarantee it's the "right" answer, but give it a try!)
+- What do you think it means (no guarantee it's the "right" answer, but give it
+  a try!)
 
 ## How many have heard about Bayesian inference? 🙋‍♀️🙋 {.center}
 
@@ -47,18 +48,19 @@ format:
 
 ## The Core Question {.smaller}
 
-> Why do we need a Bayesian approach to regression? 
+> Why do we need a Bayesian approach to regression?
 
 Can't we just use ordinary least squares?
 
 The answer is not (only):
 
--  philosophy
--  elegance
--  a matter of preference
+- philosophy
+- elegance
+- a matter of preference
 
 ::: {.callout-important appearance="simple" icon=false}
-Real regression problems are often weakly identified, noisy, unstable, and geometrically pathological.
+Real regression problems are often weakly identified, noisy, unstable, and
+geometrically pathological.
 :::
 
 ## The ultra-quick answer {.center}
@@ -66,7 +68,7 @@ Real regression problems are often weakly identified, noisy, unstable, and geome
 Bayesian regression stabilizes inference by:
 
 1. Explicitly stating expectations
-2. Constraining parameters, offering regularization 
+2. Constraining parameters, offering regularization
 3. Constraining model, offering stability in parametrization of the model
 
 ## When to use Frequentist and when to use Bayesian approaches? {.center}
@@ -74,8 +76,11 @@ Bayesian regression stabilizes inference by:
 Frequentist are often sufficient and comparable to Bayesian stats!
 
 ## The data
-```{r data1}
+
+```{r}
+#| label: data1
 #| echo: true
+
 set.seed(18062026)
 
 # Data
@@ -88,15 +93,20 @@ y <- 2 + 3*x + rnorm(n)  # α = 2, β = 3, ε = N(0,1)
 
 **Frequentist:**
 
-```{r freq-data1}
+```{r}
+#| label: freq-data1
 #| echo: true
+
 # Frequentist OLS
 fit_freq <- lm(y ~ x)
 ```
 
 **Bayesian:**
-```{r bayes-data1}
+
+```{r}
+#| label: bayes-data1
 #| echo: true
+
 # Bayesian regression with flat priors
 library(rstanarm)
 fit_bayes <- stan_glm(
@@ -110,16 +120,21 @@ fit_bayes <- stan_glm(
 ## What did we find?
 
 **Frequentist:**
-```{r data1-freq-results}
+
+```{r}
+#| label: data1-freq-results
 #| echo: true
+
 parameters::parameters(fit_freq, ci = 0.95) |> 
   dplyr::select(Parameter, Coefficient, CI, CI_low, CI_high)
 ```
 
 **Bayesian:**
 
-```{r data1-bayes-results}
+```{r}
+#| label: data1-bayes-results
 #| echo: true
+
 parameters::parameters(fit_bayes, ci = 0.95) |> 
   dplyr::select(Parameter, Median, CI, CI_low, CI_high)
 ```
@@ -132,32 +147,34 @@ parameters::parameters(fit_bayes, ci = 0.95) |>
 
 ## A More Realistic example {.smaller}
 
-:::: {.columns}
-::: {.column}
+::: {.columns}
+::::: {.column}
 Suppose we have:
 
--  30 observations
--  30 predictors
--  strong predictor correlation
--  weak signal
--  uncertain mechanisms
-:::
-::: {.column}
+- 30 observations
+- 30 predictors
+- strong predictor correlation
+- weak signal
+- uncertain mechanisms
+:::::
+::::: {.column}
 This is extremely common in:
 
--  social science
--  biology
--  psychology
--  economics
--  policy research
+- social science
+- biology
+- psychology
+- economics
+- policy research
+:::::
 :::
-::::
 
 ## Simulating Correlated Predictors {.r-stretch}
 
-```{r modeling}
+```{r}
+#| label: modeling
 #| echo: false
 #| output: false
+
 library(MASS)
 library(corrplot)
 
@@ -166,7 +183,7 @@ set.seed(12)
 n <- 30
 p <- 10
 
-Sigma <- matrix(0.9, p, p)
+Sigma <- matrix(0.8, p, p)
 diag(Sigma) <- 1
 
 X <- mvrnorm(n, mu = rep(0, p), Sigma = Sigma)
@@ -177,6 +194,7 @@ colnames(X) <- paste0("x", 1:p)
 ```{r}
 #| label: fig-correlation
 #| fig-cap: "Correlation structure among predictors."
+
 corrplot(cor(X), method = "color")
 ```
 
@@ -187,13 +205,13 @@ The truth is simple.
 Only one predictor matters.
 
 $$
-y = 1.5x_1 + \epsilon
+  y = 2x_1 + \epsilon \\
+  \epsilon = Normal(0,2)
 $$
 
 All other predictors have zero effect.
 
 Yet predictors are highly correlated.
-
 
 ## Talk to your neighbor {.center}
 
@@ -202,56 +220,90 @@ Yet predictors are highly correlated.
 - think about the model specification
 - does the same happen in the Frequentist and Bayesian models?
 
+::: {style="font-size: 75%;"}
+- 30 observations (humans?)
+- 30 predictors (genes?)
+- strong predictor correlation (ρ \~ .8)
+- weak signal (a.u. 2)
+- noise at $\mathcal{N}(0,2)$
+- data generating process:
+
+$$
+  y = 2x_1 + \epsilon \\
+  \epsilon = Normal(0,2)
+$$
+:::
 
 ## The model results when p=30 and n=30 {.r-strecht}
+
 ![](assets/30p30n.png)
 
-:::{.fragment}
-[x30 doesn't even have an estimate due to unindentifiability!]{style="color: red;"}
+::: {.fragment}
+[x30 doesn't even have an estimate due to
+unindentifiability!]{style="color: red;"}
+:::
+
+## Let's try again - with more data! {.center}
+
+*what do you think will happen*?
+
+::: {style="font-size: 75%;"}
+- 30 observations (humans?)
+- 30 predictors (genes?)
+- strong predictor correlation (ρ \~ .8)
+- weak signal (a.u. 2)
+- noise at $\mathcal{N}(0,2)$
+- data generating process:
+
+$$
+  y = 2x_1 + \epsilon \\
+  \epsilon = Normal(0,2)
+$$
 :::
 
 ## The model results when p=30 and n=32 {.r-strecht}
+
 ![](assets/p30n32.png)
 
-:::{.fragment}
-[coliniarity inflates CIs!]{style="color: red;"}
+::: {.fragment}
+[collinearity and inflates CIs and unstable coefficients!]{style="color: red;"}
 :::
 
 ## The Frequentist Ideal {.smaller .scrollable}
 
 Ordinary Least Squares (OLS):
 
--  minimizes squared residuals
--  produces unbiased estimators
--  provides confidence intervals and *p*-values
--  works beautifully asymptotically
+- minimizes squared residuals
+- produces unbiased estimators
+- provides confidence intervals and *p*-values
+- works beautifully asymptotically
 
 The classical linear model:
 
 $$
-y = X\beta + \epsilon
+  y = X\beta + \epsilon
 $$
 
 with
 
 $$
-\epsilon \sim \mathcal{N}(0, \sigma^2)
+  \epsilon \sim \mathcal{N}(0, \sigma^2)
 $$
 
 OLS estimator:
 
 $$
-\hat{\beta}_{OLS} = (X^TX)^{-1}X^Ty
+  \hat{\beta}_{OLS} = (X^TX)^{-1}X^Ty
 $$
 
 ## The Hidden Assumption
 
 OLS works well when:
 
--  predictors are not highly collinear
--  sample size is large
--  signal-to-noise ratio is reasonable
--  parameters are strongly identified
+- predictors are not highly collinear
+- sample size is large
+- signal-to-noise ratio is reasonable
+- parameters are strongly identified
 
 But real data often violate all of these simultaneously.
 
@@ -259,9 +311,9 @@ But real data often violate all of these simultaneously.
 
 With correlated predictors:
 
--  many coefficient combinations fit equally well
--  the likelihood becomes nearly flat
--  tiny noise changes estimates dramatically
+- many coefficient combinations fit equally well
+- the likelihood becomes nearly flat
+- tiny noise changes estimates dramatically
 
 OLS asks:
 
@@ -275,7 +327,6 @@ But it never asks:
 Are these coefficient magnitudes plausible?
 :::
 
-
 ## The Geometry Problem
 
 Collinearity creates unstable directions in parameter space.
@@ -283,32 +334,32 @@ Collinearity creates unstable directions in parameter space.
 The matrix:
 
 $$
-(X^TX)^{-1}
+  (X^TX)^{-1}
 $$
 
 becomes nearly singular.
 
 As a result:
 
--  coefficients explode
--  signs flip
--  uncertainty becomes enormous
--  interpretation collapses
+- coefficients explode
+- signs flip
+- uncertainty becomes enormous
+- interpretation collapses
 
 ## The Bayesian Solution
 
 Bayesian regression adds prior information:
 
 $$
-\beta_j \sim \mathcal{N}(0,1)
+  \beta_j \sim \mathcal{N}(0,1)
 $$
 
 Posterior:
 
 $$
-p(\beta \mid y)
-\propto
-p(y \mid \beta)p(\beta)
+  p(\beta \mid y)
+  \propto
+  p(y \mid \beta)p(\beta)
 $$
 
 The prior regularizes weakly identified directions.
@@ -333,10 +384,10 @@ This is often scientifically reasonable.
 
 We simulated the failure directly:
 
--  small sample
--  many predictors
--  high collinearity
--  weak signal
+- small sample
+- many predictors
+- high collinearity
+- weak signal
 
 ## Frequentist OLS
 
@@ -348,8 +399,8 @@ Predictors are interchangeable.
 
 The model can fit equally well using:
 
--   huge positive x1
--   huge negative x2
+- huge positive x1
+- huge negative x2
 
 OLS has no mechanism preventing absurd parameter values.
 
@@ -361,18 +412,17 @@ Researchers now face impossible interpretation.
 
 Questions become unstable:
 
--   Which variables matter?
--   Which signs are trustworthy?
--   Which effects are real?
+- Which variables matter?
+- Which signs are trustworthy?
+- Which effects are real?
 
 *p*-values fluctuate wildly across samples.
-
 
 ## Bayesian Regression
 
 ![*How did it do that?*](assets/30p30n.png)
 
-## Let's have a look 
+## Let's have a look
 
 ![Scientific sceptisism saves us from statistical model stupidity](assets/classic-bayes-plot-example.png)
 
@@ -386,9 +436,9 @@ Just enough to stabilize weakly identified directions.
 
 This is called:
 
--   regularization
--   shrinkage
--   partial pooling of uncertainty
+- regularization
+- shrinkage
+- partial pooling of uncertainty
 
 ## Bias-Variance Tradeoff
 
@@ -398,14 +448,14 @@ But unbiased estimators can have enormous variance.
 
 Bayesian regression accepts:
 
--   tiny bias
--   dramatically lower variance
+- tiny bias
+- dramatically lower variance
 
 This often improves:
 
--   prediction
--   calibration
--   scientific interpretation
+- prediction
+- calibration
+- scientific interpretation
 
 ## In a nutshell...
 
@@ -420,24 +470,23 @@ This distinction is profound.
 Frequentist confidence interval:
 
 ::: {.callout-warning appearance="simple" icon=false}
-Does NOT mean:
-"There is a 95% probability the parameter lies here."
+Does NOT mean: "There is a 95% probability the parameter lies here."
 :::
 
 Bayesian posterior interval:
 
 ::: {.callout-important appearance="simple" icon=false}
-Literally means:
-"Given model and data, there is 95% posterior probability the parameter lies here."
+Literally means: "Given model and data, there is 95% posterior probability the
+parameter lies here."
 :::
 
 ## Weak Identification
 
 The Bayesian posterior honestly expresses:
 
--   uncertainty
--   partial identifiability
--   lack of information
+- uncertainty
+- partial identifiability
+- lack of information
 
 Sometimes the correct scientific answer is:
 
@@ -451,11 +500,11 @@ OLS often hides this instability behind noisy point estimates.
 
 Bayesian models naturally support:
 
--   posterior predictive checks
--   hierarchical models
--   measurement error
--   causal modeling
--   uncertainty propagation
+- posterior predictive checks
+- hierarchical models
+- measurement error
+- causal modeling
+- uncertainty propagation
 
 This enables model criticism rather than blind estimation.
 
@@ -463,19 +512,20 @@ This enables model criticism rather than blind estimation.
 
 Increase:
 
--   predictors from 10 to 20
--   correlation from 0.9 to 0.95
+- predictors from 10 to 20
+- correlation from 0.9 to 0.95
 
 OLS becomes nearly meaningless.
 
 Coefficients:
 
--   explode
--   reverse sign
--   become sample-dependent noise
+- explode
+- reverse sign
+- become sample-dependent noise
 
 Bayesian regularization still produces stable inference.
 
+<!--
 ## The Core Mechanism
 
 Frequentist OLS:
@@ -485,23 +535,24 @@ $hat{β}$ =arg min RSS
 Bayesian regression:
 
 $$
-p(\beta \mid y)
-\propto
-p(y \mid \beta)p(\beta)
+  p(\beta \mid y)
+  \propto
+  p(y \mid \beta)p(\beta)
 $$
 
 The prior changes the geometry of inference.
 
 This is the key idea.
+-->
 
 ## Final Takeaway
 
 Bayesian regression matters because:
 
--   real models are weakly identified
--   finite samples are noisy
--   predictors are correlated
--   unconstrained likelihoods become pathological
+- real models are weakly identified
+- finite samples are noisy
+- predictors are correlated
+- unconstrained likelihoods become pathological
 
 Priors repair inferential geometry.
 
@@ -516,7 +567,8 @@ The Bayesian question is not:
 The Bayesian question is:
 
 ::: {.callout-important appearance="simple" icon=false}
-"What parameter values remain plausible after combining data with scientific structure?"
+"What parameter values remain plausible after combining data with scientific
+structure?"
 :::
 
 That is usually the more meaningful scientific question.
@@ -525,9 +577,11 @@ That is usually the more meaningful scientific question.
 
 - Gelman, A., et al. Bayesian Data Analysis
 - McElreath, R. Statistical Rethinking
-- Vehtari, A., Gelman, A., Gabry, J. (2017) "Practical Bayesian model evaluation using leave-one-out cross-validation"
+- Vehtari, A., Gelman, A., Gabry, J. (2017) "Practical Bayesian model evaluation
+  using leave-one-out cross-validation"
 - Hastie, Tibshirani, Friedman. Elements of Statistical Learning
 
-## Exercise:
+## Exercises:
 
-See exercises at website...
+See exercises at
+[https://danmazjen.github.io/blog/why_we_bayesian.html](https://danmazjen.github.io/blog/why_we_bayesian.html)

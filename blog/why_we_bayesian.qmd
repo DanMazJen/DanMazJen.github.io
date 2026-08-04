@@ -75,17 +75,56 @@ forecasting, and bayesian deep learning.
 ## When to use Frequentist and when to use Bayesian approaches?
 
 The Frequentist approach is often sufficient --- and indeed comparable to
-Bayesian statsistics --- when the model is simple and easy to parametrize.
+Bayesian statsistics --- when the model is:
 
-*TODO*
+- simple
+- easy to parametrize
+- (multivariate) gaussian residuals
+- flat prior
+- large sample size
 
-Show example:
+```{r}
+#| echo: true
+#| label: data-generation-simple
+
+set.seed(18062026)
+
+# Data
+n <- 100                 # samples
+x <- rnorm(n)            # x = N(0,1)      
+y <- 2 + 3*x + rnorm(n)  # α = 2, β = 3, ε = N(0,1) 
+```
 
 ```{r}
 #| label: simple-example
+#| echo: false
+#| warning: false
 
-#here
+# Frequentist OLS
+fit_freq <- lm(y ~ x)
+
+#| echo: true
+# Bayesian regression with flat priors
+library(rstanarm)
+fit_bayes <- stan_glm(
+  y ~ x,
+  prior = NULL,            # flat prior on coefficients
+  prior_intercept = NULL,
+  chains = 2, iter = 2000, refresh = 0
+)
+
+#| echo: true
+parameters::parameters(fit_freq, ci = 0.95) |> 
+  dplyr::select(Parameter, Coefficient, CI, CI_low, CI_high)
+
+#| echo: true
+parameters::parameters(fit_bayes, ci = 0.95) |> 
+  dplyr::select(Parameter, Median, CI, CI_low, CI_high)
 ```
+
+where the first output is frequentist maximum likelihood coefficients and
+confidence intervals. The second output being the median of 2000 markov chain
+monte carlo (MCMC) draws and the credible interval.
 
 ## But sometimes, they are very different!
 
@@ -95,12 +134,10 @@ parametrization. While a Frequentist approach is nearly always available, it
 often comes with stricter assumptions and more quirks (which makes solutions
 less intuitive and unable to transfer to other problems).
 
-### Binomial regression example
-
-GLMs never guarantee a multivariate Gaussian posterior distribution. Thus,
-quadratic approximation will fail. While this is no issue for MCMC, frequentist
-always assume this! Therefore, it's good to know when to expect issues for
-interpreting other colleagues models!
+One example is generalized linear models (logistic regression, Poisson,
+multinomial, etc.): GLMs never guarantee a multivariate Gaussian posterior
+distribution. Thus, quadratic approximation will fail. While this is no issue
+for MCMC, frequentist always assume this!
 
 ## Other times, Bayesian models are the only choice:
 
@@ -108,9 +145,9 @@ interpreting other colleagues models!
 ::::: {.column}
 Suppose we have:
 
-- 32 observations
-- 30 predictors
-- strong predictor correlation
+- 32 observations (humans?)
+- 30 predictors (genes?)
+- strong predictor correlation (ρ \~ .8)
 - weak signal (a.u. 2)
 - noise at $\mathcal{N}(0,2)$
 :::::
@@ -132,7 +169,7 @@ $$
 $$
 
 All other predictors have zero effect and all predictors are highly correlated
-(*ρ* \~ 0.8). Noise is
+(*ρ* \~ 0.8) with noise around same magnitude as signal (*Normal(0,2)*).
 
 ```{r}
 #| label: make-data
@@ -472,7 +509,7 @@ ggplot(draws, aes(x = b, fill = dist)) +
 This is achieved using regularizing priors.
 
 all prior $x_n$ is $\mathcal{N}(0, 1.5),$ The prior intercept is
-$mathcal{N}(0, 0.25)$
+$\mathcal{N}(0, 0.25)$
 
 So we are vocal about our assumption and expectation that the effect of each `x`
 is +-3 95% of the time.
