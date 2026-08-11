@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Daniel Skak Mazhari-Jensen">
-  <meta name="dcterms.date" content="2026-08-04">
+  <meta name="dcterms.date" content="2026-08-11">
   <title>DanMazJen – Why be a Bayesian</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -211,7 +211,7 @@ Daniel Skak Mazhari-Jensen
 </div>
 </div>
 
-  <p class="date">2026-08-04</p>
+  <p class="date">2026-08-11</p>
 </section>
 <section id="what-is-this-bayesian-thing-anyway" class="slide level2 center">
 <h2>What is this Bayesian thing anyway?</h2>
@@ -243,8 +243,10 @@ Daniel Skak Mazhari-Jensen
 <img data-src="assets/XKCD-bayes-seashell.jpg" class="r-stretch"></section>
 <section id="but-why-is-this-different-from-other-stats" class="slide level2">
 <h2>But why is this different from other stats?</h2>
-
-<img data-src="assets/kxcd-bayes-freq.png" class="r-stretch"></section>
+<div class="fragment">
+<p><img data-src="assets/kxcd-bayes-freq.png"></p>
+</div>
+</section>
 <section id="is-there-a-fight" class="slide level2 auto-animate center">
 <h2>Is there a fight?</h2>
 
@@ -253,6 +255,18 @@ Daniel Skak Mazhari-Jensen
 <h2>Is there a fight?</h2>
 
 <img data-src="assets/Kong-Godzilla-Doge.png" class="r-stretch"></section>
+<section id="the-fear-of-the-prior" class="slide level2">
+<h2>The fear of the prior</h2>
+<div class="callout callout-important no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p>frequentists are often suspicious of priors because a prior can look like smuggling assumptions into the analysis before seeing the data.</p>
+</div>
+</div>
+</div>
+<p>Their instinct is: &gt; “Let the data speak for itself”</p>
+<p><em>The prior biases the model a priori!</em></p>
+</section>
 <section id="the-core-question" class="slide level2 smaller">
 <h2>The Core Question</h2>
 <blockquote>
@@ -275,16 +289,21 @@ Daniel Skak Mazhari-Jensen
 </section>
 <section id="the-ultra-quick-answer" class="slide level2 center">
 <h2>The ultra-quick answer</h2>
+<div class="r-fit-text">
+<p><strong>Spoiler alert!</strong></p>
+</div>
 <p>Bayesian regression stabilizes inference by:</p>
 <ol type="1">
 <li>Explicitly stating expectations</li>
 <li>Constraining parameters, offering regularization</li>
-<li>Constraining model, offering stability in parametrization of the model</li>
+<li>Not using quardratic approximation of likelihood (for SD etc.)</li>
 </ol>
 </section>
 <section id="when-to-use-frequentist-and-when-to-use-bayesian-approaches" class="slide level2 center">
 <h2>When to use Frequentist and when to use Bayesian approaches?</h2>
-<p>Frequentist are often sufficient and comparable to Bayesian stats!</p>
+<div class="r-fit-text">
+<p>Frequentist stats are often sufficient and comparable to Bayesian stats!</p>
+</div>
 </section>
 <section id="the-data" class="slide level2">
 <h2>The data</h2>
@@ -360,13 +379,20 @@ x           |   3.00 | [2.82, 3.20]</code></pre>
 </div>
 </div>
 </section>
-<section id="then-why-do-we-bother" class="slide level2 center">
-<h2>THEN WHY DO WE BOTHER!?</h2>
+<section id="then-why-do-we-bother" class="slide level2 center" style="text-align: center;">
+<h2>THEN WHY DO WE BOTHER!? 👀</h2>
 </section>
 <section id="when-to-use-frequentist-and-when-to-use-bayesian-approaches-1" class="slide level2 r-stretch">
 <h2>When to use Frequentist and when to use Bayesian approaches?</h2>
-
-<img data-src="assets/chainsaw-cake.jpg" class="r-stretch"></section>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/chainsaw-cake.jpg"></p>
+<figcaption>Is he aiming for the cake or the table? 👀</figcaption>
+</figure>
+</div>
+</div>
+</section>
 <section id="a-more-realistic-example" class="slide level2 smaller">
 <h2>A More Realistic example</h2>
 <div class="columns">
@@ -420,7 +446,7 @@ Figure&nbsp;1: Correlation structure among predictors.
 <li>30 predictors (genes?)</li>
 <li>strong predictor correlation (ρ ~ .8)</li>
 <li>weak signal (a.u. 2)</li>
-<li>noise at <span class="math inline">\(\mathcal{N}(0,2)\)</span></li>
+<li>noise at <span class="math inline">\(N(0,2)\)</span></li>
 <li>data generating process:</li>
 </ul>
 <p><span class="math display">\[
@@ -432,7 +458,7 @@ Figure&nbsp;1: Correlation structure among predictors.
 <section id="the-model-results-when-p30-and-n30" class="slide level2 r-strecht">
 <h2>The model results when p=30 and n=30</h2>
 
-<img data-src="assets/30p30n.png" class="r-stretch"><div class="fragment">
+<img data-src="assets/30p30n.png" class="r-stretch quarto-figure-center"><p class="caption">What do you notice? 👀</p><div class="fragment">
 <p><span style="color: red;">x30 doesn’t even have an estimate due to unindentifiability!</span></p>
 </div>
 </section>
@@ -441,11 +467,11 @@ Figure&nbsp;1: Correlation structure among predictors.
 <p><em>what do you think will happen</em>?</p>
 <div style="font-size: 75%;">
 <ul>
-<li>30 observations (humans?)</li>
+<li>32 observations (humans?)</li>
 <li>30 predictors (genes?)</li>
 <li>strong predictor correlation (ρ ~ .8)</li>
 <li>weak signal (a.u. 2)</li>
-<li>noise at <span class="math inline">\(\mathcal{N}(0,2)\)</span></li>
+<li>noise at <span class="math inline">\(N(0,2)\)</span></li>
 <li>data generating process:</li>
 </ul>
 <p><span class="math display">\[
@@ -457,7 +483,7 @@ Figure&nbsp;1: Correlation structure among predictors.
 <section id="the-model-results-when-p30-and-n32" class="slide level2 r-strecht">
 <h2>The model results when p=30 and n=32</h2>
 
-<img data-src="assets/p30n32.png" class="r-stretch"><div class="fragment">
+<img data-src="assets/p30n32.png" class="r-stretch quarto-figure-center"><p class="caption">What do you notice? 👀</p><div class="fragment">
 <p><span style="color: red;">collinearity and inflates CIs and unstable coefficients!</span></p>
 </div>
 </section>
@@ -476,14 +502,14 @@ Figure&nbsp;1: Correlation structure among predictors.
 \]</span></p>
 <p>with</p>
 <p><span class="math display">\[
-  \epsilon \sim \mathcal{N}(0, \sigma^2)
+  \epsilon \sim N(0, \sigma^2)
 \]</span></p>
 <p>OLS estimator:</p>
 <p><span class="math display">\[
   \hat{\beta}_{OLS} = (X^TX)^{-1}X^Ty
 \]</span></p>
 </section>
-<section id="the-hidden-assumption" class="slide level2">
+<section id="the-hidden-assumption" class="slide level2 hidden">
 <h2>The Hidden Assumption</h2>
 <p>OLS works well when:</p>
 <ul>
@@ -500,7 +526,7 @@ Figure&nbsp;1: Correlation structure among predictors.
 <ul>
 <li>many coefficient combinations fit equally well</li>
 <li>the likelihood becomes nearly flat</li>
-<li>tiny noise changes estimates dramatically</li>
+<li>estimates dramatically change due to tiny noise</li>
 </ul>
 <p>OLS asks:</p>
 <div class="callout callout-note no-icon callout-style-simple">
@@ -539,7 +565,7 @@ Figure&nbsp;1: Correlation structure among predictors.
 <h2>The Bayesian Solution</h2>
 <p>Bayesian regression adds prior information:</p>
 <p><span class="math display">\[
-  \beta_j \sim \mathcal{N}(0,1)
+  \beta_j \sim N(0,1)
 \]</span></p>
 <p>Posterior:</p>
 <p><span class="math display">\[
@@ -549,7 +575,8 @@ Figure&nbsp;1: Correlation structure among predictors.
 \]</span></p>
 <p>The prior regularizes weakly identified directions.</p>
 <p>This changes the geometry of inference.</p>
-</section>
+
+<img data-src="assets/XKCD-bayes-seashell.jpg" style="width:20.0%" class="r-stretch quarto-figure-center"><p class="caption">Same thing here!</p></section>
 <section id="important-clarification" class="slide level2">
 <h2>Important Clarification</h2>
 <p>Bayesian priors are not magic.</p>
@@ -608,7 +635,7 @@ Figure&nbsp;1: Correlation structure among predictors.
 <h2>Let’s have a look</h2>
 
 <img data-src="assets/classic-bayes-plot-example.png" class="r-stretch quarto-figure-center"><p class="caption">Scientific sceptisism saves us from statistical model stupidity</p></section>
-<section id="what-the-prior-does" class="slide level2">
+<section id="what-the-prior-does" class="slide level2 hidden">
 <h2>What the Prior Does</h2>
 <p>The prior shrinks implausible coefficients toward zero.</p>
 <p>Not aggressively.</p>
@@ -640,8 +667,15 @@ Figure&nbsp;1: Correlation structure among predictors.
 <h2>In a nutshell…</h2>
 <p>OLS treats the model as fixed truth.</p>
 <p>Bayesian workflow treats models as uncertain approximations.</p>
+<div class="callout callout-warning no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
 <p>This distinction is profound.</p>
+</div>
+</div>
+</div>
 </section>
+<div class="hidden">
 <section id="posterior-interpretation" class="slide level2">
 <h2>Posterior Interpretation</h2>
 <p>Frequentist confidence interval:</p>
@@ -691,21 +725,24 @@ Figure&nbsp;1: Correlation structure among predictors.
 </ul>
 <p>This enables model criticism rather than blind estimation.</p>
 </section>
-<section id="a-more-extreme-failure" class="slide level2">
-<h2>A More Extreme Failure</h2>
-<p>Increase:</p>
+</div>
+<section id="even-more-extreme-failures" class="slide level2">
+<h2>Even More Extreme Failures…</h2>
+<p>Add complexity of:</p>
 <ul>
-<li>predictors from 10 to 20</li>
-<li>correlation from 0.9 to 0.95</li>
+<li>GLMs (often not multinomial Gaussian)</li>
+<li>Over-dispersion</li>
+<li>Outliers</li>
 </ul>
 <p>OLS becomes nearly meaningless.</p>
 <p>Coefficients:</p>
 <ul>
 <li>explode</li>
 <li>reverse sign</li>
-<li>become sample-dependent noise</li>
+<li>inference just become sample-dependent noise</li>
 </ul>
-<p>Bayesian regularization still produces stable inference.</p>
+<p>Meanwhile, Bayesian regularization still produces stable inference.</p>
+
 <!--
 ## The Core Mechanism
 
@@ -725,38 +762,39 @@ The prior changes the geometry of inference.
 
 This is the key idea.
 -->
-</section>
-<section id="final-takeaway" class="slide level2">
-<h2>Final Takeaway</h2>
-<p>Bayesian regression matters because:</p>
-<ul>
-<li>real models are weakly identified</li>
-<li>finite samples are noisy</li>
-<li>predictors are correlated</li>
-<li>unconstrained likelihoods become pathological</li>
-</ul>
-<p>Priors repair inferential geometry.</p>
-</section>
-<section id="final-thought" class="slide level2">
-<h2>Final Thought</h2>
-<p>The Bayesian question is not:</p>
+<img data-src="assets/chainsaw-cake.jpg" style="width:20.0%" class="r-stretch"></section>
+<section id="final-thoughts" class="slide level2">
+<h2>Final Thoughts</h2>
+<p>Don’t fear the prior!</p>
+<div class="columns">
+<div class="column">
 <div class="callout callout-note no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
-<p>“What coefficient minimizes error?”</p>
+<p>A prior is not some dangerous and mysterious trick that biases your model.</p>
 </div>
 </div>
 </div>
-<p>The Bayesian question is:</p>
 <div class="callout callout-important no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
-<p>“What parameter values remain plausible after combining data with scientific structure?”</p>
+<p>The Bayesian prior enforces that parameter values remain plausible after combining data with scientific structure</p>
 </div>
 </div>
 </div>
-<p>That is usually the more meaningful scientific question.</p>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/kxcd-bayes-freq.png"></p>
+<figcaption>A prior can save you from foolish inference</figcaption>
+</figure>
+</div>
+</div></div>
 </section>
+<section id="cheers" class="slide level2">
+<h2>Cheers!</h2>
+
+<img data-src="assets/prior_beer.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
 <section id="sec-references" class="slide level2">
 <h2>References</h2>
 <ul>
