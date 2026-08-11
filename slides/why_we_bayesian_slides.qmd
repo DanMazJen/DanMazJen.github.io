@@ -36,7 +36,9 @@ format:
 
 ## But why is this different from other stats?
 
+::: {.fragment}
 ![](assets/kxcd-bayes-freq.png)
+:::
 
 ## Is there a fight? {.auto-animate .center}
 
@@ -45,6 +47,17 @@ format:
 ## Is there a fight? {.auto-animate .center}
 
 ![](assets/Kong-Godzilla-Doge.png)
+
+## The fear of the prior
+
+::: {.callout-important appearance="simple" icon=false}
+frequentists are often suspicious of priors because a prior can look like
+smuggling assumptions into the analysis before seeing the data.
+:::
+
+Their instinct is: > "Let the data speak for itself"
+
+*The prior biases the model a priori!*
 
 ## The Core Question {.smaller}
 
@@ -65,15 +78,21 @@ geometrically pathological.
 
 ## The ultra-quick answer {.center}
 
+::: {.r-fit-text}
+**Spoiler alert!**
+:::
+
 Bayesian regression stabilizes inference by:
 
 1. Explicitly stating expectations
 2. Constraining parameters, offering regularization
-3. Constraining model, offering stability in parametrization of the model
+3. Not using quardratic approximation of likelihood (for SD etc.)
 
 ## When to use Frequentist and when to use Bayesian approaches? {.center}
 
-Frequentist are often sufficient and comparable to Bayesian stats!
+::: {.r-fit-text}
+Frequentist stats are often sufficient and comparable to Bayesian stats!
+:::
 
 ## The data
 
@@ -139,11 +158,13 @@ parameters::parameters(fit_bayes, ci = 0.95) |>
   dplyr::select(Parameter, Median, CI, CI_low, CI_high)
 ```
 
-## THEN WHY DO WE BOTHER!? {.center}
+## THEN WHY DO WE BOTHER!? 👀 {.center style="text-align: center;"}
 
 ## When to use Frequentist and when to use Bayesian approaches? {.r-stretch}
 
-![](assets/chainsaw-cake.jpg)
+::: {.fragment}
+![Is he aiming for the cake or the table? 👀](assets/chainsaw-cake.jpg){fig-align="center"}
+:::
 
 ## A More Realistic example {.smaller}
 
@@ -225,7 +246,7 @@ Yet predictors are highly correlated.
 - 30 predictors (genes?)
 - strong predictor correlation (ρ \~ .8)
 - weak signal (a.u. 2)
-- noise at $\mathcal{N}(0,2)$
+- noise at $N(0,2)$
 - data generating process:
 
 $$
@@ -236,7 +257,7 @@ $$
 
 ## The model results when p=30 and n=30 {.r-strecht}
 
-![](assets/30p30n.png)
+![What do you notice? 👀](assets/30p30n.png)
 
 ::: {.fragment}
 [x30 doesn't even have an estimate due to
@@ -248,11 +269,11 @@ unindentifiability!]{style="color: red;"}
 *what do you think will happen*?
 
 ::: {style="font-size: 75%;"}
-- 30 observations (humans?)
+- 32 observations (humans?)
 - 30 predictors (genes?)
 - strong predictor correlation (ρ \~ .8)
 - weak signal (a.u. 2)
-- noise at $\mathcal{N}(0,2)$
+- noise at $N(0,2)$
 - data generating process:
 
 $$
@@ -263,7 +284,7 @@ $$
 
 ## The model results when p=30 and n=32 {.r-strecht}
 
-![](assets/p30n32.png)
+![What do you notice? 👀](assets/p30n32.png)
 
 ::: {.fragment}
 [collinearity and inflates CIs and unstable coefficients!]{style="color: red;"}
@@ -287,7 +308,7 @@ $$
 with
 
 $$
-  \epsilon \sim \mathcal{N}(0, \sigma^2)
+  \epsilon \sim N(0, \sigma^2)
 $$
 
 OLS estimator:
@@ -296,6 +317,7 @@ $$
   \hat{\beta}_{OLS} = (X^TX)^{-1}X^Ty
 $$
 
+::: {.hidden}
 ## The Hidden Assumption
 
 OLS works well when:
@@ -306,6 +328,7 @@ OLS works well when:
 - parameters are strongly identified
 
 But real data often violate all of these simultaneously.
+:::
 
 ## The Mechanism of Failure {.smaller}
 
@@ -313,7 +336,7 @@ With correlated predictors:
 
 - many coefficient combinations fit equally well
 - the likelihood becomes nearly flat
-- tiny noise changes estimates dramatically
+- estimates dramatically change due to tiny noise
 
 OLS asks:
 
@@ -351,7 +374,7 @@ As a result:
 Bayesian regression adds prior information:
 
 $$
-  \beta_j \sim \mathcal{N}(0,1)
+  \beta_j \sim N(0,1)
 $$
 
 Posterior:
@@ -365,6 +388,8 @@ $$
 The prior regularizes weakly identified directions.
 
 This changes the geometry of inference.
+
+![Same thing here!](assets/XKCD-bayes-seashell.jpg){width="20%"}
 
 ## Important Clarification
 
@@ -426,6 +451,7 @@ Questions become unstable:
 
 ![Scientific sceptisism saves us from statistical model stupidity](assets/classic-bayes-plot-example.png)
 
+::: {.hidden}
 ## What the Prior Does
 
 The prior shrinks implausible coefficients toward zero.
@@ -439,6 +465,7 @@ This is called:
 - regularization
 - shrinkage
 - partial pooling of uncertainty
+:::
 
 ## Bias-Variance Tradeoff
 
@@ -463,22 +490,25 @@ OLS treats the model as fixed truth.
 
 Bayesian workflow treats models as uncertain approximations.
 
+::: {.callout-warning appearance="simple" icon=false}
 This distinction is profound.
+:::
 
+::: {.hidden}
 ## Posterior Interpretation
 
 Frequentist confidence interval:
 
-::: {.callout-warning appearance="simple" icon=false}
+::::: {.callout-warning appearance="simple" icon=false}
 Does NOT mean: "There is a 95% probability the parameter lies here."
-:::
+:::::
 
 Bayesian posterior interval:
 
-::: {.callout-important appearance="simple" icon=false}
+::::: {.callout-important appearance="simple" icon=false}
 Literally means: "Given model and data, there is 95% posterior probability the
 parameter lies here."
-:::
+:::::
 
 ## Weak Identification
 
@@ -490,9 +520,9 @@ The Bayesian posterior honestly expresses:
 
 Sometimes the correct scientific answer is:
 
-::: {.callout-note appearance="simple" icon=false}
+::::: {.callout-note appearance="simple" icon=false}
 "We do not know very much."
-:::
+:::::
 
 OLS often hides this instability behind noisy point estimates.
 
@@ -507,13 +537,15 @@ Bayesian models naturally support:
 - uncertainty propagation
 
 This enables model criticism rather than blind estimation.
+:::
 
-## A More Extreme Failure
+## Even More Extreme Failures...
 
-Increase:
+Add complexity of:
 
-- predictors from 10 to 20
-- correlation from 0.9 to 0.95
+- GLMs (often not multinomial Gaussian)
+- Over-dispersion
+- Outliers
 
 OLS becomes nearly meaningless.
 
@@ -521,9 +553,11 @@ Coefficients:
 
 - explode
 - reverse sign
-- become sample-dependent noise
+- inference just become sample-dependent noise
 
-Bayesian regularization still produces stable inference.
+Meanwhile, Bayesian regularization still produces stable inference.
+
+![](assets/chainsaw-cake.jpg){width=20%}
 
 <!--
 ## The Core Mechanism
@@ -545,33 +579,28 @@ The prior changes the geometry of inference.
 This is the key idea.
 -->
 
-## Final Takeaway
+## Final Thoughts
 
-Bayesian regression matters because:
+Don't fear the prior!
 
-- real models are weakly identified
-- finite samples are noisy
-- predictors are correlated
-- unconstrained likelihoods become pathological
-
-Priors repair inferential geometry.
-
-## Final Thought
-
-The Bayesian question is not:
-
-::: {.callout-note appearance="simple" icon=false}
-"What coefficient minimizes error?"
+::: {.columns}
+::::: {.column}
+::::::: {.callout-note appearance="simple" icon=false}
+A prior is not some dangerous and mysterious trick that biases your model.
+:::::::
+::::::: {.callout-important appearance="simple" icon=false}
+The Bayesian prior enforces that parameter values remain plausible after
+combining data with scientific structure
+:::::::
+:::::
+::::: {.column}
+![A prior can save you from foolish inference](assets/kxcd-bayes-freq.png)
+:::::
 :::
 
-The Bayesian question is:
+## Cheers!
 
-::: {.callout-important appearance="simple" icon=false}
-"What parameter values remain plausible after combining data with scientific
-structure?"
-:::
-
-That is usually the more meaningful scientific question.
+![](assets/prior_beer.jpg){fig-align="center"}
 
 ## References {#sec-references}
 

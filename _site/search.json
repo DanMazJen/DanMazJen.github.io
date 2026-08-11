@@ -501,7 +501,7 @@
     "href": "slides/why_we_bayesian_slides.html#the-frequentist-ideal",
     "title": "Why be a Bayesian",
     "section": "The Frequentist Ideal",
-    "text": "The Frequentist Ideal\nOrdinary Least Squares (OLS):\n\nminimizes squared residuals\nproduces unbiased estimators\nprovides confidence intervals and p-values\nworks beautifully asymptotically\n\nThe classical linear model:\n\\[\n  y = X\\beta + \\epsilon\n\\]\nwith\n\\[\n  \\epsilon \\sim \\mathcal{N}(0, \\sigma^2)\n\\]\nOLS estimator:\n\\[\n  \\hat{\\beta}_{OLS} = (X^TX)^{-1}X^Ty\n\\]"
+    "text": "The Frequentist Ideal\nOrdinary Least Squares (OLS):\n\nminimizes squared residuals\nproduces unbiased estimators\nprovides confidence intervals and p-values\nworks beautifully asymptotically\n\nThe classical linear model:\n\\[\n  y = X\\beta + \\epsilon\n\\]\nwith\n\\[\n  \\epsilon \\sim N(0, \\sigma^2)\n\\]\nOLS estimator:\n\\[\n  \\hat{\\beta}_{OLS} = (X^TX)^{-1}X^Ty\n\\]"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#when-to-use-frequentist-and-when-to-use-bayesian-approaches",
@@ -564,7 +564,7 @@
     "href": "slides/why_we_bayesian_slides.html#talk-to-your-neighbor",
     "title": "Why be a Bayesian",
     "section": "Talk to your neighbor",
-    "text": "Talk to your neighbor\nwhat do you think will happen?\n\nthink about the model specification\ndoes the same happen in the Frequentist and Bayesian models?\n\n\n\n30 observations (humans?)\n30 predictors (genes?)\nstrong predictor correlation (ρ ~ .8)\nweak signal (a.u. 2)\nnoise at \\(\\mathcal{N}(0,2)\\)\ndata generating process:\n\n\\[\n  y = 2x_1 + \\epsilon \\\\\n  \\epsilon = Normal(0,2)\n\\]"
+    "text": "Talk to your neighbor\nwhat do you think will happen?\n\nthink about the model specification\ndoes the same happen in the Frequentist and Bayesian models?\n\n\n\n30 observations (humans?)\n30 predictors (genes?)\nstrong predictor correlation (ρ ~ .8)\nweak signal (a.u. 2)\nnoise at \\(N(0,2)\\)\ndata generating process:\n\n\\[\n  y = 2x_1 + \\epsilon \\\\\n  \\epsilon = Normal(0,2)\n\\]"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-model-results-when-p30-and-n30",
@@ -613,7 +613,7 @@
     "href": "slides/why_we_bayesian_slides.html#the-bayesian-solution",
     "title": "Why be a Bayesian",
     "section": "The Bayesian Solution",
-    "text": "The Bayesian Solution\nBayesian regression adds prior information:\n\\[\n  \\beta_j \\sim \\mathcal{N}(0,1)\n\\]\nPosterior:\n\\[\n  p(\\beta \\mid y)\n  \\propto\n  p(y \\mid \\beta)p(\\beta)\n\\]\nThe prior regularizes weakly identified directions.\nThis changes the geometry of inference."
+    "text": "The Bayesian Solution\nBayesian regression adds prior information:\n\\[\n  \\beta_j \\sim N(0,1)\n\\]\nPosterior:\n\\[\n  p(\\beta \\mid y)\n  \\propto\n  p(y \\mid \\beta)p(\\beta)\n\\]\nThe prior regularizes weakly identified directions.\nThis changes the geometry of inference."
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#important-clarification",
@@ -949,7 +949,7 @@
     "href": "slides/why_we_bayesian_slides.html#lets-try-again---with-more-data",
     "title": "Why be a Bayesian",
     "section": "Let’s try again - with more data!",
-    "text": "Let’s try again - with more data!\nwhat do you think will happen?\n\n\n30 observations (humans?)\n30 predictors (genes?)\nstrong predictor correlation (ρ ~ .8)\nweak signal (a.u. 2)\nnoise at \\(\\mathcal{N}(0,2)\\)\ndata generating process:\n\n\\[\n  y = 2x_1 + \\epsilon \\\\\n  \\epsilon = Normal(0,2)\n\\]"
+    "text": "Let’s try again - with more data!\nwhat do you think will happen?\n\n\n30 observations (humans?)\n30 predictors (genes?)\nstrong predictor correlation (ρ ~ .8)\nweak signal (a.u. 2)\nnoise at \\(N(0,2)\\)\ndata generating process:\n\n\\[\n  y = 2x_1 + \\epsilon \\\\\n  \\epsilon = Normal(0,2)\n\\]"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#exercises",
