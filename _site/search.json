@@ -466,7 +466,7 @@
     "href": "slides/why_we_bayesian_slides.html#the-ultra-quick-answer",
     "title": "Why be a Bayesian",
     "section": "The ultra-quick answer",
-    "text": "The ultra-quick answer\nBayesian regression stabilizes inference by:\n\nExplicitly stating expectations\nConstraining parameters, offering regularization\nConstraining model, offering stability in parametrization of the model"
+    "text": "The ultra-quick answer\n\nSpoiler alert!\n\nBayesian regression stabilizes inference by:\n\nExplicitly stating expectations\nConstraining parameters, offering regularization\nNot using quardratic approximation of likelihood (for SD etc.)"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#is-there-a-fight",
@@ -501,14 +501,14 @@
     "href": "slides/why_we_bayesian_slides.html#the-frequentist-ideal",
     "title": "Why be a Bayesian",
     "section": "The Frequentist Ideal",
-    "text": "The Frequentist Ideal\nOrdinary Least Squares (OLS):\n\nminimizes squared residuals\nproduces unbiased estimators\nprovides confidence intervals and p-values\nworks beautifully asymptotically\n\nThe classical linear model:\n\\[\n  y = X\\beta + \\epsilon\n\\]\nwith\n\\[\n  \\epsilon \\sim N(0, \\sigma^2)\n\\]\nOLS estimator:\n\\[\n  \\hat{\\beta}_{OLS} = (X^TX)^{-1}X^Ty\n\\]"
+    "text": "The Frequentist Ideal\nOrdinary Least Squares (OLS):\n\nminimizes squared residuals\nproduces unbiased estimators\nprovides confidence intervals and p-values\nworks beautifully asymptotically\n\nThe classical linear model:\n\\[\n  y = X\\beta + \\epsilon\n\\]\nwith\n\\[\n  \\epsilon \\sim N(0, \\sigma^2)\n\\]\nOLS estimator:\n\\[\n  \\hat{\\beta}_{OLS} = (X^TX)^{-1}X^Ty\n\\]\n\nThe Hidden Assumption\nOLS works well when:\n\npredictors are not highly collinear\nsample size is large\nsignal-to-noise ratio is reasonable\nparameters are strongly identified\n\nBut real data often violate all of these simultaneously."
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#when-to-use-frequentist-and-when-to-use-bayesian-approaches",
     "href": "slides/why_we_bayesian_slides.html#when-to-use-frequentist-and-when-to-use-bayesian-approaches",
     "title": "Why be a Bayesian",
     "section": "When to use Frequentist and when to use Bayesian approaches?",
-    "text": "When to use Frequentist and when to use Bayesian approaches?\nFrequentist are often sufficient and comparable to Bayesian stats!"
+    "text": "When to use Frequentist and when to use Bayesian approaches?\n\nFrequentist stats are often sufficient and comparable to Bayesian stats!"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-data",
@@ -536,7 +536,7 @@
     "href": "slides/why_we_bayesian_slides.html#when-to-use-frequentist-and-when-to-use-bayesian-approaches-1",
     "title": "Why be a Bayesian",
     "section": "When to use Frequentist and when to use Bayesian approaches?",
-    "text": "When to use Frequentist and when to use Bayesian approaches?"
+    "text": "When to use Frequentist and when to use Bayesian approaches?\n\n\n\n\nIs he aiming for the cake or the table? 👀"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-models",
@@ -549,8 +549,8 @@
     "objectID": "slides/why_we_bayesian_slides.html#then-why-do-we-bother",
     "href": "slides/why_we_bayesian_slides.html#then-why-do-we-bother",
     "title": "Why be a Bayesian",
-    "section": "THEN WHY DO WE BOTHER!?",
-    "text": "THEN WHY DO WE BOTHER!?"
+    "section": "THEN WHY DO WE BOTHER!? 👀",
+    "text": "THEN WHY DO WE BOTHER!? 👀"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#an-example",
@@ -571,14 +571,14 @@
     "href": "slides/why_we_bayesian_slides.html#the-model-results-when-p30-and-n30",
     "title": "Why be a Bayesian",
     "section": "The model results when p=30 and n=30",
-    "text": "The model results when p=30 and n=30\n\n\nx30 doesn’t even have an estimate due to unindentifiability!"
+    "text": "The model results when p=30 and n=30\n\nWhat do you notice? 👀\nx30 doesn’t even have an estimate due to unindentifiability!"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-model-results-when-p30-and-n32",
     "href": "slides/why_we_bayesian_slides.html#the-model-results-when-p30-and-n32",
     "title": "Why be a Bayesian",
     "section": "The model results when p=30 and n=32",
-    "text": "The model results when p=30 and n=32\n\n\ncollinearity and inflates CIs and unstable coefficients!"
+    "text": "The model results when p=30 and n=32\n\nWhat do you notice? 👀\ncollinearity and inflates CIs and unstable coefficients!"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#a-more-realistic-situation",
@@ -599,7 +599,7 @@
     "href": "slides/why_we_bayesian_slides.html#the-mechanism-of-failure",
     "title": "Why be a Bayesian",
     "section": "The Mechanism of Failure",
-    "text": "The Mechanism of Failure\nWith correlated predictors:\n\nmany coefficient combinations fit equally well\nthe likelihood becomes nearly flat\ntiny noise changes estimates dramatically\n\nOLS asks:\n\n\n\nWhich coefficients minimize prediction error?\n\n\n\nBut it never asks:\n\n\n\nAre these coefficient magnitudes plausible?"
+    "text": "The Mechanism of Failure\nWith correlated predictors:\n\nmany coefficient combinations fit equally well\nthe likelihood becomes nearly flat\nestimates dramatically change due to tiny noise\n\nOLS asks:\n\n\n\nWhich coefficients minimize prediction error?\n\n\n\nBut it never asks:\n\n\n\nAre these coefficient magnitudes plausible?"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#the-geometry-problem",
@@ -613,14 +613,14 @@
     "href": "slides/why_we_bayesian_slides.html#the-bayesian-solution",
     "title": "Why be a Bayesian",
     "section": "The Bayesian Solution",
-    "text": "The Bayesian Solution\nBayesian regression adds prior information:\n\\[\n  \\beta_j \\sim N(0,1)\n\\]\nPosterior:\n\\[\n  p(\\beta \\mid y)\n  \\propto\n  p(y \\mid \\beta)p(\\beta)\n\\]\nThe prior regularizes weakly identified directions.\nThis changes the geometry of inference."
+    "text": "The Bayesian Solution\nBayesian regression adds prior information:\n\\[\n  \\beta_j \\sim N(0,1.5) \\\\\n  \\alpha \\sim N(0,0.25) \\\\\n\\]\nPosterior:\n\\[\n  p(\\alpha, \\beta \\mid y)\n  \\propto\n  p(y \\mid \\alpha, \\beta)p(\\alpha, \\beta)\n\\]\nThe prior regularizes weakly identified directions.\nThis changes the geometry of inference.\n\nSame thing here!"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#important-clarification",
     "href": "slides/why_we_bayesian_slides.html#important-clarification",
     "title": "Why be a Bayesian",
     "section": "Important Clarification",
-    "text": "Important Clarification\nBayesian priors are not magic.\nThey encode structural skepticism.\nThe prior says:\n\n\n\nLarge coefficients should require strong evidence.\n\n\n\nThis is often scientifically reasonable."
+    "text": "Important Clarification\n\n\n\nBayesian priors are not magic.\n\n\n\nThey encode structural skepticism.\nThe prior says:\n\n\n\nLarge coefficients should require strong evidence.\n\n\n\nThis is often scientifically reasonable.\n\nExplaining the simulation Setup\nWe simulated the failure directly:\n\nsmall sample\nmany predictors\nhigh collinearity\nweak signal"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#simulation-setup",
@@ -669,7 +669,7 @@
     "href": "slides/why_we_bayesian_slides.html#lets-have-a-look",
     "title": "Why be a Bayesian",
     "section": "Let’s have a look",
-    "text": "Let’s have a look\n\nScientific sceptisism saves us from statistical model stupidity"
+    "text": "Let’s have a look\n\nScientific sceptisism saves us from statistical model stupidity\nWhat the Prior Does\nThe prior shrinks implausible coefficients toward zero.\nNot aggressively.\nJust enough to stabilize weakly identified directions.\nThis is called:\n\nregularization\nshrinkage\npartial pooling of uncertainty"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#what-the-prior-does",
@@ -872,7 +872,7 @@
     "href": "slides/why_we_bayesian_slides.html#in-a-nutshell",
     "title": "Why be a Bayesian",
     "section": "In a nutshell…",
-    "text": "In a nutshell…\nOLS treats the model as fixed truth.\nBayesian workflow treats models as uncertain approximations.\nThis distinction is profound."
+    "text": "In a nutshell…\nOLS treats the model as fixed truth.\nBayesian workflow treats models as uncertain approximations.\n\n\n\nThis distinction is profound."
   },
   {
     "objectID": "index.html#section",
@@ -949,7 +949,7 @@
     "href": "slides/why_we_bayesian_slides.html#lets-try-again---with-more-data",
     "title": "Why be a Bayesian",
     "section": "Let’s try again - with more data!",
-    "text": "Let’s try again - with more data!\nwhat do you think will happen?\n\n\n30 observations (humans?)\n30 predictors (genes?)\nstrong predictor correlation (ρ ~ .8)\nweak signal (a.u. 2)\nnoise at \\(N(0,2)\\)\ndata generating process:\n\n\\[\n  y = 2x_1 + \\epsilon \\\\\n  \\epsilon = Normal(0,2)\n\\]"
+    "text": "Let’s try again - with more data!\nwhat do you think will happen?\n\n\n32 observations (humans?)\n30 predictors (genes?)\nstrong predictor correlation (ρ ~ .8)\nweak signal (a.u. 2)\nnoise at \\(N(0,2)\\)\ndata generating process:\n\n\\[\n  y = 2x_1 + \\epsilon \\\\\n  \\epsilon = Normal(0,2)\n\\]"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#exercises",
@@ -957,5 +957,61 @@
     "title": "Why be a Bayesian",
     "section": "Exercises:",
     "text": "Exercises:\nSee exercises at https://danmazjen.github.io/blog/why_we_bayesian.html"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#the-fear-of-the-prior",
+    "href": "slides/why_we_bayesian_slides.html#the-fear-of-the-prior",
+    "title": "Why be a Bayesian",
+    "section": "The fear of the prior",
+    "text": "The fear of the prior\n\n\n\nfrequentists are often suspicious of priors because a prior can look like smuggling assumptions into the analysis before seeing the data.\n\n\n\nTheir instinct is:\n\nLet the data speak for itself\n\nor\n\nThe prior biases the model a priori!"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#even-more-extreme-failures",
+    "href": "slides/why_we_bayesian_slides.html#even-more-extreme-failures",
+    "title": "Why be a Bayesian",
+    "section": "Even More Extreme Failures…",
+    "text": "Even More Extreme Failures…\nAdd complexity of:\n\nGLMs (often not multinomial Gaussian)\nOver-dispersion\nOutliers\n\nOLS becomes nearly meaningless.\nCoefficients:\n\nexplode\nreverse sign\ninference just become sample-dependent noise\n\nMeanwhile, Bayesian regularization still produces stable inference."
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#final-thoughts",
+    "href": "slides/why_we_bayesian_slides.html#final-thoughts",
+    "title": "Why be a Bayesian",
+    "section": "Final Thoughts",
+    "text": "Final Thoughts\n\nDon’t fear the prior!\n\n\n\n\n\nA prior is not some dangerous and mysterious trick that biases your model.\n\n\n\n\n\n\nThe Bayesian prior enforces that parameter values remain plausible after combining data with scientific structure\n\n\n\n\n\n\n\nA prior can save you from foolish inference"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#cheers",
+    "href": "slides/why_we_bayesian_slides.html#cheers",
+    "title": "Why be a Bayesian",
+    "section": "Cheers!",
+    "text": "Cheers!"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#but-why-is-this-different-from-other-stats-1",
+    "href": "slides/why_we_bayesian_slides.html#but-why-is-this-different-from-other-stats-1",
+    "title": "Why be a Bayesian",
+    "section": "But why is this different from other stats?",
+    "text": "But why is this different from other stats?"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#bayesian-prior",
+    "href": "slides/why_we_bayesian_slides.html#bayesian-prior",
+    "title": "Why be a Bayesian",
+    "section": "Bayesian prior",
+    "text": "Bayesian prior"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#bayesian-prior-1",
+    "href": "slides/why_we_bayesian_slides.html#bayesian-prior-1",
+    "title": "Why be a Bayesian",
+    "section": "Bayesian prior 🐉",
+    "text": "Bayesian prior 🐉"
+  },
+  {
+    "objectID": "slides/why_we_bayesian_slides.html#how-priors-are-made-up",
+    "href": "slides/why_we_bayesian_slides.html#how-priors-are-made-up",
+    "title": "Why be a Bayesian",
+    "section": "How priors are made (up)",
+    "text": "How priors are made (up)"
   }
 ]

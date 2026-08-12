@@ -30,23 +30,34 @@ format:
 
 ## Are you ready to get a non-technical introduction? 🎉🥳 {.center}
 
-## Bayes in the style of xkcd
+## Bayes in the style of xkcd {.center style="text-align: center;"}
 
-![](assets/XKCD-bayes-seashell.jpg)
+![](assets/XKCD-bayes-seashell.jpg){fig-align="center"}
 
-## But why is this different from other stats?
+## But why is this different from other stats? {.center style="text-align: center;"}
 
-::: {.fragment}
-![](assets/kxcd-bayes-freq.png)
+## But why is this different from other stats? {.center style="text-align: center;"}
+
+![](assets/kxcd-bayes-freq.png){fig-align="center"}
+
+## Bayesian prior {.center auto-animate="true" style="text-align: center;"}
+
+![](assets/prior_likelihood_posterior.webp){fig-align="center"}
+
+## Bayesian prior 🐉 {auto-animate="true"}
+
+::: {.columns}
+::::: {.column}
+![](assets/prior_likelihood_posterior.webp){fig-align="center"}
+:::::
+::::: {.column}
+![](assets/dragonball_posterior.png){fig-align="center"}
+:::::
 :::
 
-## Is there a fight? {.auto-animate .center}
+## How priors are made (up) {.center style="text-align: center;"}
 
-![](assets/Kong-Godzilla.png)
-
-## Is there a fight? {.auto-animate .center}
-
-![](assets/Kong-Godzilla-Doge.png)
+![](assets/madeup_prior.webp){fig-align="center"}
 
 ## The fear of the prior
 
@@ -55,9 +66,21 @@ frequentists are often suspicious of priors because a prior can look like
 smuggling assumptions into the analysis before seeing the data.
 :::
 
-Their instinct is: > "Let the data speak for itself"
+Their instinct is:
 
-*The prior biases the model a priori!*
+> Let the data speak for itself
+
+or
+
+> *The prior biases the model a priori!*
+
+## Is there a fight? {.center style="text-align: center;"}
+
+![](assets/Kong-Godzilla.png){fig-align="center"}
+
+## Is there a fight? {.center style="text-align: center;"}
+
+![](assets/Kong-Godzilla-Doge.png){fig-align="center"}
 
 ## The Core Question {.smaller}
 
@@ -84,9 +107,10 @@ geometrically pathological.
 
 Bayesian regression stabilizes inference by:
 
-1. Explicitly stating expectations
-2. Constraining parameters, offering regularization
-3. Not using quardratic approximation of likelihood (for SD etc.)
+1. [Explicitly stating expectations]{style="color: orange;"}
+2. [Constraining parameters, offering regularization]{style="color: green;"}
+3. [Not using quardratic approximation of likelihood (for SD
+   etc.)]{style="color: red;"}
 
 ## When to use Frequentist and when to use Bayesian approaches? {.center}
 
@@ -318,7 +342,7 @@ $$
 $$
 
 ::: {.hidden}
-## The Hidden Assumption
+The Hidden Assumption
 
 OLS works well when:
 
@@ -374,15 +398,16 @@ As a result:
 Bayesian regression adds prior information:
 
 $$
-  \beta_j \sim N(0,1)
+  \beta_j \sim N(0,1.5) \\
+  \alpha \sim N(0,0.25) \\
 $$
 
 Posterior:
 
 $$
-  p(\beta \mid y)
+  p(\alpha, \beta \mid y)
   \propto
-  p(y \mid \beta)p(\beta)
+  p(y \mid \alpha, \beta)p(\alpha, \beta)
 $$
 
 The prior regularizes weakly identified directions.
@@ -393,7 +418,9 @@ This changes the geometry of inference.
 
 ## Important Clarification
 
+::: {.callout-warning appearance="simple" icon=false}
 Bayesian priors are not magic.
+:::
 
 They encode structural skepticism.
 
@@ -405,7 +432,8 @@ Large coefficients should require strong evidence.
 
 This is often scientifically reasonable.
 
-## Explaining the simulation Setup
+::: {.hidden}
+Explaining the simulation Setup
 
 We simulated the failure directly:
 
@@ -413,6 +441,7 @@ We simulated the failure directly:
 - many predictors
 - high collinearity
 - weak signal
+:::
 
 ## Frequentist OLS
 
@@ -452,7 +481,7 @@ Questions become unstable:
 ![Scientific sceptisism saves us from statistical model stupidity](assets/classic-bayes-plot-example.png)
 
 ::: {.hidden}
-## What the Prior Does
+What the Prior Does
 
 The prior shrinks implausible coefficients toward zero.
 
@@ -484,7 +513,7 @@ This often improves:
 - calibration
 - scientific interpretation
 
-## In a nutshell...
+## In a nutshell... {.center .align-center}
 
 OLS treats the model as fixed truth.
 
@@ -539,7 +568,7 @@ Bayesian models naturally support:
 This enables model criticism rather than blind estimation.
 :::
 
-## Even More Extreme Failures...
+## Even More Extreme Failures... {.smaller}
 
 Add complexity of:
 
@@ -579,23 +608,23 @@ The prior changes the geometry of inference.
 This is the key idea.
 -->
 
-## Final Thoughts
+## Final Thoughts {.center style="text-align: center;"}
 
-Don't fear the prior!
+::: {.r-fit-text}
+**Don't fear the prior!**
+:::
 
-::: {.columns}
-::::: {.column}
-::::::: {.callout-note appearance="simple" icon=false}
+::: {.column .center style="text-align: center;"}
+::::: {.callout-note appearance="simple" icon=false}
 A prior is not some dangerous and mysterious trick that biases your model.
-:::::::
-::::::: {.callout-important appearance="simple" icon=false}
+:::::
+::::: {.callout-important appearance="simple" icon=false}
 The Bayesian prior enforces that parameter values remain plausible after
 combining data with scientific structure
-:::::::
 :::::
-::::: {.column}
-![A prior can save you from foolish inference](assets/kxcd-bayes-freq.png)
-:::::
+:::
+::: {.column}
+![A prior can save you from foolish inference](assets/kxcd-bayes-freq.png){width="40%"}
 :::
 
 ## Cheers!
