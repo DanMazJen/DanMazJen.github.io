@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Daniel Skak Mazhari-Jensen">
-  <meta name="dcterms.date" content="2026-08-11">
+  <meta name="dcterms.date" content="2026-08-12">
   <title>DanMazJen – Why be a Bayesian</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -211,7 +211,7 @@ Daniel Skak Mazhari-Jensen
 </div>
 </div>
 
-  <p class="date">2026-08-11</p>
+  <p class="date">2026-08-12</p>
 </section>
 <section id="what-is-this-bayesian-thing-anyway" class="slide level2 center">
 <h2>What is this Bayesian thing anyway?</h2>
@@ -237,24 +237,42 @@ Daniel Skak Mazhari-Jensen
 <section id="are-you-ready-to-get-a-non-technical-introduction" class="slide level2 center">
 <h2>Are you ready to get a non-technical introduction? 🎉🥳</h2>
 </section>
-<section id="bayes-in-the-style-of-xkcd" class="slide level2">
+<section id="bayes-in-the-style-of-xkcd" class="slide level2 center" style="text-align: center;">
 <h2>Bayes in the style of xkcd</h2>
 
-<img data-src="assets/XKCD-bayes-seashell.jpg" class="r-stretch"></section>
-<section id="but-why-is-this-different-from-other-stats" class="slide level2">
+<img data-src="assets/XKCD-bayes-seashell.jpg" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="but-why-is-this-different-from-other-stats" class="slide level2 center" style="text-align: center;">
 <h2>But why is this different from other stats?</h2>
-<div class="fragment">
-<p><img data-src="assets/kxcd-bayes-freq.png"></p>
-</div>
 </section>
-<section id="is-there-a-fight" class="slide level2 auto-animate center">
-<h2>Is there a fight?</h2>
+<section id="but-why-is-this-different-from-other-stats-1" class="slide level2 center" style="text-align: center;">
+<h2>But why is this different from other stats?</h2>
 
-<img data-src="assets/Kong-Godzilla.png" class="r-stretch"></section>
-<section id="is-there-a-fight-1" class="slide level2 auto-animate center">
-<h2>Is there a fight?</h2>
+<img data-src="assets/kxcd-bayes-freq.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="bayesian-prior" class="slide level2 center" data-auto-animate="true" style="text-align: center;">
+<h2 data-id="quarto-animate-title">Bayesian prior</h2>
 
-<img data-src="assets/Kong-Godzilla-Doge.png" class="r-stretch"></section>
+<img data-src="assets/prior_likelihood_posterior.webp" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="bayesian-prior-1" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Bayesian prior 🐉</h2>
+<div class="columns">
+<div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/prior_likelihood_posterior.webp" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div><div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/dragonball_posterior.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="how-priors-are-made-up" class="slide level2 center" style="text-align: center;">
+<h2>How priors are made (up)</h2>
+
+<img data-src="assets/madeup_prior.webp" class="quarto-figure quarto-figure-center r-stretch"></section>
 <section id="the-fear-of-the-prior" class="slide level2">
 <h2>The fear of the prior</h2>
 <div class="callout callout-important no-icon callout-style-simple">
@@ -264,9 +282,23 @@ Daniel Skak Mazhari-Jensen
 </div>
 </div>
 </div>
-<p>Their instinct is: &gt; “Let the data speak for itself”</p>
+<p>Their instinct is:</p>
+<blockquote>
+<p>Let the data speak for itself</p>
+</blockquote>
+<p>or</p>
+<blockquote>
 <p><em>The prior biases the model a priori!</em></p>
+</blockquote>
 </section>
+<section id="is-there-a-fight" class="slide level2 center" style="text-align: center;">
+<h2>Is there a fight?</h2>
+
+<img data-src="assets/Kong-Godzilla.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="is-there-a-fight-1" class="slide level2 center" style="text-align: center;">
+<h2>Is there a fight?</h2>
+
+<img data-src="assets/Kong-Godzilla-Doge.png" class="quarto-figure quarto-figure-center r-stretch"></section>
 <section id="the-core-question" class="slide level2 smaller">
 <h2>The Core Question</h2>
 <blockquote>
@@ -294,9 +326,9 @@ Daniel Skak Mazhari-Jensen
 </div>
 <p>Bayesian regression stabilizes inference by:</p>
 <ol type="1">
-<li>Explicitly stating expectations</li>
-<li>Constraining parameters, offering regularization</li>
-<li>Not using quardratic approximation of likelihood (for SD etc.)</li>
+<li><span style="color: orange;">Explicitly stating expectations</span></li>
+<li><span style="color: green;">Constraining parameters, offering regularization</span></li>
+<li><span style="color: red;">Not using quardratic approximation of likelihood (for SD etc.)</span></li>
 </ol>
 </section>
 <section id="when-to-use-frequentist-and-when-to-use-bayesian-approaches" class="slide level2 center">
@@ -508,9 +540,8 @@ Figure&nbsp;1: Correlation structure among predictors.
 <p><span class="math display">\[
   \hat{\beta}_{OLS} = (X^TX)^{-1}X^Ty
 \]</span></p>
-</section>
-<section id="the-hidden-assumption" class="slide level2 hidden">
-<h2>The Hidden Assumption</h2>
+<div class="hidden">
+<p>The Hidden Assumption</p>
 <p>OLS works well when:</p>
 <ul>
 <li>predictors are not highly collinear</li>
@@ -519,6 +550,7 @@ Figure&nbsp;1: Correlation structure among predictors.
 <li>parameters are strongly identified</li>
 </ul>
 <p>But real data often violate all of these simultaneously.</p>
+</div>
 </section>
 <section id="the-mechanism-of-failure" class="slide level2 smaller">
 <h2>The Mechanism of Failure</h2>
@@ -565,13 +597,14 @@ Figure&nbsp;1: Correlation structure among predictors.
 <h2>The Bayesian Solution</h2>
 <p>Bayesian regression adds prior information:</p>
 <p><span class="math display">\[
-  \beta_j \sim N(0,1)
+  \beta_j \sim N(0,1.5) \\
+  \alpha \sim N(0,0.25) \\
 \]</span></p>
 <p>Posterior:</p>
 <p><span class="math display">\[
-  p(\beta \mid y)
+  p(\alpha, \beta \mid y)
   \propto
-  p(y \mid \beta)p(\beta)
+  p(y \mid \alpha, \beta)p(\alpha, \beta)
 \]</span></p>
 <p>The prior regularizes weakly identified directions.</p>
 <p>This changes the geometry of inference.</p>
@@ -579,7 +612,13 @@ Figure&nbsp;1: Correlation structure among predictors.
 <img data-src="assets/XKCD-bayes-seashell.jpg" style="width:20.0%" class="r-stretch quarto-figure-center"><p class="caption">Same thing here!</p></section>
 <section id="important-clarification" class="slide level2">
 <h2>Important Clarification</h2>
+<div class="callout callout-warning no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
 <p>Bayesian priors are not magic.</p>
+</div>
+</div>
+</div>
 <p>They encode structural skepticism.</p>
 <p>The prior says:</p>
 <div class="callout callout-tip no-icon callout-style-simple">
@@ -590,9 +629,8 @@ Figure&nbsp;1: Correlation structure among predictors.
 </div>
 </div>
 <p>This is often scientifically reasonable.</p>
-</section>
-<section id="explaining-the-simulation-setup" class="slide level2">
-<h2>Explaining the simulation Setup</h2>
+<div class="hidden">
+<p>Explaining the simulation Setup</p>
 <p>We simulated the failure directly:</p>
 <ul>
 <li>small sample</li>
@@ -600,6 +638,7 @@ Figure&nbsp;1: Correlation structure among predictors.
 <li>high collinearity</li>
 <li>weak signal</li>
 </ul>
+</div>
 </section>
 <section id="frequentist-ols" class="slide level2">
 <h2>Frequentist OLS</h2>
@@ -634,9 +673,8 @@ Figure&nbsp;1: Correlation structure among predictors.
 <section id="lets-have-a-look" class="slide level2">
 <h2>Let’s have a look</h2>
 
-<img data-src="assets/classic-bayes-plot-example.png" class="r-stretch quarto-figure-center"><p class="caption">Scientific sceptisism saves us from statistical model stupidity</p></section>
-<section id="what-the-prior-does" class="slide level2 hidden">
-<h2>What the Prior Does</h2>
+<img data-src="assets/classic-bayes-plot-example.png" class="r-stretch quarto-figure-center"><p class="caption">Scientific sceptisism saves us from statistical model stupidity</p><div class="hidden">
+<p>What the Prior Does</p>
 <p>The prior shrinks implausible coefficients toward zero.</p>
 <p>Not aggressively.</p>
 <p>Just enough to stabilize weakly identified directions.</p>
@@ -646,6 +684,7 @@ Figure&nbsp;1: Correlation structure among predictors.
 <li>shrinkage</li>
 <li>partial pooling of uncertainty</li>
 </ul>
+</div>
 </section>
 <section id="bias-variance-tradeoff" class="slide level2">
 <h2>Bias-Variance Tradeoff</h2>
@@ -663,7 +702,7 @@ Figure&nbsp;1: Correlation structure among predictors.
 <li>scientific interpretation</li>
 </ul>
 </section>
-<section id="in-a-nutshell" class="slide level2">
+<section id="in-a-nutshell" class="slide level2 center align-center">
 <h2>In a nutshell…</h2>
 <p>OLS treats the model as fixed truth.</p>
 <p>Bayesian workflow treats models as uncertain approximations.</p>
@@ -726,7 +765,7 @@ Figure&nbsp;1: Correlation structure among predictors.
 <p>This enables model criticism rather than blind estimation.</p>
 </section>
 </div>
-<section id="even-more-extreme-failures" class="slide level2">
+<section id="even-more-extreme-failures" class="slide level2 smaller">
 <h2>Even More Extreme Failures…</h2>
 <p>Add complexity of:</p>
 <ul>
@@ -763,11 +802,12 @@ The prior changes the geometry of inference.
 This is the key idea.
 -->
 <img data-src="assets/chainsaw-cake.jpg" style="width:20.0%" class="r-stretch"></section>
-<section id="final-thoughts" class="slide level2">
+<section id="final-thoughts" class="slide level2 center" style="text-align: center;">
 <h2>Final Thoughts</h2>
-<p>Don’t fear the prior!</p>
-<div class="columns">
-<div class="column">
+<div class="r-fit-text">
+<p><strong>Don’t fear the prior!</strong></p>
+</div>
+<div class="column center" style="text-align: center;">
 <div class="callout callout-note no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
@@ -785,12 +825,11 @@ This is the key idea.
 </div><div class="column">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="assets/kxcd-bayes-freq.png"></p>
+<p><img data-src="assets/kxcd-bayes-freq.png" style="width:40.0%"></p>
 <figcaption>A prior can save you from foolish inference</figcaption>
 </figure>
 </div>
-</div></div>
-</section>
+</div></section>
 <section id="cheers" class="slide level2">
 <h2>Cheers!</h2>
 
