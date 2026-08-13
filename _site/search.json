@@ -613,7 +613,7 @@
     "href": "slides/why_we_bayesian_slides.html#the-bayesian-solution",
     "title": "Why be a Bayesian",
     "section": "The Bayesian Solution",
-    "text": "The Bayesian Solution\nBayesian regression adds prior information:\n\\[\n  \\beta_j \\sim N(0,1.5) \\\\\n  \\alpha \\sim N(0,0.25) \\\\\n\\]\nPosterior:\n\\[\n  p(\\alpha, \\beta \\mid y)\n  \\propto\n  p(y \\mid \\alpha, \\beta)p(\\alpha, \\beta)\n\\]\nThe prior regularizes weakly identified directions.\nThis changes the geometry of inference.\n\nSame thing here!"
+    "text": "The Bayesian Solution\nBayesian regression adds prior information:\n\\[\n  \\beta_j \\sim N(0,1.5) \\\\\n  \\alpha \\sim N(0,0.25) \\\\\n\\]\nPosterior:\n\\[\n  p(\\alpha, \\beta \\mid y,x)\n  \\propto\n  p(y \\mid x,\\alpha, \\beta)p(\\alpha, \\beta)\n\\]\nThe prior regularizes weakly identified directions.\nThis changes the geometry of inference.\n\nSame thing here!"
   },
   {
     "objectID": "slides/why_we_bayesian_slides.html#important-clarification",

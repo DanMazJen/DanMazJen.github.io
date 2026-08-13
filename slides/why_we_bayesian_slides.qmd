@@ -405,9 +405,9 @@ $$
 Posterior:
 
 $$
-  p(\alpha, \beta \mid y)
+  p(\alpha, \beta \mid y,x)
   \propto
-  p(y \mid \alpha, \beta)p(\alpha, \beta)
+  p(y \mid x,\alpha, \beta)p(\alpha, \beta)
 $$
 
 The prior regularizes weakly identified directions.
