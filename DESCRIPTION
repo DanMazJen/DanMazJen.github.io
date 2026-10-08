@@ -21,9 +21,11 @@ Imports:
     lme4,
     marginaleffects,
     MASS,
+    rethinking,
     rstanarm,
     tibble,
     tidybayes,
+    tidybayes.rethinking,
     tidyr,
     tinytable
 Depends: 

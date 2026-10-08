@@ -868,13 +868,41 @@ Interacting with GitHub through VSCode requires us to use something called a
 "personal access token", which you will learn about and create in the next
 exercise.
 
-## Reading task: Authenticating with GitHub
+## Authenticating with GitHub
+
+::: {.callout-tip appearance="simple"}
+## Github Pull Requests Extension
+
+We Highly recommend you download the Extension called **Github Pull Requests**
+by GitHub. This also enables you to sign in by writing `Sign in to GitHub` in
+the command pallet.
+:::
 
 Accounts (lower left of side bar) --- link GitHub
 
+![Authenticating GitHub in VSCode](../blog/plots/vscode_auth.png)
+
+If you are not seeing this prompt in VSCode, you can add your authorization
+token manually:
+
+1. Go to the [GitHub tokens settings](https://github.com/settings/tokens)
+2. In the browser window, generate a new token an copy your authorization token.
+3. In VS Code, select `Signing in to github.com...` in the *Status Bar* (the
+   lowest thin line in the VSCode window).
+4. Paste the token and press `Enter` to complete the sign-in process.
+
 ## Linking your project to GitHub
 
-- publish branch ?
+Are we ready to upload our project to GitHub --- and share the files with the
+world? 👀
+
+> \*double check your history and `.gitignore` file).
+
+When you're ready, its as easy as clicking `Publish Branch` as seen below:
+
+![Upload the committed files and history to github](../blog/plots/publish_branch.png)
+
+> Congrats on publishing your work 🎉
 
 Now that we have authenticated ourselves to GitHub, we can connect our project's
 Git repository to GitHub. If you are new to Git and GitHub, we strongly
