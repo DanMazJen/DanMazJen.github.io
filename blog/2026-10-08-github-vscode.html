@@ -1,0 +1,1940 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Daniel S. Mazhari-Jensen">
+<meta name="dcterms.date" content="2026-10-08">
+<meta name="description" content="A translation of the R3 Git and GitHub intro lectures.">
+
+<title>Version control in VSCode – DanMazJen</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7100700a5d4657facf49b32369185e6d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-90b0ccabdf50233fb893b00cd6e33405.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-7100700a5d4657facf49b32369185e6d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">DanMazJen</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#pre-lecture-material" id="toc-pre-lecture-material" class="nav-link active" data-scroll-target="#pre-lecture-material">Pre-lecture material:</a>
+  <ul class="collapse">
+  <li><a href="#install-git" id="toc-install-git" class="nav-link" data-scroll-target="#install-git">Install Git</a></li>
+  <li><a href="#make-a-github-account" id="toc-make-a-github-account" class="nav-link" data-scroll-target="#make-a-github-account">Make a GitHub account</a></li>
+  </ul></li>
+  <li><a href="#sec-version-control" id="toc-sec-version-control" class="nav-link" data-scroll-target="#sec-version-control">Version control with Git</a>
+  <ul class="collapse">
+  <li><a href="#sec-what-is-version-control" id="toc-sec-what-is-version-control" class="nav-link" data-scroll-target="#sec-what-is-version-control">Reading task: What is version control?</a></li>
+  <li><a href="#sec-what-is-git" id="toc-sec-what-is-git" class="nav-link" data-scroll-target="#sec-what-is-git">Reading task: What is Git?</a></li>
+  <li><a href="#sec-basics-of-git" id="toc-sec-basics-of-git" class="nav-link" data-scroll-target="#sec-basics-of-git">Reading task: Basics of Git</a></li>
+  <li><a href="#using-git-in-vscode" id="toc-using-git-in-vscode" class="nav-link" data-scroll-target="#using-git-in-vscode">Using Git in VSCode</a></li>
+  <li><a href="#reading-task-states-of-git" id="toc-reading-task-states-of-git" class="nav-link" data-scroll-target="#reading-task-states-of-git">Reading task: States of Git</a></li>
+  <li><a href="#adding-changes-to-the-git-history" id="toc-adding-changes-to-the-git-history" class="nav-link" data-scroll-target="#adding-changes-to-the-git-history">Adding changes to the Git History</a></li>
+  <li><a href="#ignoring-files-with-.gitignore" id="toc-ignoring-files-with-.gitignore" class="nav-link" data-scroll-target="#ignoring-files-with-.gitignore">Ignoring files with <code>.gitignore</code></a></li>
+  <li><a href="#exercise-committing-everything-to-the-history" id="toc-exercise-committing-everything-to-the-history" class="nav-link" data-scroll-target="#exercise-committing-everything-to-the-history">Exercise: Committing everything to the history</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  </ul></li>
+  <li><a href="#sec-github" id="toc-sec-github" class="nav-link" data-scroll-target="#sec-github">Collaborating with GitHub</a>
+  <ul class="collapse">
+  <li><a href="#sec-remotes-setting-up" id="toc-sec-remotes-setting-up" class="nav-link" data-scroll-target="#sec-remotes-setting-up">“Remotes”: Storing your repository online</a></li>
+  <li><a href="#reading-task-using-github-as-a-remote" id="toc-reading-task-using-github-as-a-remote" class="nav-link" data-scroll-target="#reading-task-using-github-as-a-remote">Reading task: Using GitHub as a remote</a></li>
+  <li><a href="#authenticating-with-github" id="toc-authenticating-with-github" class="nav-link" data-scroll-target="#authenticating-with-github">Authenticating with GitHub</a></li>
+  <li><a href="#linking-your-project-to-github" id="toc-linking-your-project-to-github" class="nav-link" data-scroll-target="#linking-your-project-to-github">Linking your project to GitHub</a></li>
+  <li><a href="#synchronizing-with-github" id="toc-synchronizing-with-github" class="nav-link" data-scroll-target="#synchronizing-with-github">Synchronizing with GitHub</a></li>
+  <li><a href="#reading-task-collaborating-using-git-and-github" id="toc-reading-task-collaborating-using-git-and-github" class="nav-link" data-scroll-target="#reading-task-collaborating-using-git-and-github">Reading task: Collaborating using Git and GitHub</a></li>
+  <li><a href="#summary-1" id="toc-summary-1" class="nav-link" data-scroll-target="#summary-1">Summary</a></li>
+  </ul></li>
+  <li><a href="#final-exercises" id="toc-final-exercises" class="nav-link" data-scroll-target="#final-exercises">Final exercises</a>
+  <ul class="collapse">
+  <li><a href="#clone-the-team-repository" id="toc-clone-the-team-repository" class="nav-link" data-scroll-target="#clone-the-team-repository">Clone the team repository</a></li>
+  <li><a href="#download-the-dataset" id="toc-download-the-dataset" class="nav-link" data-scroll-target="#download-the-dataset">Download the dataset</a></li>
+  <li><a href="#create-individual-scripts" id="toc-create-individual-scripts" class="nav-link" data-scroll-target="#create-individual-scripts">Create individual scripts</a>
+  <ul class="collapse">
+  <li><a href="#create-some-figures-and-tables" id="toc-create-some-figures-and-tables" class="nav-link" data-scroll-target="#create-some-figures-and-tables">Create some figures and tables</a></li>
+  <li><a href="#regularly-commit-the-changes" id="toc-regularly-commit-the-changes" class="nav-link" data-scroll-target="#regularly-commit-the-changes">Regularly commit the changes</a></li>
+  <li><a href="#testing-each-others-code-for-reporducibility" id="toc-testing-each-others-code-for-reporducibility" class="nav-link" data-scroll-target="#testing-each-others-code-for-reporducibility">Testing each others code for reporducibility</a></li>
+  </ul></li>
+  <li><a href="#expectations-for-the-project" id="toc-expectations-for-the-project" class="nav-link" data-scroll-target="#expectations-for-the-project">Expectations for the project</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Version control in VSCode</h1>
+<p class="subtitle lead">Git and GitHub intro in VSCode</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Git</div>
+    <div class="quarto-category">GitHub</div>
+    <div class="quarto-category">VSCode</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    A translation of the R3 Git and GitHub intro lectures.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Daniel S. Mazhari-Jensen </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 8, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This material is a translation from <a href="https://r-cubed-intro.rostools.org/">Reproducible Research in R</a>, which used R and RStudio. See the <a href="https://doi.org/10.5281/zenodo.3921893">material at Zenodo</a> and</p>
+<blockquote class="blockquote">
+<p>Johnston, L., Juel, H. B., Lengger, B., Witte, D. R., Chatwin, H., Christiansen, M. R., &amp; Isaksen, A. A. (2021). r-cubed: Guiding the overwhelmed scientist from random wrangling to Reproducible Research in R. <em>Journal of Open Source Education, 4</em>(44).</p>
+</blockquote>
+<section id="pre-lecture-material" class="level2">
+<h2 class="anchored" data-anchor-id="pre-lecture-material">Pre-lecture material:</h2>
+<section id="install-git" class="level3">
+<h3 class="anchored" data-anchor-id="install-git">Install Git</h3>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Windows</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">MacOS</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Linux (Ubuntu)</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<ol type="1">
+<li><p><a href="https://code.visualstudio.com/download">VSCode</a>: Click the link.</p></li>
+<li><p><a href="https://git-scm.com/download/win">Git</a>: Select the “Click here to download” link. Git is used throughout many sessions in the workshop. When installing, it will ask for a selecting a “Text Editor” and while we won’t be using this in the workshop, Git needs to know this information so choose Notepad.</p></li>
+</ol>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<ol type="1">
+<li><p><a href="https://code.visualstudio.com/download">VSCode</a>: Click the link or use Homebrew:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="Terminal"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> visual-studio-code</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></li>
+<li><p><a href="https://git-scm.com/download/mac">Git</a>: Git is used throughout many sessions in the workshop. With Homebrew:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="Terminal"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install git</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>If you don’t use Homebrew, you can download and install Git as you normally would by clicking the link above.</p></li>
+</ol>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<ol type="1">
+<li><p><a href="https://code.visualstudio.com/download">VSCode</a>:</p></li>
+<li><p><a href="https://git-scm.com/download/mac">Git</a>.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Terminal</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="Terminal"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install git</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></li>
+</ol>
+</div>
+</div>
+</div>
+<p>Windows users tend to have more trouble with installing Git than macOS or Linux users. See the section on <a href="https://happygitwithr.com/install-git.html#install-git-windows">Installing Git for Windows</a> for help.</p>
+</section>
+<section id="make-a-github-account" class="level3">
+<h3 class="anchored" data-anchor-id="make-a-github-account">Make a GitHub account</h3>
+<p>After you are done, you need to <a href="https://github.com/join">create a GitHub account</a>. Remember or record your username, as we will ask you for it in the pre-workshop survey. Make sure to <strong>remember your password</strong>, ideally saving it in your <a href="https://en.wikipedia.org/wiki/Password_manager">password manager</a> if you installed one already or during the pre-workshop tasks so that it can store your password for you.</p>
+<p>Now you’re ready to learn Git and GitHub! See you at the lecture 🎉</p>
+</section>
+</section>
+<section id="sec-version-control" class="level1">
+<h1>Version control with Git</h1>
+<p>Tracking what changes have been made to your files is an incredibly useful tool for managing your analysis project. It also makes it much easier to collaborate with others (like yourself in the future) and to share your work. Sharing your analysis code is a critical step in ensuring your research is reproducible. This session will cover what version control is and how to do it using Git within VSCode.</p>
+<section id="sec-what-is-version-control" class="level2">
+<h2 class="anchored" data-anchor-id="sec-what-is-version-control">Reading task: What is version control?</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Instructor note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For the reading parts, let them read it first and then walk through the material again, to reinforce the importance of version control and doing it formally. So give them a heads up that you’ll be repeating things, specifically to reinforce the concepts.</p>
+<p>It’s important in this session to go <strong>slowly</strong>. Version control is a challenging topic and isn’t something most people have ever learned about or dealt with. So take it slow and make sure everyone is on the same page. Frequently to assess how everyone is doing.</p>
+</div>
+</div>
+</div>
+<p><strong>Time: ~8 minutes</strong></p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This session is <em>very</em> text and reading heavy compared to other sessions. This is mostly because this topic requires a mental paradigm shift in how you view files, and requires you to change your habits of how you normally work. Knowing and using version control concepts and tools will fundamentally change how you work over the long term. While the concepts are quite difficult, the tools to use the concepts aren’t, and using them often will make the concepts easier to understand.</p>
+</div>
+</div>
+<div id="fig-version-control-comics" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-version-control-comics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../blog/plots/version-control.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-version-control-comics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: ‘Final’ version of a document, using a common but manual ‘version control system’.
+</figcaption>
+</figure>
+</div>
+<div id="fig-filenaming-version-control-comics" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-filenaming-version-control-comics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../blog/plots/informal-version-control.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-filenaming-version-control-comics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: File naming used in the commonly used ‘version control’.
+</figcaption>
+</figure>
+</div>
+<p>Does this way of saving files and keeping track of versions look familiar? While the above images are teasing a bit, there is truth to it: It is the most commonly used “version control”.</p>
+<p>This form of version control, while common, is fairly primitive, informal, and very manual. It isn’t ideal because it requires making multiple copies of the same file, even if changes are made to only one small part of the file. This approach also makes it difficult to find specific changes.</p>
+<p>There are, however, formal version control systems that automatically manage changes to a file or files. These formal version control systems take snapshots of changes done to files, which are usually called “revisions” or “commits”. These “commits” record what was changed since the previous “commit”. When you make these “commits”, you have to create a short message on what or why you made a change. These “commits” and their messages are stored as a log entry in a history. This history then has all this information, for each commit, on which file or files were changed, what was changed within the file(s), who changed it, and a short message about the change. This is extremely useful, especially when working in teams, or for yourself 6 months in the future (because you <em>will</em> forget things), since you can go back and quickly see what happened and why.</p>
+<p>To understand how incredibly powerful version control is, think about these questions:</p>
+<ul>
+<li>How many files of different versions of a scientific documents or thesis do you have laying around after getting feedback from your supervisor or co-authors?</li>
+<li>Have you ever wanted to experiment with your code or your report and need to make a new file so that the original is not modified?</li>
+<li>Have you ever deleted something and wish you hadn’t?</li>
+<li>Have you ever forgotten what you were doing on a project, or why you chose a particular strategy or analysis?</li>
+</ul>
+<p>All these problems can be fixed by using formal version control! There are so many good reasons to use version control, especially in science:</p>
+<ul>
+<li>Transparency of work done to demonstrate or substantiate your scientific claim.</li>
+<li>Claim to first discovery, since you have a time-stamped history of your work.</li>
+<li>Defense against fraud, because of the transparency.</li>
+<li>Evidence of contributions and work, since who does what is tracked.</li>
+<li>Keeping track of changes to files easily, by looking at the history of changes.</li>
+<li>Easy collaboration, because you can work on a single file/folder rather than emailing versions around.</li>
+<li>Organized files and folders, since there is one single project folder and one single version of each file, rather than multiple versions of the same file.</li>
+<li>Less time finding things, because everything is organized and in one place.</li>
+</ul>
+<p>In this session we’ll be covering a version control tool called <a href="https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F">Git</a>. While Git on its own can be quite difficult to use, VSCode thankfully has an amazing and straight-forward integration to it.</p>
+</section>
+<section id="sec-what-is-git" class="level2">
+<h2 class="anchored" data-anchor-id="sec-what-is-git">Reading task: What is Git?</h2>
+<p><strong>Time: ~5 minutes</strong></p>
+<p>Git is one of several version control system tools available. It was developed to help software programmers to develop and manage their work on <a href="https://en.wikipedia.org/wiki/Linux">Linux</a> (an operating system like Mac or Windows). Sadly, it was designed by and for software programmers and not for non-programming users like us researchers. So why do we teach it? Because Git has so many great features that fit with how science and data analysis is done.</p>
+<ul>
+<li>Like Python, it is open source, so it’s free and anyone verify how trustworthy and correct the code is.</li>
+<li>It is very popular and so has a very large online community that provides support, documentation, and tutorials on how to use it.</li>
+<li>The vast majority of open source projects and work, such as making Python packages, are done using Git and are hosted on <a href="https://github.com/">GitHub</a>, which is a company that hosts Git “repositories” (i.e.&nbsp;projects) online.
+<ul>
+<li>For example, the source code for <a href="https://github.com/microsoft/vscode">VSCode</a> and <a href="https://github.com/pandas-dev/pandas">pandas</a> are on GitHub.</li>
+</ul></li>
+<li>There are many open scientific projects that use Git and are hosted on GitHub, e.g.&nbsp;<a href="https://github.com/ropensci">rOpenSci</a> organization or <a href="https://github.com/MRCIEU">MRC Integrated Epidemiology Unit</a>.</li>
+<li>VSCode has an amazing interface and integration with Git.</li>
+</ul>
+<p>While learning Git and version control can be difficult and has a steep learning curve, like learning Python, it is ultimately an investment into your future productivity and effectiveness as a researcher. It is <em>very much worth it</em> to learn and use it as often as you can.</p>
+<p>While many people may use Git to manage their Python scripts, you can also manage other non-code based files like Word or images in Git. Version control is useful for any project that uses any type of files since they can be saved in the Git history (though there are some limitations to using Git for files that are not plain text like R scripts are). You can save files into the history by adding and committing them (as we will learn to do shortly).</p>
+</section>
+<section id="sec-basics-of-git" class="level2">
+<h2 class="anchored" data-anchor-id="sec-basics-of-git">Reading task: Basics of Git</h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Instructor note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Make sure everyone has their Git properly configured. Reinforce the Git repo = one R project = one research project.</p>
+</div>
+</div>
+</div>
+<p><strong>Time: ~8 minutes</strong></p>
+<p>Git works by tracking changes to files <em>at the project level</em> (i.e.&nbsp;for every Python Project). So you won’t track your entire, for instance, <code>Documents/</code> folder. When file changes are saved and put into the history, this history is called a “repository” (also called a “repo” for short). We’ll explain more about what a repository is later. What you do with Git is more or less to:</p>
+<ul>
+<li>Set up Git in your project or folder by starting it as a “repository”.</li>
+<li>Tell Git to track a file by preparing it to be saved to the history.</li>
+<li>Save changes to files in the history with a message you recorded about the change.</li>
+</ul>
+<p>Other things you can do with Git:</p>
+<ul>
+<li>Check what’s been changed or added in your files since the last save.</li>
+<li>Check the history for what was previously changed or added.</li>
+</ul>
+<p>When working with GitHub, there are extra things you can do (more on this later):</p>
+<ul>
+<li>Synchronize the Git repository on your computer with the repository on your GitHub, called “push” (upload) and “pull” (download).</li>
+</ul>
+<p>So first off, <em>what exactly is the Git repository?</em> The Git repository works at the project (the folder) level because it stores the version history in the hidden <code>.git/</code> folder as shown in the file diagram below. In Windows, this folder will probably not be hidden, but in Mac and Linux, files and folders that start with <code>.</code> are automatically hidden. The <code>.git/</code> folder itself is the repository used by Git to store the file changes and history of the project. So don’t delete it!</p>
+<p>Another important file for managing the repository is the <code>.gitignore</code> file. This file tells Git to <em>not</em> track (or “watch”) certain files, such as temporary files. This is <em>particularly</em> important for making sure you don’t save personal data in the Git history. Personal sensitive data should be stored in a <em>secure location</em> and should <em>only</em> be accessed in the R Project by loading it from that secure location.</p>
+<pre><code>├── .git/ &lt;-- Git repository stored here
+├── src/
+├── data/
+├── data-raw/
+├── docs/
+├── .gitignore &lt;-- Tells Git which files NOT to save
+└── README.md</code></pre>
+<p>Setting up a Git repository can be done in several ways:</p>
+<ul>
+<li>Using the VSCode interface</li>
+<li>Using the <code>git</code> command-line interface (CLI).</li>
+<li>Using tools like <code>uv</code></li>
+</ul>
+<p>What should a Git repository contain? In general, a common pattern is that one Git repository is one VSCode Project, which should be one research project. This helps ensure your project is reproducible and makes things much easier to manage and share as you work on the project.</p>
+</section>
+<section id="using-git-in-vscode" class="level2">
+<h2 class="anchored" data-anchor-id="using-git-in-vscode">Using Git in VSCode</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Instructor note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Since they will be using the Git interface quite a bit, really take your time walking through it and describing it. Show where things are and what things to focus on for this workshop.</p>
+</div>
+</div>
+</div>
+<p>Git was initially created to be used in the terminal (i.e command-line). However, because VSCode has a very nice interface for working with Git, we’ll be using that interface so we don’t have to switch to another application. While the terminal provides full access to Git’s power and features, the vast majority of daily use can be done through VSCode’s interface.</p>
+<p>To access the Git interface in VSCode, click the Git icon in the left sidebar (see <a href="#fig-VSCode-git-button" class="quarto-xref">Figure&nbsp;3</a>).</p>
+<div id="fig-VSCode-git-button" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-VSCode-git-button-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../blog/plots/vscode_auth.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-VSCode-git-button-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The location of the Git button in VSCode.
+</figcaption>
+</figure>
+</div>
+<p>First, we need to check whether git is installed in our system. We’ll use the terminal for this, since it is the afest and easiest way to do this.</p>
+<ol type="1">
+<li><p>In VS Code, select <strong>Terminal</strong> &gt; <strong>New Terminal</strong>, then check that Git is available:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You should see a Git version number. If the command isn’t found, restart VS Code after installing Git. If it still fails, see <a href="https://code.visualstudio.com/docs/sourcecontrol/troubleshooting">source control troubleshooting</a>.</p></li>
+<li><p>Configure the author name and email for your commits. Replace the placeholders with your details:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"&lt;your-name&gt;"</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"&lt;your-email&gt;"</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+<p>The Git interface should look something like <a href="#fig-VSCode-git-interface" class="quarto-xref">Figure&nbsp;4</a> below. A short written description is given below the image.</p>
+<div id="fig-VSCode-git-interface" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-VSCode-git-interface-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../blog/plots/initialize-repo-vscode.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-VSCode-git-interface-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: The Git interface in VSCode.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Instructor note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Do this part as a code-along, after having explained the above first.</p>
+</div>
+</div>
+</div>
+<p>Now, let’s make a project in order to see what the workflow actually look like 👀</p>
+<p>First, we make a small <code>README.md</code> file, and see what happens when we click the <strong>Initialize Repository</strong> button.</p>
+<ol type="1">
+<li>Make a folder on your laptop called <code>LearningGit</code> and open it inside VSCode.</li>
+<li>Create a <code>README.md</code> file inside that folder.</li>
+<li>Write some text inside (can be anything).</li>
+<li>Go to the Source Control tap in the left bar and hit <code>Initialize Repository</code>.</li>
+</ol>
+<p>In the Source Control panel, you should now see something like this:</p>
+<div id="fig-source-control-git-example" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-source-control-git-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../blog/plots/see_change_vscode.png" class="img-fluid figure-img"></p>
+<figcaption>Changes are shown for each file</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../blog/plots/stage_change_vscode.png" class="img-fluid figure-img"></p>
+<figcaption>Changes can be staged, viewed, or deleted</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../blog/plots/stage_mode_vscode.png" class="img-fluid figure-img"></p>
+<figcaption>The README now staged</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-source-control-git-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5
+</figcaption>
+</figure>
+</div>
+<ol type="1">
+<li>This is the panel that lists the files that have been modified in some way. You add (“stage”) files here that you want to be stored (“committed”). The top box is is the Commit Message box where you write the message about the changes that will be put into the history. Notice that there is a green <code>U</code> — this symbolize untracked files.</li>
+<li>By hovering the mouse on the file, we can (from left to right): view the changes, discard the changes, or stage changes.</li>
+<li>After clicking stage changes, the file has been moved from “Changes” to “Staged Changes”. Now, a green <code>A</code> has been added, symbolizing “add file to history”.</li>
+</ol>
+<p>In the Git interface, view the <code>README.md</code> file. You should see the text in the file, all in green. Green means the text has been added. Red, which you will see shortly, means text was removed.</p>
+<p>A <code>README.md</code> file is an important document to orient people to your project. Think of it as the “metadata” about your project, so it’s a good idea to add some basic explains about your project in it.</p>
+<p>Now click the “Staged” checkbox besides the <code>README.md</code> file to get it ready to be saved into the history. You’ve now “added” it to the staged area. Note that when you have a lot of files to stage, you can stage them all at once. The box on the top is where you type out your “commit” message. “Commit” means you save something to the history of changes. You “commit” it to the history, like you “commit” something to your own memory.</p>
+</section>
+<section id="reading-task-states-of-git" class="level2">
+<h2 class="anchored" data-anchor-id="reading-task-states-of-git">Reading task: States of Git</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Instructor note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Verbally explain the below after they’ve read it to reinforce the concepts.</p>
+</div>
+</div>
+</div>
+<p><strong>Time: ~5 minutes</strong></p>
+<p>Before we move on, there are some things to know about how Git works. In Git, there are three “states” that a file can be in, listed below and summarised in <a href="#fig-git-states" class="quarto-xref">Figure&nbsp;6</a>.</p>
+<ol type="1">
+<li>The <em>Working folder</em> state is where all files are, whether they are “untracked” or “tracked”. Untracked is when Git sees the file, but it has not yet entered the history. Tracked is when the file has been saved in the history and Git “watches” it for changes.</li>
+<li>The <em>Staged</em> state is when a file has a change that is different compared to the version in the history and it has been checked (“added”) into the “Staged” area (by ticking the checkbox beside the file in the Git interface).</li>
+<li>The <em>History</em> or <em>Committed</em> state is when a “commit” message has been written and the file with its changes has been saved into the repository history.</li>
+</ol>
+<div class="cell" data-eval="true" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-git-states" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-git-states-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-git-states">%%{init:{'themeCSS': ".actor {stroke: DarkBlue;fill: White;stroke-width:1.5px;}", 'sequence':{'mirrorActors': false}}}%%
+sequenceDiagram
+    participant W as Working folder
+    participant S as Staged
+    participant H as History
+    W-&gt;&gt;S: Add
+    S-&gt;&gt;H: Commit
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-git-states-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: The three states that files and folders can be in, when using Git.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This system allows us to keep a journal (a <em>log</em>) of what has been changed, why it has been changed, who changed it, and when. <a href="#fig-VSCode-git-interface-log" class="quarto-xref">Figure&nbsp;7</a> below shows an example log of the history of a project I’m currently working on, which makes it easy to get an overview of what is happening in a project.</p>
+<div id="fig-VSCode-git-interface-log" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-VSCode-git-interface-log-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../blog/plots/example-vscode-history.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-VSCode-git-interface-log-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: An example of a history for this workshop’s repository.
+</figcaption>
+</figure>
+</div>
+<p>You may notice that the messages in the log give a bit of detail about why a change was made, though it’s not always the case. Sometimes a message like “minor edit” is enough, because it was a minor edit.</p>
+<p>A general tip for writing an effective commit message is to be <em>concise but meaningful</em>. Writing down meaningful messages can save you a lot of time in the future when you come back to a project after some time and forget what you were doing. With a well written history you can get a quick idea or reminder about the state of the project.</p>
+</section>
+<section id="adding-changes-to-the-git-history" class="level2">
+<h2 class="anchored" data-anchor-id="adding-changes-to-the-git-history">Adding changes to the Git History</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Instructor note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For going over the Git history pane, demonstrate how you can open a file at that commit, so that nothing is ever lost.</p>
+</div>
+</div>
+</div>
+<p>Ok, now we will write something like “Add initial README file” in the commit message box and commit the change. After clicking “Commit”, you’ll notice that the <code>README.md</code> file is no longer on the left side. That’s because we’ve put the change into the history. We’ll return to that shortly.</p>
+<p>Next, open up the <code>README.md</code> file in VSCode using the Files tab. At the top of the file, write your name and your favorite food, and then save the file. Open up the Git interface again (with the Git icon. You should now see the added text in green. Alright, now “Stage” the change (click the <code>+</code>), write a message like “added my name to README file”, and commit the change.</p>
+<p>We can view the history in the Graph tab in the Git pane. Here you can see what has been done in previous commits. The “Graph” section is quite powerful. As long as you commit something into the Git history, it will never be completely gone<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. For instance, we can see the full contents of a file at a specific commit by clicking the commit, moving to the file you want to look into, and clicking the commit and selecting the file of interest. Try that with the second commit of the README file. It shows you what the file was like in that commit, so we can always go back the changes we made there.</p>
+<p>A question that may come up is “how often should I commit”? In general, it’s better to commit fairly frequently and to commit changes that are related to each other and to the commit message. Following this basic principle will make your history easier for you to read and make it easier for others as well.</p>
+</section>
+<section id="ignoring-files-with-.gitignore" class="level2">
+<h2 class="anchored" data-anchor-id="ignoring-files-with-.gitignore">Ignoring files with <code>.gitignore</code></h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>:teacher: Teacher note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Reinforce that we don’t always want Git to track everything. Make sure to explain why we want to ignore generated files and what the <code>*</code> means (wildcard for any characters).</p>
+</div>
+</div>
+</div>
+<p>We already read about the <code>.gitignore</code> file earlier. There are actually some files that we don’t want to track as we work on our project. This could be generated figures, documents, or other artifacts of the code, which is unnecessary. It can also be sensitive data or personal notes. So let’s tell Git to not track a specific file named <code>/personal.md</code>.</p>
+<p>We do two things:</p>
+<ol type="1">
+<li>Make the file <code>personal.md</code> in the root directory and type in your phone number. Notice that the <code>personal.md</code> file is automatically showing up in the “Changes” in the Git tab.</li>
+<li>Make a file called <code>.gitignore</code> in the root directory. In the file, type in the following code:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>.gitignore</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename=".gitignore"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>personal.md</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let’s stage and commit this change with a message like “Ignore generated HTML files and folders”. Notice that your phone number in <code>personal.md</code> is not committed.</p>
+</section>
+<section id="exercise-committing-everything-to-the-history" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-committing-everything-to-the-history">Exercise: Committing everything to the history</h2>
+<p><strong>Time: ~15 minutes.</strong></p>
+<p>When working on your own projects and when you use Git, you will be committing a <em>lot</em> of changes to your files into the Git history. Part of the initial barrier is simply getting used to this workflow of committing what you’ve changed. Use this exercise to get some practice.</p>
+<ol type="1">
+<li>Practice the add-commit (“add to staging”-“committing to history”) sequence by adding and committing code into the Git history. At the end, <strong>all</strong> of your files and folders should be committed to the history. While you could add and commit them all at once, we want you to do them one at a time so you practice using this workflow.
+<ul>
+<li>Make sure to write a meaningful and short message about what you added and why. In this case, the “why” is simply that you are saving the file into the history for the first time.</li>
+</ul></li>
+</ol>
+<p><strong>Exercise 1: Calculate BMI from patient measurements</strong></p>
+<p>A study collected height and weight from participants.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>patients <span class="op">=</span> pd.DataFrame({ </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"patientid"</span>: [<span class="st">"P01"</span>, <span class="st">"P02"</span>, <span class="st">"P03"</span>, <span class="st">"P04"</span>, <span class="st">"P05"</span>], </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"heightcm"</span>: [<span class="dv">172</span>, <span class="dv">165</span>, <span class="dv">181</span>, <span class="dv">158</span>, <span class="dv">175</span>], </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"weight_kg"</span>: [<span class="dv">68</span>, <span class="dv">72</span>, <span class="dv">85</span>, <span class="dv">54</span>, <span class="dv">91</span>] </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>TODO:</strong></p>
+<ul>
+<li>Add a new column called “bmi”.</li>
+<li>BMI = weight (kg) / height (m)^2</li>
+</ul>
+<p><strong>Task:</strong> Add the <code>bmi</code> column.</p>
+<p><strong>Exercise 2: Find patients with high heart rate</strong></p>
+<p>A nurse records resting heart rate during a clinical visit.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>patients <span class="op">=</span> pd.DataFrame({ </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"patientid"</span>: [<span class="st">"P01"</span>, <span class="st">"P02"</span>, <span class="st">"P03"</span>, <span class="st">"P04"</span>, <span class="st">"P05"</span>, <span class="st">"P06"</span>], </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"heartrate"</span>: [<span class="dv">72</span>, <span class="dv">88</span>, <span class="dv">105</span>, <span class="dv">64</span>, <span class="dv">112</span>, <span class="dv">79</span>] </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>TODO:</strong></p>
+<ul>
+<li>Find all patients with a heart rate above 100 bpm.</li>
+<li>Store the result in a new DataFrame called “high_hr”. print(high_hr)</li>
+</ul>
+<p><strong>Task:</strong> Use boolean filtering to find patients with <code>heart_rate &gt; 100</code>.</p>
+<p><strong>Exercise 3: Calculate average blood pressure</strong></p>
+<p>Researchers measured systolic and diastolic blood pressure.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>bp <span class="op">=</span> pd.DataFrame({ </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"patient_id"</span>: [<span class="st">"P01"</span>, <span class="st">"P02"</span>, <span class="st">"P03"</span>, <span class="st">"P04"</span>, <span class="st">"P05"</span>], </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"systolic"</span>: [<span class="dv">118</span>, <span class="dv">135</span>, <span class="dv">142</span>, <span class="dv">125</span>, <span class="dv">155</span>], </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"diastolic"</span>: [<span class="dv">76</span>, <span class="dv">82</span>, <span class="dv">91</span>, <span class="dv">79</span>, <span class="dv">95</span>] </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>TODO:</strong></p>
+<ul>
+<li>Calculate the mean systolic blood pressure.</li>
+<li>Calculate the mean diastolic blood pressure.</li>
+</ul>
+<p><strong>Task:</strong> Calculate both averages using pandas.</p>
+<p><strong>Exercise 4: Classify patients by blood glucose</strong></p>
+<p><strong>Scenario:</strong> Blood glucose was measured during a screening study.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>patients <span class="op">=</span> pd.DataFrame({ </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"patientid"</span>: [<span class="st">"P01"</span>, <span class="st">"P02"</span>, <span class="st">"P03"</span>, <span class="st">"P04"</span>, <span class="st">"P05"</span>, <span class="st">"P06"</span>], </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"glucosemmol_l"</span>: [<span class="fl">4.8</span>, <span class="fl">6.1</span>, <span class="fl">8.4</span>, <span class="fl">5.2</span>, <span class="fl">7.2</span>, <span class="fl">3.9</span>] })</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>TODO:</strong> Add a column called “glucose_status”.</p>
+<p>Use these categories:</p>
+<ul>
+<li>below 4.0 -&gt; “low”</li>
+<li>4.0 to 6.9 -&gt; “normal”</li>
+<li>7.0 or higher -&gt; “high”</li>
+</ul>
+<p><strong>Task:</strong> Use <code>numpy.select()</code> or <code>np.where()</code> to create the classification.</p>
+<p><strong>Exercise 5: Find the largest change in oxygen saturation</strong></p>
+<p>Patients had their oxygen saturation (<code>SpO2</code>) measured before and after treatment.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>patients <span class="op">=</span> pd.DataFrame({ </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"patientid"</span>: [<span class="st">"P01"</span>, <span class="st">"P02"</span>, <span class="st">"P03"</span>, <span class="st">"P04"</span>, <span class="st">"P05"</span>], </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"spo2before"</span>: [<span class="dv">94</span>, <span class="dv">91</span>, <span class="dv">96</span>, <span class="dv">89</span>, <span class="dv">93</span>], </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"spo2_after"</span>: [<span class="dv">97</span>, <span class="dv">95</span>, <span class="dv">97</span>, <span class="dv">94</span>, <span class="dv">96</span>] </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>TODO:</strong></p>
+<ul>
+<li>Calculate the change in SpO2 for each patient.</li>
+<li>Add it as a column called “spo2_change”.</li>
+<li>Then find the patient with the largest improvement.</li>
+</ul>
+<p><strong>Task:</strong> Calculate the difference and use <code>idxmax()</code> to find the largest improvement.</p>
+<p><strong>Exercise 6: Detect missing laboratory measurements</strong></p>
+<p><strong>Scenario:</strong> Some blood samples failed to produce a result.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>labresults <span class="op">=</span> pd.DataFrame({ </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sampleid"</span>: [<span class="st">"S01"</span>, <span class="st">"S02"</span>, <span class="st">"S03"</span>, <span class="st">"S04"</span>, <span class="st">"S05"</span>, <span class="st">"S06"</span>], </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hemoglobin"</span>: [<span class="fl">13.2</span>, <span class="fl">14.1</span>, np.nan, <span class="fl">12.8</span>, np.nan, <span class="fl">15.0</span>], </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"crp"</span>: [<span class="fl">2.1</span>, np.nan, <span class="fl">8.4</span>, <span class="fl">3.2</span>, <span class="fl">12.5</span>, np.nan] </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>TODO:</strong></p>
+<ul>
+<li>Find out how many missing values there are in each laboratory measurement.</li>
+</ul>
+<p><strong>Task:</strong> Calculate the number of missing values in each column.</p>
+<p><strong>Exercise 7: Compare treatment groups</strong></p>
+<p>A small clinical study compares two treatments and records reduction in pain score.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>study <span class="op">=</span> pd.DataFrame({ </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"patientid"</span>: [<span class="st">"P01"</span>, <span class="st">"P02"</span>, <span class="st">"P03"</span>, <span class="st">"P04"</span>, <span class="st">"P05"</span>, <span class="st">"P06"</span>], </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"treatment"</span>: [<span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>], </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"painreduction"</span>: [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">6</span>] </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>TODO:</strong></p>
+<ul>
+<li>Calculate the average pain reduction for treatment A and treatment B.</li>
+</ul>
+<p><strong>Task:</strong> Use <code>groupby()</code> to calculate the mean for each treatment.</p>
+<p><strong>Exercise 8: Combine patient data with lab results</strong></p>
+<p>Patient information and laboratory measurements were stored separately. Before analysis, they need to be combined.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>patients <span class="op">=</span> pd.DataFrame({ </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"patient_id"</span>: [<span class="st">"P01"</span>, <span class="st">"P02"</span>, <span class="st">"P03"</span>, <span class="st">"P04"</span>], </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"age"</span>: [<span class="dv">34</span>, <span class="dv">52</span>, <span class="dv">47</span>, <span class="dv">61</span>], </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sex"</span>: [<span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>] })</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>labs <span class="op">=</span> pd.DataFrame({ </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"patient_id"</span>: [<span class="st">"P01"</span>, <span class="st">"P02"</span>, <span class="st">"P03"</span>, <span class="st">"P04"</span>], </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hemoglobin"</span>: [<span class="fl">13.4</span>, <span class="fl">14.8</span>, <span class="fl">12.9</span>, <span class="fl">13.7</span>],</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"crp"</span>: [<span class="fl">1.2</span>, <span class="fl">4.5</span>, <span class="fl">2.1</span>, <span class="fl">8.3</span>] </span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>TODO:</strong></p>
+<ul>
+<li>Merge the two DataFrames using “patient_id”.</li>
+<li>Store the result in “patient_data”.</li>
+</ul>
+<p><strong>Task:</strong> Use <code>pd.merge()</code> to combine the demographic and laboratory data.</p>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<ul>
+<li>Use the version control system Git to track changes to your files, to more easily manage your project, and to more easily collaborate with others.</li>
+<li>Git tracks files in three states: “Working directory”, “Staged”, and “History”.
+<ul>
+<li>The Git repository contains the history.</li>
+</ul></li>
+<li>The main actions to move between states are:
+<ul>
+<li>“Add to staging”</li>
+<li>“Commit to history”</li>
+</ul></li>
+<li>When committing to history, keep messages short and meaningful. Focus more on <strong>why</strong> the change was made, not what.</li>
+<li>Almost all Git actions can be done using VSCode’s Git interface.</li>
+</ul>
+</section>
+</section>
+<section id="sec-github" class="level1">
+<h1>Collaborating with GitHub</h1>
+<p>GitHub is a popular online service for hosting Git repositories. It also makes collaborating on projects much easier. In this session, we will cover what GitHub is and how to use it with your R project that is a Git repository.</p>
+<section id="sec-remotes-setting-up" class="level2">
+<h2 class="anchored" data-anchor-id="sec-remotes-setting-up">“Remotes”: Storing your repository online</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Instructor note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Briefly go over this next section, especially highlighting the image.</p>
+</div>
+</div>
+</div>
+<p>A version control system that didn’t include a type of external backup wouldn’t be a very good system, because if something happened to your computer, you’d lose your Git repository. In Git, this “external” backup is called a “remote”, meaning it is something that is separate and in a different location, usually online, than the main repository. The remote repository is essentially a duplicate copy of the <em>history</em>, found in the <code>.git/</code> folder, of your <em>local</em> repository on your computer. So when you synchronize with the remote, as illustrated in <a href="#fig-git-remotes" class="quarto-xref">Figure&nbsp;8</a>, it only copies over the changes made as commits in the history.</p>
+<p>One of the biggest reasons why we teach Git is because of the popularity of several Git repository hosting sites. The most popular one is <a href="https://github.com/">GitHub</a> (which this lecture is hosted on). In this session, we’ll be covering GitHub not only because it is very popular, but also because the Python community is almost entirely on GitHub.</p>
+<div class="cell" data-eval="true" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-git-remotes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-git-remotes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-git-remotes">graph TB
+    linkStyle default interpolate basis
+    A('Remote':&lt;br&gt;GitHub) --- B('Local':&lt;br&gt;Your computer)
+
+    style A fill:White,stroke:DarkBlue,stroke-width:1.5px;
+    style B fill:White,stroke:DarkBlue,stroke-width:1.5px;
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-git-remotes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: The ‘remote’ vs ‘local’ repository, or online vs on your computer.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s get familiar with the GitHub interface.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Instructor note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Go over the interface of GitHub, especially where repositories are listed, the sidebar of the landing page (of your account), and where your account settings are.</p>
+<p>Also, reinforce the warning and note below.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When using GitHub, especially in relation to health research, you need to be mindful of what you save into the Git history and what you put up online. Some things to think about are:</p>
+<ul>
+<li><strong>Do not</strong> save any personal or sensitive data or files in your Git repository.</li>
+<li>Generally don’t save very large files, like big image files or large (non-personal) datasets.</li>
+</ul>
+<p>In both cases, it’s better to use another tool to store files like that, rather than through Git and GitHub.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Some research projects require working on restricted server environments (such as <a href="https://www.dst.dk/en">Denmark Statistics</a> when doing research on the Danish register data), where access to the internet is not available. This means that you can’t use GitHub or any other online Git repository hosting service. However, you can still use Git on those servers without using a remote.</p>
+</div>
+</div>
+</section>
+<section id="reading-task-using-github-as-a-remote" class="level2">
+<h2 class="anchored" data-anchor-id="reading-task-using-github-as-a-remote">Reading task: Using GitHub as a remote</h2>
+<p><strong>Time: ~3 minutes</strong></p>
+<p>Making and cloning a GitHub repository is the first step to linking a local repository to a remote one. We are creating a GitHub repository from an existing local one, but you can also create one on GitHub first.</p>
+<p>After connecting your local Git repository, to keep your GitHub repository synchronized, you need to “push” (upload) and “pull” (download) any changes you make to the repository on your computer, as shown in <a href="#fig-git-remotes-synch" class="quarto-xref">Figure&nbsp;9</a>. It isn’t done automatically because Git is designed with having control in mind, so you must do this synchronization manually. “Pushing” is when changes to the history are uploaded to GitHub while “pulling” is when the history is downloaded from GitHub.</p>
+<div class="cell" data-eval="true" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-git-remotes-synch" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-git-remotes-synch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-git-remotes-synch">graph TB
+    linkStyle default interpolate basis
+    A('Remote':&lt;br&gt;GitHub) -- Pull --&gt; B('Local':&lt;br&gt;Your computer)
+    B -- Push --&gt; A
+
+    style A fill:White,stroke:DarkBlue,stroke-width:1.5px;
+    style B fill:White,stroke:DarkBlue,stroke-width:1.5px;
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-git-remotes-synch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Synchronizing with GitHub: ‘Pushing’ and ‘pulling’.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>So, when we put the concepts back into the framework of the “states”, first introduced in <a href="#sec-basics-of-git" class="quarto-xref">Section&nbsp;1.3</a>, pushing and pulling <em>happen only to the history</em>. Things that you’ve changed <em>and then</em> saved to the history, either on the remote or the local repository, are synchronized from or to GitHub. So, as shown in <a href="#fig-git-states-with-github" class="quarto-xref">Figure&nbsp;10</a>, pushing copies of the history over to GitHub and pulling copies of the history from GitHub. Since changes saved in the history also reflect the working folder (the files and folders you actually see and interact with), “pulling” also updates the files and folders.</p>
+<div class="cell" data-eval="true" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-git-states-with-github" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-git-states-with-github-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-git-states-with-github">%%{init:{'themeCSS': ".actor {stroke: DarkBlue;fill: White;stroke-width:1.5px;}", 'sequence':{'mirrorActors': false}}}%%
+sequenceDiagram
+    participant W as Working folder
+    participant S as Staged
+    participant H as History
+    participant R as GitHub
+    W-&gt;&gt;S: Add
+    S-&gt;&gt;H: Commit
+    H-&gt;&gt;R: Push
+    R-&gt;&gt;H: Pull
+    R-&gt;&gt;W: Pull
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-git-states-with-github-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Which states get ‘pushed’ and ‘pulled’.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Interacting with GitHub through VSCode requires us to use something called a “personal access token”, which you will learn about and create in the next exercise.</p>
+</section>
+<section id="authenticating-with-github" class="level2">
+<h2 class="anchored" data-anchor-id="authenticating-with-github">Authenticating with GitHub</h2>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Github Pull Requests Extension
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We Highly recommend you download the Extension called <strong>Github Pull Requests</strong> by GitHub. This also enables you to sign in by writing <code>Sign in to GitHub</code> in the command pallet.</p>
+</div>
+</div>
+<p>Accounts (lower left of side bar) — link GitHub</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../blog/plots/vscode_auth.png" class="img-fluid figure-img"></p>
+<figcaption>Authenticating GitHub in VSCode</figcaption>
+</figure>
+</div>
+<p>If you are not seeing this prompt in VSCode, you can add your authorization token manually:</p>
+<ol type="1">
+<li>Go to the <a href="https://github.com/settings/tokens">GitHub tokens settings</a></li>
+<li>In the browser window, generate a new token an copy your authorization token.</li>
+<li>In VS Code, select <code>Signing in to github.com...</code> in the <em>Status Bar</em> (the lowest thin line in the VSCode window).</li>
+<li>Paste the token and press <code>Enter</code> to complete the sign-in process.</li>
+</ol>
+</section>
+<section id="linking-your-project-to-github" class="level2">
+<h2 class="anchored" data-anchor-id="linking-your-project-to-github">Linking your project to GitHub</h2>
+<p>Are we ready to upload our project to GitHub — and share the files with the world? 👀</p>
+<blockquote class="blockquote">
+<p>*double check your history and <code>.gitignore</code> file).</p>
+</blockquote>
+<p>When you’re ready, its as easy as clicking <code>Publish Branch</code> as seen below:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../blog/plots/publish_branch.png" class="img-fluid figure-img"></p>
+<figcaption>Upload the committed files and history to github</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Congrats on publishing your work 🎉</p>
+</blockquote>
+<p>Now that we have authenticated ourselves to GitHub, we can connect our project’s Git repository to GitHub. If you are new to Git and GitHub, we strongly recommend starting your first work project(s) as private, in case you accidentally add files you aren’t supposed to. It will also help get you get more comfortable with using Git and GitHub. However, for this class, we will be keeping it public.</p>
+<p>Now, whenever you use Git and save your changes to the Git history, whenever you “Push” your changes it will be sent to your project on GitHub. The diagram below shows how it conceptually looks like:</p>
+<div class="cell" data-eval="true" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-local-vs-remote" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-local-vs-remote-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-local-vs-remote">%%{init:{'theme':'forest', 'flowchart':{'nodeSpacing': 20, 'rankSpacing':30}}}%%
+graph LR;
+    yours(Your local) --&gt;|Push| github(GitHub)
+    github --&gt;|Pull| yours
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-local-vs-remote-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Schematic showing a local repository connected to GitHub’s remote repository.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The “Your local” is your own computer. Whenever you “push” to GitHub, it means it will upload your file changes (like synchronizing in Dropbox). Whenever you “pull” from GitHub, it takes any changes made on GitHub and downloads them to your “Local” computer.</p>
+<p>Using GitHub (because of Git) is one of the most effective ways to collaborate on a project. Hundreds of companies and hundreds of thousands of workers use Git and services like GitHub to work together on massive projects. The way collaboration works would conceptually look like:</p>
+<div class="cell" data-eval="true" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-local-collab-and-remote" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-local-collab-and-remote-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-local-collab-and-remote">%%{init:{'theme':'forest', 'flowchart':{'nodeSpacing': 20, 'rankSpacing':30}}}%%
+graph LR;
+    yours(Your local) --&gt;|Push| github(GitHub)
+    github --&gt;|Pull| yours
+    others(Collaborator's&lt;br&gt;local) --&gt;|Push| github
+    github --&gt;|Pull| others
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-local-collab-and-remote-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Schematic showing a local repository, GitHub’s remote repository, and a collaborator’s repository.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This approach to collaborating makes it much easier to contribute <em>directly</em> (not through emails) to projects and to more easily help others out with issues.</p>
+</section>
+<section id="synchronizing-with-github" class="level2">
+<h2 class="anchored" data-anchor-id="synchronizing-with-github">Synchronizing with GitHub</h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>:teacher: Instructor note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Go through this section slowly, remembering to make use of the stickies/origami hats to check that everyone is following along.</p>
+</div>
+</div>
+</div>
+<p>After we’ve created the token and put our project onto GitHub, we can now push and pull any changes you make to the files. Let’s practice how it works.</p>
+<p>Now time to test out pushing the change to GitHub. Click the “Push” button in the top right corner of the Git interface. A pop-up will indicate that it’s pushing and will show some text after it’s pushed. Go to our GitHub repository to see that it worked!</p>
+<p>Now let’s try the opposite way, by making a change on GitHub, committing the changes there, and then pulling changes from GitHub to your local repository (on your computer).</p>
+<p>While in your <code>LearningGit</code> GitHub repository, click the <code>README.md</code> file there. Then click the “Edit” button (the pencil icon) in the top right corner of the file view. You’ll be taken to a web-based editor.</p>
+<p>Write another random sentence somewhere near the top of the file. Scroll down to the commit message box, and type out a commit message. Then, click the “Commit” button. We’ve now made a change on the repository in GitHub. Let’s synchronize it to our local repository.</p>
+<p>Go back to VSCode, open the Git interface and now click the “Pull” button in the top right corner beside the “Push” button. Wait for it to finish pulling and check your <code>README.md</code> file for the new change. You’ve now updated your project!</p>
+</section>
+<section id="reading-task-collaborating-using-git-and-github" class="level2">
+<h2 class="anchored" data-anchor-id="reading-task-collaborating-using-git-and-github">Reading task: Collaborating using Git and GitHub</h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Instructor note
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>After they’ve read the text, briefly go over the image and emphasize why collaborating this way makes things easier. If you have some personal experiences, please share them!</p>
+</div>
+</div>
+</div>
+<p><strong>Time: ~10 minutes</strong></p>
+<p>While Git and GitHub are useful on even when you work alone, it’s main and biggest advantage is that it makes it much easier to collaborate with others on a project.</p>
+<p>Academia is unfortunately far behind when it comes to using modern tools to effectively collaborate together. Most researchers still use emails to send Word or other files back and forth, and while this is a very simple and non-technical way to collaborate as it requires very little learning or training to use, it is <em>not</em> very effective.</p>
+<p>Usually this style of collaborating revolves around one or two people doing most of the actual writing or direct contributing, while others give feedback or indirectly contribute through discussions or meetings. You might be familiar with using “Track changes” in Word when doing this style of collaborating. If your collaborators are a bit more technical, you all might be using Google Docs to do real-time collaboration together.</p>
+<p>When you use Git and GitHub and write in Quarto documents, this style of collaborating isn’t possible. For one, there is no “track changes” feature in Quarto documents. Instead, you need to use another way of collaborating, one that is much more effective and extremely powerful. This workflow of using Git and GitHub has been tried and tested by tens of thousands of teams in tens of hundreds of companies globally. One of the goals of this workshop is to slowly move researchers more into the modern era, using more modern technology, tools, and workflows so that we can produce better research faster.</p>
+<p>How does the workflow look like when using Git and GitHub? It works by using the concept of remotes that we introduced earlier. Since a local repository is a copy of a remote repository, anyone else can collaborate on your project by copying the remote repository. When they want to contribute back, they make commits to their local copy and push those changes up to the remote. Then you can pull those changes to your local repository and do the same thing by committing and then pushing. This is illustrated in <a href="#fig-git-remotes-collaborate" class="quarto-xref">Figure&nbsp;13</a>.</p>
+<div class="cell" data-eval="true" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-git-remotes-collaborate" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-git-remotes-collaborate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-git-remotes-collaborate">graph TB
+    linkStyle default interpolate basis
+    A('Remote':&lt;br&gt;GitHub) -- Pull --&gt; B('Local':&lt;br&gt;Your computer)
+    B -- Push --&gt; A
+    A -- Pull --&gt; C('Local':&lt;br&gt;Collaborator's&lt;br&gt;computer)
+    C -- Push --&gt; A
+
+    style A fill:White,stroke:DarkBlue,stroke-width:1.5px;
+    style B fill:White,stroke:DarkBlue,stroke-width:1.5px;
+    style C fill:White,stroke:DarkBlue,stroke-width:1.5px;
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-git-remotes-collaborate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Collaborating with others using Git and GitHub by having a shared central GitHub repository.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A disadvantage to this workflow is, in order to use it to effectively, it takes time to learn and get used to. For instance, you may think that you can just collaborate with others by making changes directly to the same file at the same time. But a problem comes up when you both push and pull changes to the same file. You will encounter something called a “merge conflict”, which you’ll have to learn how to resolve. Git knows that changes were made to the same file, but it doesn’t know which change to keep and which to discard. You have to manually resolve the conflict by opening the file and deciding which change to keep.</p>
+<p>So, how do you manage this when collaborating with others? Always dealing with merge conflicts sounds time-consuming and frustrating, doesn’t it? Well, that’s because Git wasn’t designed for that style of collaborating. Instead, Git uses a concept called <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches">“branches”</a> to more effectively manage multiple collaborators working on the same project. However, branches are a bit more of an advanced topic that we won’t be covering in this workshop. Instead, when collaborating with others, we recommend that each collaborator create their own separate file to work on. For instance, if you are collaborating on writing a report together, each collaborator would create their own Quarto document to write in. When everyone is finished writing, one person can then merge all the documents together into one final report. This way, you avoid merge conflicts entirely. This is the approach we will get you to use for the team project at the end of this workshop.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For public GitHub repositories, anyone can copy your repository and contribute back (only if you want their contribution), so working with collaborators is easy. When you have a private repository, you need to explicitly add collaborators in GitHub.</p>
+<p>You add someone to a private (or public) repository by going to “Settings &gt; Manage Access &gt; Invite a collaborator”. We won’t do this for the workshop, but we’re telling you how you can just in case you want to after the workshop.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As we mentioned, when working with others (or even yourself) through GitHub, you will eventually encounter “merge conflicts”. This happens when a change has been made to the same line in the same file, but in different commits, either by you or someone else. This usually happens if you make a change on GitHub as the remote while also making a change on your local repository without pulling first.</p>
+<p>When this happens, Git will not know which change to keep and will ask you to resolve the conflict. You resolve the conflict by opening the file in RStudio, finding the conflict, and deciding which change to keep and which to remove. After you’ve resolved the conflict, you would then stage the file and commit it.</p>
+<p>We won’t go into merge conflicts in this workshop, though you might deal with them during the team project. If you want to learn more about them after the workshop, GitHub has a <a href="https://github.com/skills/resolve-merge-conflicts">practical tutorial</a> on it. We also have an extra appendix section to deal with merge conflicts in <strong>?@sec-merge-conflicts</strong>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A big challenge you’ll encounter with becoming better with this way of collaborating is that most of your collaborators will likely not be familiar with it.</p>
+<p>Sadly, even experienced researchers struggle with this workflow (mainly due to not being familiar with Git) and there is no easy answer on how to handle this. The best way (in our opinion) is to start training any colleague who is interested in collaborating this way and slowly surround yourself with collaborators who also work this way.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Want to see how others use Git and GitHub in their research as examples? Check out the <a href="https://guides.rostools.org/learning#examples">Examples</a> section of the rostools Guides website.</p>
+</div>
+</div>
+</section>
+<section id="summary-1" class="level2">
+<h2 class="anchored" data-anchor-id="summary-1">Summary</h2>
+<ul>
+<li>“Remotes” are external storage locations for your Git repository. GitHub is a popular remote repository hosting service.
+<ul>
+<li>Downloading a Git repository from GitHub is called “cloning”.</li>
+</ul></li>
+<li>“Pushing” and “pulling” are actions to upload and download to the remote repository (which usually is called “origin”), so that you can synchronize your changes.</li>
+<li>Collaborating together using Git and GitHub is a powerful way of working, but does take some learning. Collaborating involves each collaborator creating a copy of the remote repository that you each push and pull to as you work together.</li>
+</ul>
+</section>
+</section>
+<section id="final-exercises" class="level1">
+<h1>Final exercises</h1>
+<p>You will be collaborating as a team using Git and GitHub to manage your team assignment. We will set up the project with Git and GitHub for you so you can quickly start collaborating together on the project. You will be pushing and pulling a lot of content, so you will need to maintain regular and open communication with your team members.</p>
+<section id="clone-the-team-repository" class="level2">
+<h2 class="anchored" data-anchor-id="clone-the-team-repository">Clone the team repository</h2>
+<p>All team members need to clone (download) your team’s repository to their own computer. Open the command pallet and look for <code>Git: Clone</code>. Then, paste your team’s repository URL (copied from the team’s repository page on GitHub) into the “Repository URL” box. After you clone the repository in VSCode, it should open up as a Project for you.</p>
+</section>
+<section id="download-the-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="download-the-dataset">Download the dataset</h2>
+<p>Each team member needs to <strong>download the dataset</strong> for the project work and save the file into the <code>data/</code> folder of the R project. We already set the project to ignore the <code>data/</code> folder, so the data will not be tracked by Git. There are two ways to download the dataset:</p>
+<ul>
+<li><p>Manually download the dataset and move it from your <code>Downloads/</code> folder of your computer into the R project’s <code>data/</code> folder by using your file manager (like Finder or File Explorer). Use <a href="https://zenodo.org/records/8292712/files/SUA_CVDs_risk_factors.csv?download=1">this link</a> to directly download the data.</p></li>
+<li><p>Or, run this code below:</p></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> urllib.request</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://zenodo.org/records/8292712/files/SUA_CVDs_risk_factors.csv"</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>destfile <span class="op">=</span> Path(<span class="st">"data/SUA_CVDs_risk_factors.csv"</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>urllib.request.urlretrieve(url, destfile)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="create-individual-scripts" class="level2">
+<h2 class="anchored" data-anchor-id="create-individual-scripts">Create individual scripts</h2>
+<p>In order to avoid merge conflicts, make a script that you will be working on.</p>
+<section id="create-some-figures-and-tables" class="level3">
+<h3 class="anchored" data-anchor-id="create-some-figures-and-tables">Create some figures and tables</h3>
+<p>This task will take the most amount of time. We want each team member to create a few figures and tables. Ideally, each team member would create <em>different</em> figures and tables, so that you get practice on your own. So this will require some coordination and communication between team members.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can do any wrangling, plotting, and table-making that you want, as long as you use the code and techniques you learned during the workshop. Just to remind you, you can wrangling and analyse the data any way you want, even if technically it might not make sense or be wrong. The point of this project is to practice what you learned and have fun along the way.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Keep the figures and tables simple. The simpler the better. The goal is to practice what you learned, not to create a perfect analysis.</p>
+</div>
+</div>
+<p>To help you get started or to give you some ideas, here are some plots and tables you could make:</p>
+<ul>
+<li><p>A table of the mean of <code>Age</code> and <code>BMI</code> (using <code>groupby()</code> and <code>mean()</code>) grouped by <code>Sex</code>. Display the table with <code>print()</code>.</p></li>
+<li><p>A table of the mean of <code>Age</code>, <code>BMI</code>, <code>SBP</code>, and <code>DBP</code> (using <code>groupby()</code> and <code>mean()</code>) grouped by <code>hypertension</code> (or <code>dyslipidemia</code> or <code>hyperglycemia</code>). Display the table with <code>print()</code>.</p></li>
+<li><p>A histogram of <code>BMI</code> with <code>sns.histplot()</code>, with <code>hyperglycemia</code> as the <code>hue</code> or using separate plots with <code>col=</code>.</p></li>
+<li><p>A scatter plot of <code>SBP</code> vs <code>DBP</code> with <code>sns.scatterplot()</code>, colored by <code>hypertension</code> (optionally with a <code>sns.regplot()</code> or <code>sns.lmplot()</code> trend line).</p></li>
+<li><p>A bar plot of the counts of <code>hyperglycemia</code> status with <code>sns.countplot()</code>, making separate plots for <code>Times</code> using <code>col=</code>.</p></li>
+<li><p>A boxplot of <code>TC</code> (total cholesterol) by <code>dyslipidemia</code> status with <code>sns.boxplot()</code>.</p></li>
+<li><p>Find the mean <code>BMI</code> by <code>hyperglycemia</code> using <code>groupby()</code> and <code>mean()</code>, and create a bar plot with <code>sns.barplot()</code>.</p></li>
+</ul>
+<p>We suggest that you talk with your team members to get some other ideas or to decide who does what. As you code, get or give help to your teammates.</p>
+</section>
+<section id="regularly-commit-the-changes" class="level3">
+<h3 class="anchored" data-anchor-id="regularly-commit-the-changes">Regularly commit the changes</h3>
+<p>Use the “Git workflow” by adding to the staged area, committing, pushing, and pulling the changes you and your teammate have made. You may encounter merge conflicts. If you do, get one of the helpers or teachers to help you out!</p>
+</section>
+<section id="testing-each-others-code-for-reporducibility" class="level3">
+<h3 class="anchored" data-anchor-id="testing-each-others-code-for-reporducibility">Testing each others code for reporducibility</h3>
+<p>When a figure or table is completed and committed, the teammate should pull and try to replicate the table or figure using the code in the teammates script file.</p>
+</section>
+</section>
+<section id="expectations-for-the-project" class="level2">
+<h2 class="anchored" data-anchor-id="expectations-for-the-project">Expectations for the project</h2>
+<p>What we expect you to do for the team project:</p>
+<ul>
+<li>Use Git and GitHub throughout your work.</li>
+<li>Work collaboratively as a team and share responsibilities and tasks.</li>
+<li>Use as much of what we covered in the workshop to practice what you learned.</li>
+</ul>
+<p>What we don’t expect:</p>
+<ul>
+<li>Complicated analysis or coding. The simpler it is, the easier is to for you to do the coding and understand what is going on. It also helps us to see that you’ve practiced what you’ve learned.</li>
+<li>Clever or overly concise code. Clearly written and readable code is <em>always</em> better than clever or concise code. Keep it simple and understandable!</li>
+</ul>
+<p>Essentially, the team project is a way to reinforce what you learned during the session, but in a more relaxed and collaborative setting.</p>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>This isn’t completely true, you can delete stuff, like if you accidentally add a password or personal data.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/DanMazJen\.github\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
