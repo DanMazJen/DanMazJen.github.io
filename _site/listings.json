@@ -2,6 +2,8 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/2026-09-20-four-reasons-for-bayes.html",
+      "/blog/2026-10-08-github-vscode.html",
       "/blog/2026-07-23-baclup-rsync-CLI.html",
       "/blog/2026-06-12-learning-leptos.html",
       "/blog/2026-05-06-new-mac.html",
