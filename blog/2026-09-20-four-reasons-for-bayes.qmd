@@ -18,7 +18,7 @@ instantly gain regularization without any tuning.
 
 ## 2. Marginalization
 
-```{r}
+```r
 #| label: marginal-data
 
 library(rethinking)
@@ -51,7 +51,7 @@ There is deliberately no $z$ effect.
 
 Here is the simple model:
 
-```{r}
+```r
 #| label: simple-model
 
 set.seed(173329571)
@@ -74,7 +74,7 @@ m1 <- ulam(
 
 And the unnecessarily complicated model:
 
-```{r}
+```r
 #| label: complex-model
 
 set.seed(83150518)
@@ -96,14 +96,14 @@ m2 <- ulam(
 )
 ```
 
-```{r}
+```r
 #| label: see-estimates
 
 precis(m1)
 precis(m2)
 ```
 
-```{r}
+```r
 #| label: plot1
 
 library(tidybayes)
@@ -123,7 +123,7 @@ ggplot(post_m2, aes(x = beta_z)) +
   theme_classic()
 ```
 
-```{r}
+```r
 #| label: plo2
 
 prior <- tibble(
@@ -173,7 +173,7 @@ because the model has to average over all parameters.
 
 ## No reliance of quadratic approximation
 
-```{r}
+```r
 #| label: quap1
 
 library(tidyr)
