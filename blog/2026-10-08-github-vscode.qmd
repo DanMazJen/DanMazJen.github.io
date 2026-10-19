@@ -14,7 +14,7 @@ format:
 ---
 
 This material is a translation from [Reproducible Research in
-R](https://r-cubed-intro.rostools.org/), which used R and RStudio. See the
+R](https://r-cubed-intro.rostools.org/), which uses R and RStudio. See the
 [material at Zenodo](https://doi.org/10.5281/zenodo.3921893) and
 
 > Johnston, L., Juel, H. B., Lengger, B., Witte, D. R., Chatwin, H.,
@@ -45,8 +45,7 @@ R](https://r-cubed-intro.rostools.org/), which used R and RStudio. See the
    brew install --cask visual-studio-code
    ```
 
-2. [Git](https://git-scm.com/download/mac): Git is used throughout many sessions
-   in the workshop. With Homebrew:
+2. [Git](https://git-scm.com/download/mac) with Homebrew:
 
    ```bash {filename="Terminal"}
    brew install git
@@ -57,9 +56,11 @@ R](https://r-cubed-intro.rostools.org/), which used R and RStudio. See the
 
 ### Linux (Ubuntu)
 
-1. [VSCode](https://code.visualstudio.com/download):
+1. [VSCode](https://code.visualstudio.com/download) - depends on your destro,
+   see also the [setup](https://code.visualstudio.com/docs/setup/linux)
 
-2. [Git](https://git-scm.com/download/mac).
+2. [Git](https://git-scm.com/download/mac) - you should already have it, but
+   otherwise:
 
    ```bash {filename="Terminal"}
    sudo apt install git
@@ -216,8 +217,8 @@ While many people may use Git to manage their Python scripts, you can also
 manage other non-code based files like Word or images in Git. Version control is
 useful for any project that uses any type of files since they can be saved in
 the Git history (though there are some limitations to using Git for files that
-are not plain text like R scripts are). You can save files into the history by
-adding and committing them (as we will learn to do shortly).
+are not plain text like python scripts are). You can save files into the history
+by adding and committing them (as we will learn to do shortly).
 
 ## Reading task: Basics of Git {#sec-basics-of-git}
 
@@ -225,7 +226,7 @@ adding and committing them (as we will learn to do shortly).
 ## Instructor note
 
 Make sure everyone has their Git properly configured. Reinforce the Git repo =
-one R project = one research project.
+one python project = one research project.
 :::
 
 **Time: \~8 minutes**
@@ -264,8 +265,8 @@ Another important file for managing the repository is the `.gitignore` file.
 This file tells Git to *not* track (or "watch") certain files, such as temporary
 files. This is *particularly* important for making sure you don't save personal
 data in the Git history. Personal sensitive data should be stored in a *secure
-location* and should *only* be accessed in the R Project by loading it from that
-secure location.
+location* and should *only* be accessed in the code project by loading it from
+that secure location.
 
 ```
 ├── .git/ <-- Git repository stored here
@@ -490,7 +491,7 @@ your history easier for you to read and make it easier for others as well.
 ## Ignoring files with `.gitignore`
 
 ::: {.callout-note collapse="true"}
-## :teacher: Teacher note
+## Teacher note
 
 Reinforce that we don't always want Git to track everything. Make sure to
 explain why we want to ignore generated files and what the `*` means (wildcard
@@ -501,7 +502,7 @@ We already read about the `.gitignore` file earlier. There are actually some
 files that we don't want to track as we work on our project. This could be
 generated figures, documents, or other artifacts of the code, which is
 unnecessary. It can also be sensitive data or personal notes. So let's tell Git
-to not track a specific file named `/personal.md`.
+to not track a specific file named `personal.md`.
 
 We do two things:
 
@@ -731,7 +732,7 @@ labs = pd.DataFrame({
 
 GitHub is a popular online service for hosting Git repositories. It also makes
 collaborating on projects much easier. In this session, we will cover what
-GitHub is and how to use it with your R project that is a Git repository.
+GitHub is and how to use it with your code project that is a Git repository.
 
 ## "Remotes": Storing your repository online {#sec-remotes-setting-up}
 
@@ -891,7 +892,7 @@ token manually:
    lowest thin line in the VSCode window).
 4. Paste the token and press `Enter` to complete the sign-in process.
 
-## Linking your project to GitHub
+## Reading task: Linking your project to GitHub
 
 Are we ready to upload our project to GitHub --- and share the files with the
 world? 👀
@@ -959,7 +960,7 @@ This approach to collaborating makes it much easier to contribute *directly*
 ## Synchronizing with GitHub
 
 ::: {.callout-note appearance="minimal" collapse="true"}
-## :teacher: Instructor note
+## Instructor note
 
 Go through this section slowly, remembering to make use of the stickies/origami
 hats to check that everyone is following along.
@@ -1161,13 +1162,13 @@ open up as a Project for you.
 ## Download the dataset
 
 Each team member needs to **download the dataset** for the project work and save
-the file into the `data/` folder of the R project. We already set the project to
-ignore the `data/` folder, so the data will not be tracked by Git. There are two
-ways to download the dataset:
+the file into the `data-raw/` folder of the code project. We already set the
+project to ignore the `data-raw/` folder, so the data will not be tracked by
+Git. There are two ways to download the dataset:
 
 - Manually download the dataset and move it from your `Downloads/` folder of
-  your computer into the R project's `data/` folder by using your file manager
-  (like Finder or File Explorer). Use [this
+  your computer into the code project's `data-raw/` folder by using your file
+  manager (like Finder or File Explorer). Use [this
   link](https://zenodo.org/records/8292712/files/SUA_CVDs_risk_factors.csv?download=1)
   to directly download the data.
 
@@ -1178,7 +1179,7 @@ import urllib.request
 from pathlib import Path
 
 url = "https://zenodo.org/records/8292712/files/SUA_CVDs_risk_factors.csv"
-destfile = Path("data/SUA_CVDs_risk_factors.csv")
+destfile = Path("data-raw/SUA_CVDs_risk_factors.csv")
 
 urllib.request.urlretrieve(url, destfile)
 ```
