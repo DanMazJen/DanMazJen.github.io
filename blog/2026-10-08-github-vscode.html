@@ -362,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sec-remotes-setting-up" id="toc-sec-remotes-setting-up" class="nav-link" data-scroll-target="#sec-remotes-setting-up">“Remotes”: Storing your repository online</a></li>
   <li><a href="#reading-task-using-github-as-a-remote" id="toc-reading-task-using-github-as-a-remote" class="nav-link" data-scroll-target="#reading-task-using-github-as-a-remote">Reading task: Using GitHub as a remote</a></li>
   <li><a href="#authenticating-with-github" id="toc-authenticating-with-github" class="nav-link" data-scroll-target="#authenticating-with-github">Authenticating with GitHub</a></li>
-  <li><a href="#linking-your-project-to-github" id="toc-linking-your-project-to-github" class="nav-link" data-scroll-target="#linking-your-project-to-github">Linking your project to GitHub</a></li>
+  <li><a href="#reading-task-linking-your-project-to-github" id="toc-reading-task-linking-your-project-to-github" class="nav-link" data-scroll-target="#reading-task-linking-your-project-to-github">Reading task: Linking your project to GitHub</a></li>
   <li><a href="#synchronizing-with-github" id="toc-synchronizing-with-github" class="nav-link" data-scroll-target="#synchronizing-with-github">Synchronizing with GitHub</a></li>
   <li><a href="#reading-task-collaborating-using-git-and-github" id="toc-reading-task-collaborating-using-git-and-github" class="nav-link" data-scroll-target="#reading-task-collaborating-using-git-and-github">Reading task: Collaborating using Git and GitHub</a></li>
   <li><a href="#summary-1" id="toc-summary-1" class="nav-link" data-scroll-target="#summary-1">Summary</a></li>
@@ -428,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This material is a translation from <a href="https://r-cubed-intro.rostools.org/">Reproducible Research in R</a>, which used R and RStudio. See the <a href="https://doi.org/10.5281/zenodo.3921893">material at Zenodo</a> and</p>
+<p>This material is a translation from <a href="https://r-cubed-intro.rostools.org/">Reproducible Research in R</a>, which uses R and RStudio. See the <a href="https://doi.org/10.5281/zenodo.3921893">material at Zenodo</a> and</p>
 <blockquote class="blockquote">
 <p>Johnston, L., Juel, H. B., Lengger, B., Witte, D. R., Chatwin, H., Christiansen, M. R., &amp; Isaksen, A. A. (2021). r-cubed: Guiding the overwhelmed scientist from random wrangling to Reproducible Research in R. <em>Journal of Open Source Education, 4</em>(44).</p>
 </blockquote>
@@ -454,7 +454,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="Terminal"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> visual-studio-code</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></li>
-<li><p><a href="https://git-scm.com/download/mac">Git</a>: Git is used throughout many sessions in the workshop. With Homebrew:</p>
+<li><p><a href="https://git-scm.com/download/mac">Git</a> with Homebrew:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Terminal</strong></pre>
@@ -466,8 +466,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <ol type="1">
-<li><p><a href="https://code.visualstudio.com/download">VSCode</a>:</p></li>
-<li><p><a href="https://git-scm.com/download/mac">Git</a>.</p>
+<li><p><a href="https://code.visualstudio.com/download">VSCode</a> - depends on your destro, see also the <a href="https://code.visualstudio.com/docs/setup/linux">setup</a></p></li>
+<li><p><a href="https://git-scm.com/download/mac">Git</a> - you should already have it, but otherwise:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Terminal</strong></pre>
@@ -580,7 +580,7 @@ Figure&nbsp;2: File naming used in the commonly used ‘version control’.
 <li>VSCode has an amazing interface and integration with Git.</li>
 </ul>
 <p>While learning Git and version control can be difficult and has a steep learning curve, like learning Python, it is ultimately an investment into your future productivity and effectiveness as a researcher. It is <em>very much worth it</em> to learn and use it as often as you can.</p>
-<p>While many people may use Git to manage their Python scripts, you can also manage other non-code based files like Word or images in Git. Version control is useful for any project that uses any type of files since they can be saved in the Git history (though there are some limitations to using Git for files that are not plain text like R scripts are). You can save files into the history by adding and committing them (as we will learn to do shortly).</p>
+<p>While many people may use Git to manage their Python scripts, you can also manage other non-code based files like Word or images in Git. Version control is useful for any project that uses any type of files since they can be saved in the Git history (though there are some limitations to using Git for files that are not plain text like python scripts are). You can save files into the history by adding and committing them (as we will learn to do shortly).</p>
 </section>
 <section id="sec-basics-of-git" class="level2">
 <h2 class="anchored" data-anchor-id="sec-basics-of-git">Reading task: Basics of Git</h2>
@@ -596,7 +596,7 @@ Figure&nbsp;2: File naming used in the commonly used ‘version control’.
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Make sure everyone has their Git properly configured. Reinforce the Git repo = one R project = one research project.</p>
+<p>Make sure everyone has their Git properly configured. Reinforce the Git repo = one python project = one research project.</p>
 </div>
 </div>
 </div>
@@ -617,7 +617,7 @@ Figure&nbsp;2: File naming used in the commonly used ‘version control’.
 <li>Synchronize the Git repository on your computer with the repository on your GitHub, called “push” (upload) and “pull” (download).</li>
 </ul>
 <p>So first off, <em>what exactly is the Git repository?</em> The Git repository works at the project (the folder) level because it stores the version history in the hidden <code>.git/</code> folder as shown in the file diagram below. In Windows, this folder will probably not be hidden, but in Mac and Linux, files and folders that start with <code>.</code> are automatically hidden. The <code>.git/</code> folder itself is the repository used by Git to store the file changes and history of the project. So don’t delete it!</p>
-<p>Another important file for managing the repository is the <code>.gitignore</code> file. This file tells Git to <em>not</em> track (or “watch”) certain files, such as temporary files. This is <em>particularly</em> important for making sure you don’t save personal data in the Git history. Personal sensitive data should be stored in a <em>secure location</em> and should <em>only</em> be accessed in the R Project by loading it from that secure location.</p>
+<p>Another important file for managing the repository is the <code>.gitignore</code> file. This file tells Git to <em>not</em> track (or “watch”) certain files, such as temporary files. This is <em>particularly</em> important for making sure you don’t save personal data in the Git history. Personal sensitive data should be stored in a <em>secure location</em> and should <em>only</em> be accessed in the code project by loading it from that secure location.</p>
 <pre><code>├── .git/ &lt;-- Git repository stored here
 ├── src/
 ├── data/
@@ -849,7 +849,7 @@ Figure&nbsp;7: An example of a history for this workshop’s repository.
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>:teacher: Teacher note
+<span class="screen-reader-only">Note</span>Teacher note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -859,7 +859,7 @@ Figure&nbsp;7: An example of a history for this workshop’s repository.
 </div>
 </div>
 </div>
-<p>We already read about the <code>.gitignore</code> file earlier. There are actually some files that we don’t want to track as we work on our project. This could be generated figures, documents, or other artifacts of the code, which is unnecessary. It can also be sensitive data or personal notes. So let’s tell Git to not track a specific file named <code>/personal.md</code>.</p>
+<p>We already read about the <code>.gitignore</code> file earlier. There are actually some files that we don’t want to track as we work on our project. This could be generated figures, documents, or other artifacts of the code, which is unnecessary. It can also be sensitive data or personal notes. So let’s tell Git to not track a specific file named <code>personal.md</code>.</p>
 <p>We do two things:</p>
 <ol type="1">
 <li>Make the file <code>personal.md</code> in the root directory and type in your phone number. Notice that the <code>personal.md</code> file is automatically showing up in the “Changes” in the Git tab.</li>
@@ -1027,7 +1027,7 @@ Figure&nbsp;7: An example of a history for this workshop’s repository.
 </section>
 <section id="sec-github" class="level1">
 <h1>Collaborating with GitHub</h1>
-<p>GitHub is a popular online service for hosting Git repositories. It also makes collaborating on projects much easier. In this session, we will cover what GitHub is and how to use it with your R project that is a Git repository.</p>
+<p>GitHub is a popular online service for hosting Git repositories. It also makes collaborating on projects much easier. In this session, we will cover what GitHub is and how to use it with your code project that is a Git repository.</p>
 <section id="sec-remotes-setting-up" class="level2">
 <h2 class="anchored" data-anchor-id="sec-remotes-setting-up">“Remotes”: Storing your repository online</h2>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -1208,8 +1208,8 @@ Figure&nbsp;10: Which states get ‘pushed’ and ‘pulled’.
 <li>Paste the token and press <code>Enter</code> to complete the sign-in process.</li>
 </ol>
 </section>
-<section id="linking-your-project-to-github" class="level2">
-<h2 class="anchored" data-anchor-id="linking-your-project-to-github">Linking your project to GitHub</h2>
+<section id="reading-task-linking-your-project-to-github" class="level2">
+<h2 class="anchored" data-anchor-id="reading-task-linking-your-project-to-github">Reading task: Linking your project to GitHub</h2>
 <p>Are we ready to upload our project to GitHub — and share the files with the world? 👀</p>
 <blockquote class="blockquote">
 <p>*double check your history and <code>.gitignore</code> file).</p>
@@ -1280,7 +1280,7 @@ Figure&nbsp;12: Schematic showing a local repository, GitHub’s remote reposito
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>:teacher: Instructor note
+<span class="screen-reader-only">Note</span>Instructor note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1427,16 +1427,16 @@ Tip
 </section>
 <section id="download-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="download-the-dataset">Download the dataset</h2>
-<p>Each team member needs to <strong>download the dataset</strong> for the project work and save the file into the <code>data/</code> folder of the R project. We already set the project to ignore the <code>data/</code> folder, so the data will not be tracked by Git. There are two ways to download the dataset:</p>
+<p>Each team member needs to <strong>download the dataset</strong> for the project work and save the file into the <code>data-raw/</code> folder of the code project. We already set the project to ignore the <code>data-raw/</code> folder, so the data will not be tracked by Git. There are two ways to download the dataset:</p>
 <ul>
-<li><p>Manually download the dataset and move it from your <code>Downloads/</code> folder of your computer into the R project’s <code>data/</code> folder by using your file manager (like Finder or File Explorer). Use <a href="https://zenodo.org/records/8292712/files/SUA_CVDs_risk_factors.csv?download=1">this link</a> to directly download the data.</p></li>
+<li><p>Manually download the dataset and move it from your <code>Downloads/</code> folder of your computer into the code project’s <code>data-raw/</code> folder by using your file manager (like Finder or File Explorer). Use <a href="https://zenodo.org/records/8292712/files/SUA_CVDs_risk_factors.csv?download=1">this link</a> to directly download the data.</p></li>
 <li><p>Or, run this code below:</p></li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> urllib.request</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://zenodo.org/records/8292712/files/SUA_CVDs_risk_factors.csv"</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>destfile <span class="op">=</span> Path(<span class="st">"data/SUA_CVDs_risk_factors.csv"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>destfile <span class="op">=</span> Path(<span class="st">"data-raw/SUA_CVDs_risk_factors.csv"</span>)</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>urllib.request.urlretrieve(url, destfile)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
