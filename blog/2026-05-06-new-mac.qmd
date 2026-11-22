@@ -2,7 +2,9 @@
 title: "Setting up a new Mac for work"
 subtitle: "Using Homebrew and the terminal"
 author: "Daniel S. Mazhari-Jensen"
-description: "It can be tedious setting up a new computer. In this blog, I share my tricks for a more enjoyable experience"
+description: >-
+  It can be tedious setting up a new computer. In this blog, I share my tricks
+  for a more enjoyable experience
 date: 2026-06-05
 reading-time: 5 min
 file-modified: 2026-06-05
@@ -15,68 +17,185 @@ format:
 
 # Congrats with the your Mac!
 
-It's great getting a new computer - it's faster, has more CPU/GPU, and it's a great way to "start fresh".
-However... fresh starts can be tedious, cumbersome and frustrating if you have to make a comprehensive setup.
-This blog post is for future me (and maybe you), if you need to start from scratch with your Mac OS.
+It's great getting a new computer - it's faster, has more CPU/GPU, and it's a
+great way to "start fresh". However... fresh starts can be tedious, cumbersome
+and frustrating if you have to make a comprehensive setup. This blog post is for
+future me (and maybe you), if you need to start from scratch with your Mac OS.
 
 ## Setting up a Mac
 
-We need some basic functionality:
+We need some basic functionality and a nice way to organize and manage software:
 
-1)  Xcode
-    A framework?
-2)  Curl 
-    Internet API from the terminal
-3)  Homebrew
-    The package manager for Mac OS
+1) First, install xcode --- a collection of tools/software for Mac devs.
+2) Second, the infamous `curl` for internet API from the terminal.
+3) Finally, `homebrew`, the package manager for Mac OS.
 
-For all the tools, we'll use the terminal. Mac OS is a unix system and uses zsh as default. 
-
+For all the tools, we'll use the terminal. Mac OS is a unix system and uses zsh
+as default.
 
 ::: {.callout-tip collapse="true"}
-
-# The terminal
+## The terminal
 
 A terminal uses an IDE (iTerm2) and a coding language underneath (bash/zsh).
 It's benefinical to learn quickly!
-
 :::
 
+### Step 1: `xcode-select`
 
+Run:
 
+```bash {name="Terminal"}
+xcode-select --install
+```
 
-### Step 1: Xcode-select 
+Now, we should have a C-compiler, `git`, and many more most-haves for
+programming.
 
-Xcode-select —install
+Check that you have `git` by running:
 
-git —version 
+```bash {name="Terminal"}
+git --version
+```
 
 ### Step 2: Homebrew
-/bin/bash -c “$(curl -fsSL …
 
-Follow “Next Steps”
+To manage most software/apps, we'll use Homebrew:
+
+```bash {name="Terminal"}
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Follow "Next Steps"
 
 echo >>
 
 ### Step 3: Happy brew install
 
+Finally, we'll make a large brew install for all the most important software we
+want to update regularly and manage via the package manager:
+
+**Github CLI:**
+
+```bash {name="Terminal"}
 brew install gh
+```
 
+Check it with:
+
+```bash {name="Terminal"}
 gh auth login
+```
 
+**zsh instead of bash**
+
+```bash {name="Terminal"}
+brew install ---cask zsh
+```
+
+**Terminal**
+
+```bash {name="Terminal"}
+brew install ---cask iterm2
+```
+
+**R version manager**
+
+```bash {name="Terminal"}
 brew tap r-lib/rig
+```
 
-brew install —cask rig
+```bash {name="Terminal"}
+brew install ---cask rig
+```
 
+```bash {name="Terminal"}
 rig add release
+```
+**Quarto CLI**
 
-brew install —cask quarto
+```bash {name="Terminal"}
+brew install ---cask quarto
+```
 
-brew install —cask positron
+**Positron IDE**
 
-brew install —cask zsh
+```bash {name="Terminal"}
+brew install ---cask positron
+```
 
-brew install —cask iterm2
+**Plugin for zsh**
+
+```bash {name="Terminal"}
+brew install zsh-autosuggestions 
+```
+
+```bash {name="Terminal"}
+brew install zsh-syntax-highlighting brew
+```
+
+```bash {name="Terminal"}
+brew install autojump
+```
+
+**Agnostic script/workflow code**
+
+```bash {name="Terminal"}
+brew install just
+```
+
+**URL tester**
+
+```bash {name="Terminal"}
+brew install lychee
+```
+
+**Python management**
+
+```bash {name="Terminal"}
+brew install uv
+```
+
+**Inexpensable system navigation and shortcuts for Mac OS**
+
+```bash {name="Terminal"}
+brew install --cask raycast
+```
+
+**Team communication**
+
+```bash {name="Terminal"}
+install --cask discord
+```
+
+**Snippet management**
+
+```bash {name="Terminal"}
+install --cask espanso
+```
+
+**Notes in markdown**
+
+```bash {name="Terminal"}
+brew install --cask obsidian
+```
+
+**Blasing fast database**
+
+```bash {name="Terminal"}
+brew install duckdb
+```
+
+**Windows app for DST working on server**
+
+```bash {name="Terminal"}
+brew install --cask windows-app
+```
+
+**A collection of fonts needed by R/quarto on Mac**
+
+```bash {name="Terminal"}
+brew install --cask xquartz
+```
 
 ### Bonus: Making the terminal a nicer placer to be
 
@@ -84,55 +203,77 @@ https://dev.to/gabriel_perez_337aabb5cfd/supercharge-your-mac-terminal-a-step-by
 
 https://github.com/romkatv/powerlevel10k
 
-open -e ~/.zshrc
+```bash {name="Terminal"}
+open -e ~/.zshrc 
 open -e ~/.p10k.zsh
+```
 
+- `plugins=(git)`
 
-	plugins=(git)
+- `source $ZSH/oh-my-zsh.sh`
 
-	source $ZSH/oh-my-zsh.sh
+- User configuration
 
-	# User configuration
-	[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-
-brew install zsh-autosuggestions
-brew install zsh-syntax-highlighting
-brew install autojump
-
-
-brew install just
-
-brew install uv
-
-brew install --cask raycast
-
-
-install --cask discord
-
-install --cask espanso
-
+```text
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+```
 
 ## Future hotkeys to practice:
 
-brew update
-brew outdated
+```bash {name="Terminal"}
+brew update 
+brew outdated 
 brew upgrade
+```
 
+```bash {name="Terminal"}
 upgrade_oh_my_zsh
+```
 
-I use a system-wide hotkey (ctrl + `) to open iTerm2 from anywhere.
+I use a system-wide hotkey (ctrl + \`) to open iTerm2 from anywhere.
 
-option + space = Reycast
+- `option + space` = Reycast
 
-Minimize current window: Press Command (⌘) + M.
+- Minimize current window: Press Command (⌘) + M.
 
-espanso restart # after adding things in match
+- espanso restart # after adding things in match
 
-### terminal tricks 
+- option+cmd left/right/up (Raycast)
 
-```{.zsh}
+- random seed generator script in Raycast
+
+- raycast quicklinks
+
+- Bitwarden for passward management
+
+### terminal tricks
+
+Jump straight to a path including `"espanso"`:
+
+```bash {name="Terminal"}
 j espanso
 ```
 
 will jump to the folder for making espanso scripts.
+
+## A note on Rust
+
+Don't install Rust using Brew!
+
+Simply, use `rustup`, run:
+
+```bash {name="Terminal"}
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+Then, update using:
+
+```bash {name="Terminal"}
+rustup update
+```
+
+You also get `cargo` for free:
+
+```bash {name="Terminal"}
+cargo --version
+```
